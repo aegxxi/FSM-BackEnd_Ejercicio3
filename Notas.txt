@@ -1,4 +1,4 @@
-Ejercicio 02 - Mi primer base de datos en  "Node.js-Express.js-MongoDb"
+Ejercicio 03 - Mi primer base de datos en  "Node.js-Express.js-MongoDb"
 
 Carpeta: ejSrv_Njs02_A0
 
@@ -71,7 +71,7 @@ Referencias:
 	MongoDb - Compass: https://www.mongodb.com/es/products/compass
 	MongooseJs: https://mongoosejs.com/
 	Corse:  https://www.npmjs.com/package/cors ,
-				https://www.section.io/engineering-education/how-to-use-cors-in-nodejs-with-express/
+			https://www.section.io/engineering-education/how-to-use-cors-in-nodejs-with-express/
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -81,7 +81,7 @@ Referencias:
  
  
 Errores al correr el servidor:
--------------------------------------
+------------------------------
  
 Error 1
 ---------
@@ -112,7 +112,8 @@ Error 1
 		at Object.<anonymous> (/home/andres/Documentos/DesarrolloWeb/ejSrv_Njs02_A0/node_modules/whatwg-url/lib/url-state-machine.js:5:34)
 		at Module._compile (internal/modules/cjs/loader.js:778:30)
 	[nodemon] app crashed - waiting for file changes before starting...
-	 
+
+
  Investigacion: 
  -------------------
 	El error "TextEncoder is not defined" se debe a confictos entre la version de Node y la version de Mongoouse.
