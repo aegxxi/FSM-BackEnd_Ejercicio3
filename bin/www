@@ -1,0 +1,139 @@
+#!/usr/bin/env node
+
+/**
+ * Dependencias del módulo.
+ * (Module dependencies.)
+ */
+
+const app = require('../app');
+const debug = require('debug')('ejsrv-njs02-a0:server');
+const http = require('http');
+
+const myhandler =require('../handlers/handler'); // Funciones auxiliares
+const cAppName = app.name.toLocaleUpperCase(); // obtener el nombre de la app principal
+
+//---
+
+
+
+// intento obtener valores de entorno
+console.log();
+console.log(`Inicio - (www) Informacion para depuracion...`);
+console.log(`* www.js => DotEnv, PORT => ${process.env.PORT}`);
+console.log(`* app. => name:${app.name}, puerto:${app.puerto}, Port:${app.Port}, PORT:${app.PORT}`);
+//console.log();
+
+const entorno = require('../appSrvEntorno');
+
+console.log(`* entorno. => funcion_fnAppObtenerNombre:${entorno.fnAppObtenerNombre()}, funcion_fnMiServidor:${entorno.fnMiServidor()}`);
+console.log(entorno.fnMiServidor());
+//console.log();
+
+const {fnMiServidor}= entorno
+const {srvPuerto,srvNombre} = fnMiServidor()
+
+console.log(`* entorno.fnMiServidor() => srvNombre:${srvNombre}, srvPuerto:${srvPuerto}`);
+console.log(`Fin - (www) Informacion para depuracion.`);
+console.log();
+//
+
+
+
+/**
+ * Obtenga puerto del entorno y almacene en Express.
+ * (Get port from environment and store in Express.)
+ */
+const port = normalizePort(process.env.PORT || srvPuerto);
+app.set('port', port);
+
+/**
+ * Crear un servidor HTTP.
+ * (Create HTTP server.)
+ */
+const server = http.createServer(app);
+
+/**
+ * Escuche el puerto provisto, en todas las interfaces de red.
+ * (Listen on provided port, on all network interfaces.)
+ */
+server.listen(port);
+server.on('error', onError);
+server.on('listening', onListening);
+
+/**
+ * Normaliza un puerto en un número, cadena o falso.
+ * (Normalize a port into a number, string, or false.)
+ */
+function normalizePort(val) {
+  const port = parseInt(val, 10);
+
+  if (isNaN(port)) {
+    // named pipe
+    return val;
+  }
+
+  if (port >= 0) {
+    // port number
+    return port;
+  }
+
+  return false;
+}
+
+/**
+ * Ayector de eventos para el evento de "error" del servidor HTTP.
+ * (Event listener for HTTP server "error" event.)
+ */
+function onError(error) {
+  if (error.syscall !== 'listen') {
+    throw error;
+  }
+
+  const bind = typeof port === 'string'
+    ? 'Pipe ' + port
+    : 'Port ' + port;
+
+  // Manejar errores de escucha específicos con mensajes amistosos
+  // (handle specific listen errors with friendly messages)
+  switch (error.code) {
+    case 'EACCES':
+      console.error(bind + ' requires elevated privileges');
+      process.exit(1);
+      break;
+    case 'EADDRINUSE':
+      console.error(bind + ' is already in use');
+      process.exit(1);
+      break;
+    default:
+      throw error;
+  }
+}
+
+/**
+ * Arranco el Servidor.
+ *  Ayector de eventos para el evento de "escuchar" del servidor HTTP.
+ *  (Event listener for HTTP server "listening" event.)
+ */
+function onListening() {
+  const addr = server.address();
+  const bind = typeof addr === 'string'
+    ? 'pipe ' + addr
+    : 'port ' + addr.port;
+  debug('Listening on ' + bind);
+
+  // Muestro informacion en la consola
+  const info =`` // Opcional: obtengo informacion adicional
+  console.log(``);
+  console.log(`-----------------------------------------------------------------------`);
+  console.log(`El Servidor '${cAppName}' Escucha en el puerto: ${addr.port}`); 
+  console.log(` * Direcion/es Ip V4: ${myhandler.obtenerIpLocal()}`);
+  console.log(` * Node version:      ${myhandler.obtenerNodeVersion()}`);
+  console.log(` * Express version:   ${myhandler.obtenerExpressVersion()}`);
+  console.log(` * Mongoose version:  ${myhandler.obtenerMongooseVersion()}`);
+  //console.log(`${info}`);
+  console.log(` * Iniciado:          ${myhandler.obtenerMomentoDeArranque()}`);
+  //console.log(``);
+  console.log(` * Ir a la pagina inicial del servidor: http://localhost:${addr.port}`);
+  console.log(`-----------------------------------------------------------------------`);
+  console.log(``);
+}

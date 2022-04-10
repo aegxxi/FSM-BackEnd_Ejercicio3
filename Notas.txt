@@ -1,0 +1,163 @@
+Ejercicio 02 - Mi primer base de datos en  "Node.js-Express.js-MongoDb"
+
+Carpeta: ejSrv_Njs02_A0
+
+01 - Intalar servidor Express.js desde plantilla
+	   A) Utilice la herramienta de generador de aplicaciones, express, para crear rápidamente un esqueleto de aplicación.
+			Instale express con el siguiente mandato:
+
+			npm install express-generator -g
+
+		B) Crear una aplicación Express 
+				#express --no-view [myapp]:
+			
+				express --no-view ejSrv_Njs02_A0
+
+		C) A continuación, instale las dependencias :
+				#cd [myapp]
+
+				cd ejSrv_Njs02_A0
+				npm install
+
+		D)  Ejecute la aplicación con este mandato:
+				En MacOS o Linux:
+					#DEBUG=[myapp]:* npm start
+					
+					DEBUG=ejSrv_Njs02_A0:* npm start
+
+				En Windows:
+					#set DEBUG=[myapp]:* & npm start
+					
+					set DEBUG=ejSrv_Njs02_A0:* & npm start
+
+				A continuación, cargue http://localhost:3000/ en el navegador para acceder a la aplicación.
+
+
+02 - Instalar otras dependencias utiles (si no estan ya instaladas)
+	
+	A) Instalar Nodemon
+		
+		 npm install -g nodemon
+		 
+	B) Instalar DotEnv
+	
+		npm install dotenv --save
+
+		
+03 Instalar Mongoose 
+		Herramienta de modelado de objetos MongoDB diseñada para trabajar en un entorno asíncrono.
+		Mongoose admite tanto promesas como devoluciones de llamadas.	
+
+		npm install mongoose
+		
+		 
+04 Instalar Cors
+		CORS es un paquete de node.js para proporcionar un middleware Connect / Express, 
+		que se puede usar para habilitar CORS con varias opciones.
+		CORS significa Cross-Origin Resource Sharing. Nos permite relajar la seguridad aplicada a una API. Esto se hace omitiendo los Access-Control-Allow-Origin encabezados, que especifican quién origins puede acceder a la API.
+		En otras palabras, CORS es una función de seguridad del navegador que restringe las solicitudes HTTP de origen cruzado con otros servidores y especifica qué dominios acceden a sus recursos.
+		
+		npm install cors
+
+
+
+
+
+Referencias:
+	Express Instalación: https://expressjs.com/es/starter/installing.html
+	Generador de aplicaciones Express: https://expressjs.com/es/starter/generator.html
+	DotEnv: https://www.npmjs.com/package/dotenv
+	Mongoose: https://www.npmjs.com/package/mongoose
+	MongoDb - Compass: https://www.mongodb.com/es/products/compass
+	MongooseJs: https://mongoosejs.com/
+	Corse:  https://www.npmjs.com/package/cors ,
+				https://www.section.io/engineering-education/how-to-use-cors-in-nodejs-with-express/
+---------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+ 
+ 
+Errores al correr el servidor:
+-------------------------------------
+ 
+Error 1
+---------
+ 
+	$ npm run dev
+
+	> ejsrv-njs02-a0@0.0.0 dev /home/andres/Documentos/DesarrolloWeb/ejSrv_Njs02_A0
+	> nodemon ./bin/www
+
+	[nodemon] 2.0.15
+	[nodemon] to restart at any time, enter 
+	[nodemon] watching path(s): *.*
+	[nodemon] watching extensions: js,mjs,json
+	[nodemon] starting `node ./bin/www`
+	/home/andres/Documentos/DesarrolloWeb/ejSrv_Njs02_A0/node_modules/whatwg-url/lib/encoding.js:2
+	const utf8Encoder = new TextEncoder();
+						^
+
+	ReferenceError: TextEncoder is not defined
+		at Object.<anonymous> (/home/andres/Documentos/DesarrolloWeb/ejSrv_Njs02_A0/node_modules/whatwg-url/lib/encoding.js:2:21)
+		at Module._compile (internal/modules/cjs/loader.js:778:30)
+		at Object.Module._extensions..js (internal/modules/cjs/loader.js:789:10)
+		at Module.load (internal/modules/cjs/loader.js:653:32)
+		at tryModuleLoad (internal/modules/cjs/loader.js:593:12)
+		at Function.Module._load (internal/modules/cjs/loader.js:585:3)
+		at Module.require (internal/modules/cjs/loader.js:692:17)
+		at require (internal/modules/cjs/helpers.js:25:18)
+		at Object.<anonymous> (/home/andres/Documentos/DesarrolloWeb/ejSrv_Njs02_A0/node_modules/whatwg-url/lib/url-state-machine.js:5:34)
+		at Module._compile (internal/modules/cjs/loader.js:778:30)
+	[nodemon] app crashed - waiting for file changes before starting...
+	 
+ Investigacion: 
+ -------------------
+	El error "TextEncoder is not defined" se debe a confictos entre la version de Node y la version de Mongoouse.
+	Referencia: https://github.com/Automattic/mongoose/issues/10638
+ 
+ Estado:
+	 package.json:
+		 "dependencies": {
+			"cookie-parser": "~1.4.4",
+			"debug": "~2.6.9",
+			"dotenv": "^16.0.0",
+			"express": "~4.16.1",
+			"mongoose": "^6.2.10",
+			"morgan": "~1.9.1"
+		  }
+ 
+ - Verificacion de Versiones
+	Comandos: 
+			nodejs --version
+			npm mongoose -v
+ 
+	Rerultados:
+		 version de Node => 10.24
+		 version de Mongoouse => 8.5.0
+ 
+ Solucion: 
+ -------------
+ Actualice la version de Node a 12.x
+ 
+		#  Actualizar Node.js en ubuntu 18.04
+			#  Ultima version estable
+					sudo npm cache clean -f
+					sudo npm install -g n
+					sudo n stable
+
+			#  Version 12.x
+					curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+					sudo apt-get install -y nodejs
+
+- Verificacion final de Versiones
+	 version de Node => 12.22.12
+	 version de Mongoouse => 8.5.0
+ 
+ Resultado:
+ --------------
+	Funciona Ok
+	
+	

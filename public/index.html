@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Express</title>
+  <!-- <link rel="stylesheet" href="/stylesheets/style.css"> -->
+  <style>
+    h1 {
+      color:aquamarine;
+      font-weight: normal;
+    }
+    h2 {color:lawngreen;}
+    
+    p {
+      color:aquamarine;
+      font-size:large;
+    }
+    
+    a {color:aliceblue}
+    summary {color:aliceblue}
+    article {color:aliceblue}
+    
+    .interlineado { line-height: 150%;}
+
+    .fondo {
+      color:aquamarine;
+      background-color: black;
+      margin: 2rem;
+    }
+
+    .textoComentario{
+      color:aliceblue
+    }
+
+    .firma {
+      color:aquamarine;
+      height: 64rem;
+      text-align: right;
+      margin-right: 32rem;
+    }
+  </style>
+  
+  <!-- 
+    <script src="../appSrvEntorno.js"></script>
+
+  <script>
+    console.log(fnMiServidor())
+    // ¿Como obtengo el puerto del servidor desde aqui?
+    // ¿Como reemplazo el valor fijo del puerto '4000' en la url?
+  </script> 
+-->
+</head>
+
+<body  class="fondo">
+  <h1>
+    Mi tercer servidor, <b>"Node.js - Express.js - Mongoose"</b> 
+  </h1>
+  <br/>
+  <h2>
+    Ruta raiz (Informacion)
+  </h2>
+  <ul>
+    <li>
+      <p>Informacion del Servidor: <a href="http://localhost:4001/info" target="_blank">Ver Informacion</a></p>
+    </li>
+    <li>
+      <p>Informacion de las Apis Disponibles: <a href="http://localhost:4001/api" target="_blank">Ver Informacion</a></p>
+    </li>
+  </ul>
+
+  <br/>
+
+  <h2>
+    Subrutas (Apis)
+  </h2>
+
+  <ul>
+    <li>
+      <p>Api Gatitos: <a href="http://localhost:4001/api/cats" target="_blank">Ver Subruta</a></p>
+    </li>
+    <li>
+      <p>Api Usuarios: <a href="http://localhost:4001/api/usuarios" target="_blank">Ver Subruta</a></p>
+    </li>
+  </ul> 
+  <br/><br/><br/>
+  <p class="firma">
+    &#174;Ejercicio realizado por: <b>Andres Eduardo Garcia </b>
+  </p>
+</body>
+
+</html>
