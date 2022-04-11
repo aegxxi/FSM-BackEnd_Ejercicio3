@@ -69,6 +69,7 @@ Referencias:
 	DotEnv: https://www.npmjs.com/package/dotenv
 	Mongoose: https://www.npmjs.com/package/mongoose
 	MongoDb - Compass: https://www.mongodb.com/es/products/compass
+	MongoDb - Articulo: https://code.tutsplus.com/es/articles/an-introduction-to-mongoose-for-mongodb-and-nodejs--cms-29527
 	MongooseJs: https://mongoosejs.com/
 	Corse:  https://www.npmjs.com/package/cors ,
 			https://www.section.io/engineering-education/how-to-use-cors-in-nodejs-with-express/
