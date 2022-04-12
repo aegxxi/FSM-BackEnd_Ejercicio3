@@ -35,8 +35,8 @@ const crearUsuario = async (req, res) => {
         res.json({msg: 'Se ha creado un nuevo usuario'}); 
 
     } catch (error) {
-        console.log(error);
-        res.status(400).send({msg: 'Hubo un error al crear el nuevo usuario'});
+        console.log({msg:'Hubo un error al crear el nuevo usuario'},error);
+        res.status(400).send({msg: 'Hubo un error al crear el nuevo usuario'},error);
     }
 };
 
@@ -53,8 +53,8 @@ const mostrarUsuarios = async (req, res) => {
         res.json(usuario);
 
     } catch (error) {
-        console.log(error);
-        res.status(400).send('Hubo un error al leer los usuarios');
+        console.log({msg: 'Hubo un error al leer los usuarios'},error);
+        res.status(400).send({msg: 'Hubo un error al leer los usuarios'},error);
     }
   };
 

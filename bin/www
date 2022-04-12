@@ -4,14 +4,12 @@
  * Dependencias del módulo.
  * (Module dependencies.)
  */
-
 const app = require('../app');
 const debug = require('debug')('ejsrv-njs02-a0:server');
 const http = require('http');
 
 const myhandler =require('../handlers/handler'); // Funciones auxiliares
 const cAppName = app.name.toLocaleUpperCase(); // obtener el nombre de la app principal
-
 //---
 
 
@@ -40,7 +38,7 @@ console.log();
 
 
 /**
- * Obtenga puerto del entorno y almacene en Express.
+ * Obtener puerto del entorno y almacenar en Express.
  * (Get port from environment and store in Express.)
  */
 const port = normalizePort(process.env.PORT || srvPuerto);

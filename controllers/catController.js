@@ -38,8 +38,8 @@ const crearGatito = async (req, res) => {
         res.json({msg: 'meow'}); 
 
     } catch (error) {
-        console.log(error);
-        res.status(400).send({msg: 'Hubo un error al crear el gatito'});   
+        console.log({msg: 'Hubo un error al crear el gatito'},error);
+        res.status(400).send({msg: 'Hubo un error al crear el gatito'},error);   
     };
     
     

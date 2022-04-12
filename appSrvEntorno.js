@@ -1,11 +1,15 @@
-//require('dotenv').config({ path: 'variables.env' });
-require('dotenv').config();
-console.log(`appSrvEntorno.js => dotenv, DB_MONGO => ${process.env.DB_MONGO}`);
+// Importo dependencias
+require('dotenv').config();         //require('dotenv').config({ path: 'variables.env' });
+const aplicacion = require('./app');
+/* 
+// Consologeo el valor de DotEnv para la cadena de conexion ala Db
+console.log(`appSrvEntorno.js => dotenv, DB_MONGO => ${process.env.DB_MONGO}`); 
+*/
 
 // Establezco string de conexion a la DB
 const myConection= (process.env.DB_MONGO) 
     ? process.env.DB_MONGO
-    : 'mongodb+srv://Andy:And.Fsm-2022@cluster0.7g1lp.mongodb.net/test';
+    : 'mongodb+srv://<Usuario>:<Password>@cluster0.7g1lp.mongodb.net/test';
 
 // Establezco el Puerto
 const cAppPuerto = (process.env.PORT)
@@ -13,13 +17,14 @@ const cAppPuerto = (process.env.PORT)
     :'4000';
 
 // Establezco el Nombre del Servidor
-const {name} = require('./app');
+//const aplicacion = require('./app');
+const {name} = aplicacion
 const cAppName =  (name)
     ?`${name}`
     :'Desconocido';  // app.name.toLocaleUpperCase();
 
 
-    // Creo el objeto con los datos de funcionamiento del servidor    
+// Creo el objeto con los datos de funcionamiento del servidor    
 const miServidor = {
     srvPuerto: cAppPuerto,
     srvNombre: cAppName,

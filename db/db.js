@@ -1,17 +1,22 @@
+// Importo dependencias
 const mongoose = require('mongoose');
-//require('dotenv').config({ path: 'variables.env' });
-require('dotenv').config();
+require('dotenv').config();                     //require('dotenv').config({ path: 'variables.env' });
 
 const entorno = require('../appSrvEntorno');
 const {fnMiServidor}= entorno
 const { srvDbConection } = fnMiServidor()
 
-console.log(`db.js => dotenv, DB_MONGO => ${process.env.DB_MONGO}`);
+/* 
+// Consologeo el valor de DotEnv para la cadena de conexion
+console.log(`db.js => dotenv, DB_MONGO => ${process.env.DB_MONGO}`); 
+*/
 
+// Obtengo la cadena de conexion a la DB
 const myConection= (process.env.DB_MONGO) 
     ? process.env.DB_MONGO
     : srvDbConection;
 
+// funcion para conectar la DB    
 const conectarDB = async () => {
     try {
         //await mongoose.connect(process.env.DB_MONGO, {
@@ -28,5 +33,6 @@ const conectarDB = async () => {
     }
 }
 
+// Exporto la funcion para conectar la DB 
 module.exports = {conectarDB};
 
