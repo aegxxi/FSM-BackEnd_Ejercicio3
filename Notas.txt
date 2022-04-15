@@ -60,6 +60,19 @@ Carpeta: ejSrv_Njs02_A0
 		npm install cors
 
 
+05 Instalar Express-Validator
+		Dependencia (Libreria) para validar los datos recibidos por http
+		
+		npm install express-validator
+
+
+06 Instalar bcrypt.js
+	Dependencia (Libreria) para encriptar los datos
+	bcrypt optimizado en JavaScript con cero dependencias. Compatible con el enlace bcrypt de C++ en node.js y también funciona en el navegador.
+	
+	npm install bcryptjs
+
+
 
 
 
@@ -73,6 +86,9 @@ Referencias:
 	MongooseJs: https://mongoosejs.com/
 	Corse:  https://www.npmjs.com/package/cors ,
 			https://www.section.io/engineering-education/how-to-use-cors-in-nodejs-with-express/
+	Express-Validator: https://www.npmjs.com/package/express-validator
+					   https://express-validator.github.io/docs/	
+	bcrypt.js= https://www.npmjs.com/package/bcryptjs
 ---------------------------------------------------------------------------------------------------------------------------------------------------
 
 

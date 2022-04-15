@@ -1,4 +1,4 @@
-// Importo Librerias
+// Importo Dependencias (Librerias)
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
@@ -15,7 +15,7 @@ app.use(express.json());    // middleware nativo. Permite recibir informacion en
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(cors());
+app.use(cors());            // Controlo dede donde pueden venir las peticiones
 
 
 // Importo las rutas
