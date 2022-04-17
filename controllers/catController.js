@@ -5,23 +5,28 @@ const { validationResult } = require('express-validator');
     res.render('index', { title: 'Express' });
 } */
 
-
-// Muestro api info
+/**
+ * Muestro api info
+ */
 const {catInfo} = require('../PaginasJs/cats');
 const apiCatInfo = async (req, res) => {
-    const contenido = catInfo()
+    const contenido = catInfo();
     res.send(contenido);
-}
+};
 
 
-// Muestro todos los gatitos
+/**
+ * Muestro todos los gatitos
+ */
 const vistaGatitos = async (req, res) => {
     const gatitos = await Cat.find();
     res.status(200).json({gatitos});
-}
+};
 
 
-// Muestro un gatito
+/**
+ * Muestro un gatito
+ */
 const verUnGatito = async (req, res) => {
     // extraer id del body (es elidentificador unico)
     const { _id } = req.body;
@@ -40,7 +45,7 @@ const verUnGatito = async (req, res) => {
         // Verificar si no se paso el id del gatito a bucar.
         if(!valorClave) {
             return res.status(400).json({ msg: 'El id es obligatorio' });
-        }
+        };
         
         // Verificar si se paso el id en el body
         if (_id) {
@@ -52,24 +57,23 @@ const verUnGatito = async (req, res) => {
             };    
         }; 
         
+        //Busco gatipo (por su id), si gato resulta vacio rompe por el catch
         gato = await Cat.findById(valorClave);
-        //  Verifico si el gatito eliminado existia
-        if (gato) {
-            res.status(200).json({msg: 'Gatito encontrado', gato}); 
-        } else {
-            res.status(400).json({msg: `No hay un gatito con este id:${valorclave}`, gato});
-        };
+        
+        res.status(200).json({msg: 'Gatito encontrado', gato}); 
         
     } catch (error) {
         //console.log(gato)
         res.status(400).send({msg: 'Hubo un error al buscar el gatito, o el gattito no se encuentra en la base',error});      
-    }
-}
+    };
+};
 
 
-// Creo un gatito nuevo
+/**
+ * Creo un gatito nuevo
+ */
 const crearGatito = async (req, res) => {
-    // extraer id del body (es elidentificador unico)
+    // extraer name del body (es un identificador unico en este caso)
     const { name } = req.body;
 
     // Almeceno el valor del id, si se paso por algun metodo (body, query, params)
@@ -84,7 +88,7 @@ const crearGatito = async (req, res) => {
         // Verificar si no se paso el name del gatito a bucar.
         if(!nameGato) {
             return res.status(400).json({ msg: 'El nombre es obligatorio' });
-        }
+        };
         
         // Verificar si se paso el name en el body
         if (name) {
@@ -96,8 +100,7 @@ const crearGatito = async (req, res) => {
                 return res.status(400).json({errores: errores.array() });
             };    
         }; 
-        
-        
+           
         // Revisar que el gatito registrado sea unico 
         let kitty = await Cat.findOne({ nameGato });
 
@@ -105,20 +108,11 @@ const crearGatito = async (req, res) => {
             return res.json({ msg: 'El gattito ya existe' });
         }; 
         
-        // Agrego gatito (si ya existiera romperia e iria por el catch)
+        // Agrego gatito, si kitty resulta vacio rompe por el catch
         kitty = new Cat({ name: nameGato });
         const gato = await kitty.save();
 
-        //  Verifico si el gatito agregado existia
-        console.log( gato)
-        if (gato) {
-            res.status(200).json({msg: 'Gatito agregado', gato}); 
-        } else {
-            res.status(400).json({msg: `No se agrego un gatito con este nombre:${nameGato}`, gato});
-        };
-        
-        //console.log('meow');
-        //res.status(201).json({msg: 'meow'}); 
+        res.status(200).json({msg: 'Gatito agregado', gato}); 
 
     } catch (error) {
         //console.log({msg: 'Hubo un error al crear el gatito',error});
@@ -127,7 +121,9 @@ const crearGatito = async (req, res) => {
 };
 
 
-// Modifico un gatito
+/**
+ * Modifico un gatito
+ */
 const editarGatito = async (req, res) => {
     // extraer id del body (es elidentificador unico)
     const { _id, name } = req.body;
@@ -139,7 +135,7 @@ const editarGatito = async (req, res) => {
             ? req.params.id
             : req.query.id
         ;  
-        // Almeceno el valor del Name, si se paso por algun metodo (body, query, params)
+        // Almeceno el valor del name, si se paso por algun metodo (body, query, params)
         const valorNombre = (name) 
         ? name 
         : (req.params.name)
@@ -149,19 +145,20 @@ const editarGatito = async (req, res) => {
     
         let gato;
         let editarGato;
+
     try {
         // Verificar si no se paso el id del gatito a bucar.
         if(!valorClave) {
             return res.status(400).json({ msg: 'El id es obligatorio' });
-        }
+        };
         
         // Verificar si no se paso el nuevo nombre del gatito a bucar.
         if(!valorNombre) {
             return res.status(400).json({ msg: 'El nuevo nombre es obligatorio' });
-        }
+        };
 
-        // Verificar si se paso el id o el nombre en el body
-        if (_id && name) {
+        // Verificar si se paso el nombre en el body (si no usara params o qry en las rutas (_id || name))
+        if ( name) {
             // Revisar si hay errores en el body
             const errores = validationResult(req);
             console.log(errores);
@@ -170,29 +167,28 @@ const editarGatito = async (req, res) => {
             };    
         }; 
         
-        // Armo el objeto Modificado para modificar el gatito.
-        editarGato={
+        // Armo el objeto Modificado (para modificar el gatito).
+        editarGato = {
             _id: valorClave,
             name: valorNombre
-        }
-
-        gato = await Cat.findByIdAndUpdate( valorClave, editarGato );
-        //  Verifico si el gatito eliminado existia
-        if (gato) {
-            res.status(200).json({msg: `Gatito editado, nuevo nombre:${valorNombre}`, gato}); 
-        } else {
-            res.status(400).json({msg: `No hay un gatito con este id:${valorclave}`, gato});
         };
+
+        // Modifico el gatito, si gato resulta vacio rompe por el catch
+        gato = await Cat.findByIdAndUpdate( valorClave, editarGato );
+        
+        res.status(200).json({msg: `Gatito editado, nuevo nombre:${valorNombre}`, gato}); 
         
     } catch (error) {
         //console.log(gato)
         res.status(400).send({msg: 'Hubo un error al buscar el gatito, o el gattito no se encuentra en la base',error});      
-    }
-}
+    };
+};
 
 
 
-// Elimino un gatito
+/**
+ * Elimino un gatito
+ */
 const elininarGatito = async (req, res) => {
     // extraer id del body (es elidentificador unico)
     const { _id, } = req.body;
@@ -210,7 +206,7 @@ const elininarGatito = async (req, res) => {
         // Verificar si no se paso el id del gatito a eliminar.
         if(!valorclave) {
             return res.status(400).json({ msg: 'No existen parametros validos para esta operacion' });
-        }
+        };
         
         // Verificar si se paso el id en el body
         if (_id) {
@@ -221,25 +217,21 @@ const elininarGatito = async (req, res) => {
             };    
         }; 
         
-        // Eliminar (si el id no existiera, devuelve gato vacio )
+        // Eliminar un gatito por su id, si gato resulta vacio rompe por el catch
         const gato = await Cat.findByIdAndDelete( valorclave );
         
-        //  Verifico si el gatito eliminado existia
-        if (gato) {
-            res.status(200).json({msg: 'Gatito Eliminado', gato}); 
-        } else {
-            res.status(400).json({msg: `No hay un gatito con este id:${valorclave}`, gato});
-        };
-        
+        res.status(200).json({msg: 'Gatito Eliminado', gato});   
 
     } catch (error) {
         //console.log(error);
         res.status(400).send({msg: 'Hubo un error al eliminar el gatito',error});
-    }
+    };
+};
 
-}
 
-
+/**
+ * Exporto las funciones del contrlador
+ */
 module.exports = {
                     apiCatInfo,
                     crearGatito,
@@ -247,4 +239,4 @@ module.exports = {
                     vistaGatitos,
                     verUnGatito,
                     elininarGatito
-                }
+                };

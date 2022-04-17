@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router(); 
 const { check } = require('express-validator');
-const { apiCatInfo, vistaGatitos, verUnGatito, crearGatito, editarGatito, elininarGatito } = require('../controllers/catController.js')
+const { apiCatInfo, vistaGatitos, verUnGatito, crearGatito, editarGatito, elininarGatito } = require('../controllers/catController.js');
 
 /**
  *  GET 
