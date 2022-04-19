@@ -107,7 +107,7 @@ function usuariosInfo() {
                             <p>${tab}<b>Metodo: Get (por params)</b></p>
                             <p>${tab}${tab}Uri:${b}<i>" http://localhost:${srvPuerto}/api/usuarios/ver/usuario/<i class='destacar1'>[IdUsuario]</i> </i> " </i>${b}</p>
                             <p>${tab}<b>Metodo: Get (por qry)</b></p>
-                            <p>${tab}${tab}Uri:${b}<i>" http://localhost:${srvPuerto}/api/usuarios/ver/usuario<i class='destacar2'>?</i><i class='destacar1'>id=[IdUsuario]</i> " </i>${b}</p>
+                            <p>${tab}${tab}Uri:${b}<i>" http://localhost:${srvPuerto}/api/usuarios/ver/usuario<i class='destacar2'><b>?</b></i><i class='destacar1'>id=[IdUsuario]</i> " </i>${b}</p>
                             <p>${tab}<b>Metodo: Get (por body)</b></p>
                             <p>${tab}${tab}Uri:${b}<i>" http://localhost:${srvPuerto}/api/usuarios/ver/usuario " </i>${b}</p>
                             <div class='Codigo'>
@@ -126,8 +126,8 @@ function usuariosInfo() {
                             <div class='Codigo'>
                                 <code>
                                     ${tab}${tab}{${saltoLinea}    
-                                    ${tab}${tab}"nombre":	"Andres"${saltoLinea}
-                                    ${tab}${tab}"email":	"Andres@correo.com"${saltoLinea}
+                                    ${tab}${tab}"nombre":	"Andres",${saltoLinea}
+                                    ${tab}${tab}"email":	"Andres@correo.com",${saltoLinea}
                                     ${tab}${tab}"password":	"123456"${saltoLinea}
                                     ${tab}${tab}}
                                 </code>
@@ -142,8 +142,8 @@ function usuariosInfo() {
                                 <code>
                                     ${tab}${tab}{${saltoLinea}    
                                     ${tab}${tab}"_id": "6258d21ba60416c73341165e",${saltoLinea}
-                                    ${tab}${tab}"nombre":	"Andres"${saltoLinea}
-                                    ${tab}${tab}"email":	"Andres@correo.com"${saltoLinea}
+                                    ${tab}${tab}"nombre":	"Andres",${saltoLinea}
+                                    ${tab}${tab}"email":	"Andres@correo.com",${saltoLinea}
                                     ${tab}${tab}"password":	"123456"${saltoLinea}
                                     ${tab}${tab}}
                                 </code>
@@ -155,13 +155,13 @@ function usuariosInfo() {
                             <p>${tab}<b>Metodo: Delete (por params)</b></p>
                             <p>${tab}${tab}Uri:${b}<i>" http://localhost:${srvPuerto}/api/usuarios/eliminar/usuario/<i class='destacar1'>[IdUsuario]</i> " </i>${b}</p>
                             <p>${tab}<b>Metodo: Delete (por qry)</b></p>
-                            <p>${tab}${tab}Uri:${b}<i>" http://localhost:${srvPuerto}/api/usuarios/eliminar/usuario<i class='destacar2'>?</i><i class='destacar1'>id=[IdUsuario]</i> " </i>${b}</p>
+                            <p>${tab}${tab}Uri:${b}<i>" http://localhost:${srvPuerto}/api/usuarios/eliminar/usuario<i class='destacar2'><b>?</b></i><i class='destacar1'>id=[IdUsuario]</i> " </i>${b}</p>
                             <p>${tab}<b>Metodo: Delete (por body)</b></p>
                             <p>${tab}${tab}Uri:${b}<i>" http://localhost:${srvPuerto}/api/usuarios/eliminar/usuario${b} "</i></p>
                             <div class='Codigo'>
                                 <code>
                                     ${tab}${tab}{${saltoLinea}    
-                                    ${tab}${tab}"_id": "6258d21ba60416c73341165e",${saltoLinea}
+                                    ${tab}${tab}"_id": "6258d21ba60416c73341165e"${saltoLinea}
                                     ${tab}${tab}}
                                 </code>
                             </div>

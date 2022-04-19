@@ -105,13 +105,13 @@ function catInfo() {
                             <p>${tab}<b>Metodo: Get (por params)</b></p>
                             <p>${tab}${tab}Uri:${b}<i>" http://localhost:${srvPuerto}/api/ver/gato/<i class='destacar1'>[IdGatito]</i> </i> " </i>${b}</p>
                             <p>${tab}<b>Metodo: Get (por qry)</b></p>
-                            <p>${tab}${tab}Uri:${b}<i>" http://localhost:${srvPuerto}/api/ver/gato<i class='destacar2'>?</i><i class='destacar1'>id=[IdGatito]</i> " </i>${b}</p>
+                            <p>${tab}${tab}Uri:${b}<i>" http://localhost:${srvPuerto}/api/ver/gato<i class='destacar2'><b>?</b></i><i class='destacar1'>id=[IdGatito]</i> " </i>${b}</p>
                             <p>${tab}<b>Metodo: Get (por body)</b></p>
                             <p>${tab}${tab}Uri:${b}<i>" http://localhost:${srvPuerto}/api/ver/gato " </i>${b}</p>
                             <div class='Codigo'>
                                 <code>
                                     ${tab}${tab}{${saltoLinea}    
-                                    ${tab}${tab}"_id": "6258d21ba60416c73341165e",${saltoLinea}
+                                    ${tab}${tab}"_id": "6258d21ba60416c73341165e"${saltoLinea}
                                     ${tab}${tab}}
                                 </code>
                             </div>
@@ -122,7 +122,7 @@ function catInfo() {
                             <p>${tab}Metodo: Post (por params) </p>
                             <p>${tab}${tab}Uri:${b}<i>" http://localhost:${srvPuerto}/api/cats/crear/<i class='destacar1'>[NobreGatito]</i> " </i></p>
                             <p>${tab}Metodo: Post (por qry) </p>
-                            <p>${tab}${tab}Uri:${b}<i>" http://localhost:${srvPuerto}/api/cats/crear<i class='destacar2'>?</i><i class='destacar1'>name=[NobreGatito]</i> " </i></p>
+                            <p>${tab}${tab}Uri:${b}<i>" http://localhost:${srvPuerto}/api/cats/crear<i class='destacar2'><b>?</b></i><i class='destacar1'>name=[NobreGatito]</i> " </i></p>
                             <p>${tab}Metodo: Post (por body) </p>
                             <p>${tab}${tab}Uri:${b}<i>" http://localhost:${srvPuerto}/api/cats/crear " </i></p>
                             <div class='Codigo'>
@@ -139,7 +139,7 @@ function catInfo() {
                             <p>${tab}<b>Metodo: Put (por params)</b></p>
                             <p>${tab}${tab}Uri:${b}<i>" http://localhost:${srvPuerto}/api/editar/<i class='destacar1'>[IdGatito]</i>/<i class='destacar1'>[NombreGatito]</i> " </i>${b}</p>
                             <p>${tab}<b>Metodo: Put (por qry)</b></p>
-                            <p>${tab}${tab}Uri:${b}<i>" http://localhost:${srvPuerto}/api/editar<i class='destacar2'>?</i><i class='destacar1'>id=[IdGatito]<i class='destacar2'>&</i>name=[NombreGatito]</i> " </i>${b}</p>
+                            <p>${tab}${tab}Uri:${b}<i>" http://localhost:${srvPuerto}/api/editar<i class='destacar2'><b>?</b></i><i class='destacar1'>id=[IdGatito]<i class='destacar2'><b>&</b></i>name=[NombreGatito]</i> " </i>${b}</p>
                             <p>${tab}<b>Metodo: Put (por body)</b></p>
                             <p>${tab}${tab}Uri:${b}<i>" http://localhost:${srvPuerto}/api/editar${b} "</p>
                             <div class='Codigo'>
@@ -157,13 +157,13 @@ function catInfo() {
                             <p>${tab}<b>Metodo: Delete (por params)</b></p>
                             <p>${tab}${tab}Uri:${b}<i>" http://localhost:${srvPuerto}/api/eliminar/<i class='destacar1'>[IdGatito]</i> " </i>${b}</p>
                             <p>${tab}<b>Metodo: Delete (por qry)</b></p>
-                            <p>${tab}${tab}Uri:${b}<i>" http://localhost:${srvPuerto}/api/eliminar<i class='destacar2'>?</i><i class='destacar1'>id=[IdGatito]</i> " </i>${b}</p>
+                            <p>${tab}${tab}Uri:${b}<i>" http://localhost:${srvPuerto}/api/eliminar<i class='destacar2'><b>?</b></i><i class='destacar1'>id=[IdGatito]</i> " </i>${b}</p>
                             <p>${tab}<b>Metodo: Delete (por body)</b></p>
                             <p>${tab}${tab}Uri:${b}<i>" http://localhost:${srvPuerto}/api/eliminar${b}"</p>
                             <div class='Codigo'>
                                 <code>
                                     ${tab}${tab}{${saltoLinea}    
-                                    ${tab}${tab}"_id": "6258d21ba60416c73341165e",${saltoLinea}
+                                    ${tab}${tab}"_id": "6258d21ba60416c73341165e"${saltoLinea}
                                     ${tab}${tab}}
                                 </code>
                             </div>
