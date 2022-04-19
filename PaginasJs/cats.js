@@ -44,6 +44,24 @@ const estilos=`<style>
                     font-size:large;
                   }
 
+                  .crud{
+                    font-size:large;
+                    line-height: 200%;
+                    margin-top: 32px;
+                  }
+
+                  .codigo {
+                    border-image: initial;
+                    border: 1px solid blue;
+                    color:white;
+                    background-color: darkslategray;
+                    margin-right: 64rem;
+                    margin-left: 2rem;
+                    line-height: 200%;
+                    font-size:large;
+                    border-radius: 30px;
+                  }
+
                   .firma {
                     color:aquamarine;
                     height: 64rem;
@@ -68,24 +86,87 @@ function catInfo() {
                       <h2>
                         Informacion para el uso de las api cats
                       </h2>
-                      <p><b>Proposito general:</b>${b} Crear y retornar nombres de gatitos.</p>
+                      <p><b>Proposito general:</b>${b} CRUD de gatitos.</p>
                        ${saltoLinea}
                       <h3>
                         Gatitos:
                       </h3>
                       <ul>
                         <li>
-                            <p><b>Ver todos los gatitos </b></p>
+                            <p class='crud'><b>Ver todos los gatitos </b></p>
                             <p>${tab}Proposito: retornar todos los nombres de gatitos.</p>
                             <p>${tab}Metodo: Get </p>
-                            <p>${tab}Uri:${b}<i>"http://localhost:${srvPuerto}/api/cats/ver" </i>${b}
+                            <p>${tab}Uri:${b}<i>" http://localhost:${srvPuerto}/api/cats/ver " </i>${b}
                                 <a href="http://localhost:${srvPuerto}/api/cats/ver" target="_blank">Ver</a></p>
                         </li>
                         <li>
-                            <p><b>Crear gatitos </b></p>
+                            <p class='crud'><b>Ver un gatito </b></p>
+                            <p>${tab}Proposito: retornar un nombre de gatito.</p>
+                            <p>${tab}<b>Metodo: Get (por params)</b></p>
+                            <p>${tab}${tab}Uri:${b}<i>" http://localhost:${srvPuerto}/api/ver/gato/<i class='destacar1'>[IdGatito]</i> </i> " </i>${b}</p>
+                            <p>${tab}<b>Metodo: Get (por qry)</b></p>
+                            <p>${tab}${tab}Uri:${b}<i>" http://localhost:${srvPuerto}/api/ver/gato<i class='destacar2'>?</i><i class='destacar1'>id=[IdGatito]</i> " </i>${b}</p>
+                            <p>${tab}<b>Metodo: Get (por body)</b></p>
+                            <p>${tab}${tab}Uri:${b}<i>" http://localhost:${srvPuerto}/api/ver/gato " </i>${b}</p>
+                            <div class='Codigo'>
+                                <code>
+                                    ${tab}${tab}{${saltoLinea}    
+                                    ${tab}${tab}"_id": "6258d21ba60416c73341165e",${saltoLinea}
+                                    ${tab}${tab}}
+                                </code>
+                            </div>
+                        </li>
+                        <li>
+                            <p class='crud'><b>Crear nombres de gatitos </b></p>
                             <p>${tab}Proposito: Crear un nombre de gatito.</p>
-                            <p>${tab}Metodo: Post (por parametros) </p>
-                            <p>${tab}Uri:${b}<i>"http://localhost:${srvPuerto}/api/cats/crear/<i class='destacar1'>[NobreGatito]</i>" </i></p>
+                            <p>${tab}Metodo: Post (por params) </p>
+                            <p>${tab}${tab}Uri:${b}<i>" http://localhost:${srvPuerto}/api/cats/crear/<i class='destacar1'>[NobreGatito]</i> " </i></p>
+                            <p>${tab}Metodo: Post (por qry) </p>
+                            <p>${tab}${tab}Uri:${b}<i>" http://localhost:${srvPuerto}/api/cats/crear<i class='destacar2'>?</i><i class='destacar1'>name=[NobreGatito]</i> " </i></p>
+                            <p>${tab}Metodo: Post (por body) </p>
+                            <p>${tab}${tab}Uri:${b}<i>" http://localhost:${srvPuerto}/api/cats/crear " </i></p>
+                            <div class='Codigo'>
+                                <code>
+                                    ${tab}${tab}{${saltoLinea}    
+                                    ${tab}${tab}"name": "Patroclo"${saltoLinea}
+                                    ${tab}${tab}}
+                                </code>
+                            </div>
+                        </li>
+                        <li>
+                            <p class='crud'><b>Modificar un gatito </b></p>
+                            <p>${tab}Proposito: modificar un nombre de gatito.</p>
+                            <p>${tab}<b>Metodo: Put (por params)</b></p>
+                            <p>${tab}${tab}Uri:${b}<i>" http://localhost:${srvPuerto}/api/editar/<i class='destacar1'>[IdGatito]</i>/<i class='destacar1'>[NombreGatito]</i> " </i>${b}</p>
+                            <p>${tab}<b>Metodo: Put (por qry)</b></p>
+                            <p>${tab}${tab}Uri:${b}<i>" http://localhost:${srvPuerto}/api/editar<i class='destacar2'>?</i><i class='destacar1'>id=[IdGatito]<i class='destacar2'>&</i>name=[NombreGatito]</i> " </i>${b}</p>
+                            <p>${tab}<b>Metodo: Put (por body)</b></p>
+                            <p>${tab}${tab}Uri:${b}<i>" http://localhost:${srvPuerto}/api/editar${b} "</p>
+                            <div class='Codigo'>
+                                <code>
+                                    ${tab}${tab}{${saltoLinea}    
+                                    ${tab}${tab}"_id": "6258d21ba60416c73341165e",${saltoLinea}
+                                    ${tab}${tab}"name": "Patroclo"${saltoLinea}
+                                    ${tab}${tab}}
+                                </code>
+                            </div>
+                        </li>
+                        <li>
+                            <p class='crud'><b>Eliminar un gatito </b></p>
+                            <p>${tab}Proposito: eliminar un nombre de gatito.</p>
+                            <p>${tab}<b>Metodo: Delete (por params)</b></p>
+                            <p>${tab}${tab}Uri:${b}<i>" http://localhost:${srvPuerto}/api/eliminar/<i class='destacar1'>[IdGatito]</i> " </i>${b}</p>
+                            <p>${tab}<b>Metodo: Delete (por qry)</b></p>
+                            <p>${tab}${tab}Uri:${b}<i>" http://localhost:${srvPuerto}/api/eliminar<i class='destacar2'>?</i><i class='destacar1'>id=[IdGatito]</i> " </i>${b}</p>
+                            <p>${tab}<b>Metodo: Delete (por body)</b></p>
+                            <p>${tab}${tab}Uri:${b}<i>" http://localhost:${srvPuerto}/api/eliminar${b}"</p>
+                            <div class='Codigo'>
+                                <code>
+                                    ${tab}${tab}{${saltoLinea}    
+                                    ${tab}${tab}"_id": "6258d21ba60416c73341165e",${saltoLinea}
+                                    ${tab}${tab}}
+                                </code>
+                            </div>
                         </li>
                       </ul> 
                       ${saltoLinea}

@@ -84,46 +84,24 @@ function Info() {
                       <h3>
                         Gatitos:
                       </h3>
-                      <p><b>${tab}Proposito general:</b>${b} Crear y retornar nombres de gatitos.</p>
+                      <p><b>${tab}Proposito general:</b>${b} CRUD de nombres de gatitos.</p>
                       <ul>
                         <li>
-                            <p><b>Ver todos los gatitos </b></p>
-                            <p>${tab}Metodo: Get </p>
-                            <p>${tab}Uri:${b}<i>"http://localhost:${srvPuerto}/api/cats/ver" <i>${b}
-                                <a href="http://localhost:${srvPuerto}/api/cats/ver" target="_blank">Ver</a></p>
-                        </li>
-                        <li>
-                            <p><b>Crear gatitos </b></p>
-                            <p>${tab}Metodo: Post (por parametros)</p>
-                            <p>${tab}Uri:${b}<i>"http://localhost:${srvPuerto}/api/cats/crear/<i class='destacar1'>[NombreGatito]</i>" </i></p>
+                            <p><b>Documentacion de las Api de gatitos </b></p>
+                            <p>${tab}Uri:${b}<i>"http://localhost:${srvPuerto}/api/cats" <i>${b}
+                                <a href="http://localhost:${srvPuerto}/api/cats" target="_blank">Ver</a></p>
                         </li>
                       </ul> 
                       ${saltoLinea}
                       <h3>
                         Usuarios:
                       </h3>
-                      <p><b>${tab}Proposito general:</b>${b} Crear y retornar usuarios.</p>
+                      <p><b>${tab}Proposito general:</b>${b} CRUD de usuarios.</p>
                       <ul>
                         <li>
-                            <p><b>Ver todos los Usuarios </b></p>
-                            <p>${tab}Metodo: Get </p>
-                            <p>${tab}Uri:${b}<i>"http://localhost:${srvPuerto}/api/usuarios/ver" </i>${b}
-                                <a href="http://localhost:${srvPuerto}/api/usuarios/ver" target="_blank">Ver</a></p>
-                        </li>
-                        <li>
-                            <p><b>Crear Usuarios </b></p>
-                            <p>${tab}Metodo: Post (por body)</p>
-                            <p>${tab}Uri:${b}<i>"http://localhost:${srvPuerto}/api/usuarios/crear" </i></p>
-                            <p>${tab}Estructura: (ejemplo del body para el post)</p>
-                            <div class='Codigo'>
-                                <code>
-                                    ${tab}${tab}{${saltoLinea}    
-                                    ${tab}${tab}"nombre":	"Andres"${saltoLinea}
-                                    ${tab}${tab}"email":	"Andres@correo.com"${saltoLinea}
-                                    ${tab}${tab}"password":	"123456"${saltoLinea}
-                                    ${tab}${tab}}
-                                </code>
-                            </div>
+                            <p><b>Documentacion de las Api de usuarios  </b></p>
+                            <p>${tab}Uri:${b}<i>"http://localhost:${srvPuerto}/api/usuarios" </i>${b}
+                                <a href="http://localhost:${srvPuerto}/api/usuarios" target="_blank">Ver</a></p>
                         </li>
                       </ul> 
                       ${saltoLinea}

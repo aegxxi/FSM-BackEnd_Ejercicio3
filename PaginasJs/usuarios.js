@@ -34,6 +34,22 @@ const estilos=`<style>
                     color:aliceblue
                   }
 
+                  .destacar1{
+                    color:brown;
+                    font-size:large;
+                  }
+
+                  .destacar2{
+                    color:blueviolet;
+                    font-size:large;
+                  }
+
+                  .crud{
+                    font-size:large;
+                    line-height: 200%;
+                    margin-top: 32px;
+                  }
+
                   .codigo {
                     border-image: initial;
                     border: 1px solid blue;
@@ -43,8 +59,9 @@ const estilos=`<style>
                     margin-left: 1rem;
                     line-height: 200%;
                     font-size:large;
+                    border-radius: 30px;
                   }
-
+                  
                   .firma {
                     color:aquamarine;
                     height: 64rem;
@@ -70,7 +87,7 @@ function usuariosInfo() {
                       <h2>
                         Informacion para el uso de las api de usuario
                       </h2>                      
-                      <p><b>Proposito general:</b>${b} Crear y retornar usuarios.</p>  
+                      <p><b>Proposito general:</b>${b} CRUD de usuarios.</p>  
                       ${saltoLinea}
                       
                       <h3>
@@ -78,24 +95,73 @@ function usuariosInfo() {
                       </h3>
                       <ul>
                         <li>
-                            <p><b>Ver todos los Usuarios </b></p>
+                            <p class='crud'><b>Ver todos los Usuarios </b></p>
                             <p>${tab}Proposito: retornar todos los usuarios.</p>
                             <p>${tab}Metodo: Get </p>
                             <p>${tab}Uri:${b}<i>"http://localhost:${srvPuerto}/api/usuarios/ver" </i>${b}
                                 <a href="http://localhost:${srvPuerto}/api/usuarios/ver" target="_blank">Ver</a></p>
                         </li>
                         <li>
-                            <p><b>Crear Usuarios </b></p>
-                            <p>${tab}Proposito: crear un usuario.</p>
-                            <p>${tab}Metodo: Post (por body)</p>
-                            <p>${tab}<i>Uri:${b}"http://localhost:${srvPuerto}/api/usuarios/crear" </i></p>
-                            <p>${tab}Estructura: (ejemplo del body para el post)</p>
+                            <p class='crud'><b>Ver un Usuario </b></p>
+                            <p>${tab}Proposito: retornar los datos de un usuario por su Id.</p>
+                            <p>${tab}<b>Metodo: Get (por params)</b></p>
+                            <p>${tab}${tab}Uri:${b}<i>" http://localhost:${srvPuerto}/api/usuarios/ver/usuario/<i class='destacar1'>[IdUsuario]</i> </i> " </i>${b}</p>
+                            <p>${tab}<b>Metodo: Get (por qry)</b></p>
+                            <p>${tab}${tab}Uri:${b}<i>" http://localhost:${srvPuerto}/api/usuarios/ver/usuario<i class='destacar2'>?</i><i class='destacar1'>id=[IdUsuario]</i> " </i>${b}</p>
+                            <p>${tab}<b>Metodo: Get (por body)</b></p>
+                            <p>${tab}${tab}Uri:${b}<i>" http://localhost:${srvPuerto}/api/usuarios/ver/usuario " </i>${b}</p>
+                            <div class='Codigo'>
+                              <code>
+                              ${tab}${tab}{${saltoLinea}    
+                              ${tab}${tab}"_id":"6251a723b972dfcf40c273c9"${saltoLinea}
+                              ${tab}${tab}}
+                            </code>
+                            </div>
+                        </li>
+                        <li>
+                            <p class='crud'><b>Crear usuarios </b></p>
+                            <p>${tab}Proposito: Ingresar datos y crear un usuario nuevo.</p>
+                            <p>${tab}Metodo: Post (por body) </p>
+                            <p>${tab}${tab}Uri:${b}<i>" http://localhost:${srvPuerto}/api/usuarios/crear " </i></p>
                             <div class='Codigo'>
                                 <code>
                                     ${tab}${tab}{${saltoLinea}    
                                     ${tab}${tab}"nombre":	"Andres"${saltoLinea}
                                     ${tab}${tab}"email":	"Andres@correo.com"${saltoLinea}
                                     ${tab}${tab}"password":	"123456"${saltoLinea}
+                                    ${tab}${tab}}
+                                </code>
+                            </div>
+                        </li>
+                        <li>
+                            <p class='crud'><b>Modificar un usuario </b></p>
+                            <p>${tab}Proposito: modificar un Usuario por su Id.</p>
+                            <p>${tab}<b>Metodo: Put (por body)</b></p>
+                            <p>${tab}${tab}Uri:${b}<i>" http://localhost:${srvPuerto}/api/editar/usuario${b} " </i></p>
+                            <div class='Codigo'>
+                                <code>
+                                    ${tab}${tab}{${saltoLinea}    
+                                    ${tab}${tab}"_id": "6258d21ba60416c73341165e",${saltoLinea}
+                                    ${tab}${tab}"nombre":	"Andres"${saltoLinea}
+                                    ${tab}${tab}"email":	"Andres@correo.com"${saltoLinea}
+                                    ${tab}${tab}"password":	"123456"${saltoLinea}
+                                    ${tab}${tab}}
+                                </code>
+                            </div>
+                        </li>
+                        <li>
+                            <p class='crud'><b>Eliminar un usuario </b></p>
+                            <p>${tab}Proposito: eliminar un usuario por su Id.</p>
+                            <p>${tab}<b>Metodo: Delete (por params)</b></p>
+                            <p>${tab}${tab}Uri:${b}<i>" http://localhost:${srvPuerto}/api/usuarios/eliminar/usuario/<i class='destacar1'>[IdUsuario]</i> " </i>${b}</p>
+                            <p>${tab}<b>Metodo: Delete (por qry)</b></p>
+                            <p>${tab}${tab}Uri:${b}<i>" http://localhost:${srvPuerto}/api/usuarios/eliminar/usuario<i class='destacar2'>?</i><i class='destacar1'>id=[IdUsuario]</i> " </i>${b}</p>
+                            <p>${tab}<b>Metodo: Delete (por body)</b></p>
+                            <p>${tab}${tab}Uri:${b}<i>" http://localhost:${srvPuerto}/api/usuarios/eliminar/usuario${b} "</i></p>
+                            <div class='Codigo'>
+                                <code>
+                                    ${tab}${tab}{${saltoLinea}    
+                                    ${tab}${tab}"_id": "6258d21ba60416c73341165e",${saltoLinea}
                                     ${tab}${tab}}
                                 </code>
                             </div>
