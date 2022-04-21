@@ -1,13 +1,21 @@
 const myhandler = require('../handlers/handler');
+const myCatsCrudHandler =require('../controllers/catsCrudHandler')
 const entorno = require('../appSrvEntorno');
 
-const { fnMiServidor } =entorno
+const { fnMiServidor } = entorno
 const { srvPuerto, srvNombre } = fnMiServidor()
+
+const {verGatitoPorParams} = myCatsCrudHandler
 
 const saltoLinea =  '<Br/>';  //'\n' en Java, <Br/> en Html
 const b = '&nbsp';              //Espacio en blanco
 const tab = `${b}${b}${b}`;     //Tabulacion de tres espacios
 const dA = '&#174;'             // Derechos de Autor
+
+const myScripts =`
+                  <script>
+                  </script> 
+                `
 
 const estilos=`<style>
                   h1 {color:aquamarine;}

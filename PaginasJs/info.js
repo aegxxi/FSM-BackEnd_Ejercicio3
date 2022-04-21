@@ -8,9 +8,7 @@ const { obtenerAppNombre,
         obtenerAppPuerto,
         obtenerMongooseVersion
     } = myhandler
-
-
-
+    
 const saltoLinea =  '<Br/>';    //'\n' en Java, <Br/> en Html
 const b = '&nbsp';              //Espacio en blanco
 const tab = `${b}${b}${b}`;     //Tabulacion de tres espacios
