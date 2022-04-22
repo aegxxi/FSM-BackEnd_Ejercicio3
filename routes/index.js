@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 //const { vistaInicio } = require('../controllers/catController.js')
-const { informacion, vistaInicio, apiInfo, resultado } = require('../controllers/indexControler')
+const { informacion, vistaInicio, apiInfo } = require('../controllers/indexControler')
 
 /* GET home page. */
 router.get('/', vistaInicio);
@@ -14,6 +14,6 @@ router.get('/api',apiInfo);
 
 
 /* Obtener página de Resultados. */
-router.get('/resultado/:accion',resultado);
+//router.get('/consulta/:accion/:ListaValores',resultado);
 
 module.exports = router;

@@ -10,8 +10,13 @@ const { validationResult } = require('express-validator');
  */
 const {catInfo} = require('../PaginasJs/cats');
 const apiCatInfo = async (req, res) => {
-    const contenido = catInfo();
-    res.send(contenido);
+    
+    try {
+        const contenido = catInfo();
+        res.send(contenido);    
+    } catch (error) {
+        res.status(400).send({msg: 'Hubo un error',error});    
+    };
 };
 
 
@@ -19,8 +24,13 @@ const apiCatInfo = async (req, res) => {
  * Muestro todos los gatitos
  */
 const vistaGatitos = async (req, res) => {
-    const gatitos = await Cat.find();
-    res.status(200).json({gatitos});
+    try {
+        const gatitos = await Cat.find();
+        res.status(200).json({gatitos});    
+    } catch (error) {
+        //console.log(gato)
+        res.status(400).send({msg: 'Hubo un error al mostrar los gatitos',error});          
+    };   
 };
 
 

@@ -5,9 +5,10 @@ const {fnMiServidor}= entorno
 const {srvPuerto,srvNombre} = fnMiServidor()
 const mySrvUri = `http://localhost:${srvPuerto}`
 
-//const consologuearErrores = true
+const consologuearErrores = true
 
 
+/* 
 //ejemplo
 const x = axios.get('/user?ID=12345').catch( (error) => {
     if (error.response) {
@@ -17,7 +18,8 @@ const x = axios.get('/user?ID=12345').catch( (error) => {
     };
     error.origin = 'Error al obtener la ruta';
     throw error;
-});
+}); 
+*/
 
 
 
@@ -31,7 +33,7 @@ const x = axios.get('/user?ID=12345').catch( (error) => {
 */
 const verGatitoPorParams = async ( idGatito, srvUri=mySrvUri ) => {
     const contenido = await axios.get(`${srvUri}/api/ver/gato/${idGatito}`).catch( (error) => {
-        if (error.response) {
+        if (error.response && consologuearErrores) {
             console.log(error.response.data);
             console.log(error.response.status);
             console.log(error.response.headers);
@@ -50,7 +52,7 @@ const verGatitoPorParams = async ( idGatito, srvUri=mySrvUri ) => {
  */
 const verGatitoPorQry = async ( idGatito, srvUri=mySrvUri ) => {
     const contenido = await axios.get(`${srvUri}/api/ver/gato?id=${idGatito}`).catch( (error) => {
-        if (error.response) {
+        if (error.response && consologuearErrores) {
             console.log(error.response.data);
             console.log(error.response.status);
             console.log(error.response.headers);
@@ -69,7 +71,7 @@ const verGatitoPorQry = async ( idGatito, srvUri=mySrvUri ) => {
  */
 const verGatitoPorBody = async ( body, srvUri=mySrvUri ) => {
     const contenido = await axios.get(`${srvUri}/api/ver/gato`, {body}).catch( (error) => {
-        if (error.response) {
+        if (error.response && consologuearErrores) {
             console.log(error.response.data);
             console.log(error.response.status);
             console.log(error.response.headers);
@@ -92,7 +94,7 @@ const verGatitoPorBody = async ( body, srvUri=mySrvUri ) => {
 */
 const crearGatitoPorParams = async ( nombreGatito, srvUri=mySrvUri ) => {
     const contenido = await axios.post(`${srvUri}/api/cats/crear/${nombreGatito}`).catch( (error) => {
-        if (error.response) {
+        if (error.response && consologuearErrores) {
             console.log(error.response.data);
             console.log(error.response.status);
             console.log(error.response.headers);
@@ -111,7 +113,7 @@ const crearGatitoPorParams = async ( nombreGatito, srvUri=mySrvUri ) => {
  */
 const crearGatitoPorQry = async ( nombreGatito, srvUri=mySrvUri ) => {
     const contenido = await axios.post(`${srvUri}/api/cats/crear?id=${nombreGatito}`).catch( (error) => {
-        if (error.response) {
+        if (error.response && consologuearErrores) {
             console.log(error.response.data);
             console.log(error.response.status);
             console.log(error.response.headers);
@@ -134,7 +136,7 @@ const crearGatitoPorQry = async ( nombreGatito, srvUri=mySrvUri ) => {
  */
 const crearGatitoPorBody = async ( body, srvUri=mySrvUri ) => {
     const contenido = await axios.post(`${srvUri}/api/cats/crear`, {body}).catch( (error) => {
-        if (error.response) {
+        if (error.response && consologuearErrores) {
             console.log(error.response.data);
             console.log(error.response.status);
             console.log(error.response.headers);
@@ -157,7 +159,7 @@ const crearGatitoPorBody = async ( body, srvUri=mySrvUri ) => {
 */
 const editarGatitoPorParams = async ( idGatito, nombreGatito, srvUri=mySrvUri ) => {
     const contenido = await axios.put(`${srvUri}/api/editar/${idGatito}/${nombreGatito}`).catch( (error) => {
-        if (error.response) {
+        if (error.response && consologuearErrores) {
             console.log(error.response.data);
             console.log(error.response.status);
             console.log(error.response.headers);
@@ -176,7 +178,7 @@ const editarGatitoPorParams = async ( idGatito, nombreGatito, srvUri=mySrvUri ) 
  */
 const editarGatitoPorQry = async ( idGatito, nombreGatito, srvUri=mySrvUri ) => {
     const contenido = await axios.put(`${srvUri}/api/editar?id=${idGatito}&name=${nombreGatito}`).catch( (error) => {
-        if (error.response) {
+        if (error.response && consologuearErrores) {
             console.log(error.response.data);
             console.log(error.response.status);
             console.log(error.response.headers);
@@ -200,7 +202,7 @@ const editarGatitoPorQry = async ( idGatito, nombreGatito, srvUri=mySrvUri ) => 
  */
 const editarGatitoPorBody = async ( body, srvUri=mySrvUri ) => {
     const contenido = await axios.put(`${srvUri}/api/editar`, {body}).catch( (error) => {
-        if (error.response) {
+        if (error.response && consologuearErrores) {
             console.log(error.response.data);
             console.log(error.response.status);
             console.log(error.response.headers);
@@ -223,7 +225,7 @@ const editarGatitoPorBody = async ( body, srvUri=mySrvUri ) => {
 */
 const eliminarGatitoPorParams = async ( idGatito, srvUri=mySrvUri ) => {
     const contenido = await axios.delete(`${srvUri}/api/eliminar/${idGatito}`).catch( (error) => {
-        if (error.response) {
+        if (error.response && consologuearErrores) {
             console.log(error.response.data);
             console.log(error.response.status);
             console.log(error.response.headers);
@@ -242,7 +244,7 @@ const eliminarGatitoPorParams = async ( idGatito, srvUri=mySrvUri ) => {
  */
 const eliminarGatitoPorQry = async ( idGatito, srvUri=mySrvUri ) => {
     const contenido = await axios.delete(`${srvUri}/api/eliminar?id=${idGatito}`).catch( (error) => {
-        if (error.response) {
+        if (error.response && consologuearErrores) {
             console.log(error.response.data);
             console.log(error.response.status);
             console.log(error.response.headers);
@@ -265,7 +267,7 @@ const eliminarGatitoPorQry = async ( idGatito, srvUri=mySrvUri ) => {
  */
 const eliminarGatitoPorBody = async ( body, srvUri=mySrvUri ) => {
     const contenido = await axios.delete(`${srvUri}/api/eliminar`, {body}).catch( (error) => {
-        if (error.response) {
+        if (error.response && consologuearErrores) {
             console.log(error.response.data);
             console.log(error.response.status);
             console.log(error.response.headers);

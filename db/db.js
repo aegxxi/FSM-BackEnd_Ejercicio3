@@ -12,6 +12,7 @@ console.log(`db.js => dotenv, DB_MONGO => ${process.env.DB_MONGO}`);
 */
 
 // Obtengo la cadena de conexion a la DB
+//console.log({DbConeccion: process.env.DB_MONGO});
 const myConection= (process.env.DB_MONGO) 
     ? process.env.DB_MONGO
     : srvDbConection;

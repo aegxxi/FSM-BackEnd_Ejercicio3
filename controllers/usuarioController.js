@@ -11,9 +11,15 @@ const {usuariosInfo} = require('../PaginasJs/usuarios');
  *  Muestro api info 
  */
 const apiUserInfo = async (req, res) => {
-    const contenido = usuariosInfo();
-    res.send(contenido);
-}
+    
+    try {
+        const contenido = usuariosInfo();
+        res.send(contenido);    
+    } catch (error) {
+        res.status(400).send({msg: 'Hubo un error'},error);    
+    };
+
+};
 
 
 /**  
@@ -30,7 +36,7 @@ const apiUserInfo = async (req, res) => {
     } catch (error) {
         console.log({msg: 'Hubo un error al leer los usuarios'},error);
         res.status(400).send({msg: 'Hubo un error al leer los usuarios'},error);
-    }
+    };
   };
 
 
@@ -132,7 +138,7 @@ const crearUsuario = async (req, res) => {
     } catch (error) {
         //console.log({msg:'Hubo un error al crear el nuevo usuario',error});
         res.status(400).send({msg: 'Hubo un error al crear el nuevo usuario',error});
-    }
+    };
 };
 
 
@@ -233,8 +239,8 @@ const eliminarUsuario = async (req, res) => {
     } catch (error) {
         //console.log(error);
         res.status(400).send({msg: 'Hubo un error al eliminar el usuario',error});
-    }
-}
+    };
+};
 
 
 
