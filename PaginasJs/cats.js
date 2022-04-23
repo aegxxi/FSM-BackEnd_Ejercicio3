@@ -1,5 +1,5 @@
 const myhandler = require('../handlers/handler');
-const myCatsCrudHandler =require('../controllers/catsCrudHandler')
+const myCatsCrudHandler =require('../consultas/catsCrudHandler')
 const entorno = require('../appSrvEntorno');
 
 const { fnMiServidor } = entorno
@@ -96,8 +96,12 @@ function catInfo() {
                       </h2>
                       <p><b>Proposito general:</b>${b} CRUD de gatitos.</p>
                        ${saltoLinea}
-                      <h3>
-                        Gatitos:
+                       <p>${tab}Probar las api del Crud de gatitos${b}
+                       <a href="http://localhost:${srvPuerto}/api/cats/prueba" target="_blank">Ver</a>
+                       </p> 
+                       ${saltoLinea}
+                       <h3>
+                        Documentacion del Crud de Gatitos:
                       </h3>
                       <ul>
                         <li>

@@ -2,10 +2,10 @@ const axios = require('axios');
 const entorno = require('../appSrvEntorno');
 
 const {fnMiServidor}= entorno
-const {srvPuerto,srvNombre} = fnMiServidor()
+let {srvPuerto} = fnMiServidor()
 const mySrvUri = `http://localhost:${srvPuerto}`
 
-const consologuearErrores = true
+const consologuearErrores = false
 
 
 /* 
@@ -31,8 +31,16 @@ const x = axios.get('/user?ID=12345').catch( (error) => {
  * Ver un gatito (por params)
  * api/ver/gato 
 */
-const verGatitoPorParams = async ( idGatito, srvUri=mySrvUri ) => {
-    const contenido = await axios.get(`${srvUri}/api/ver/gato/${idGatito}`).catch( (error) => {
+const verGatitoPorParams = async ( idGatito, srvUri = mySrvUri, responder ) => {
+    (srvUri) 
+    ? (srvUri.length<9)
+        ? srvUri=mySrvUri
+        :  srvUri= srvUri
+    : srvUri=mySrvUri
+    ;
+
+    //console.log('verGatitoPorParams -> param(srvUri):',srvUri)
+    const contenido = await axios.get(`${srvUri}/api/cats/ver/gato/${idGatito}`, { timeout: 10000 }).catch( (error) => {
         if (error.response && consologuearErrores) {
             console.log(error.response.data);
             console.log(error.response.status);
@@ -42,7 +50,10 @@ const verGatitoPorParams = async ( idGatito, srvUri=mySrvUri ) => {
         throw error;
     });
 
-    return(contenido.data)
+    //console.log('verGatitoPorParams',contenido);
+    responder(contenido);
+    //return(contenido);
+    return;
 }
 
 
@@ -50,8 +61,15 @@ const verGatitoPorParams = async ( idGatito, srvUri=mySrvUri ) => {
  * Ver un gatito (por query) 
  * api/ver/gato
  */
-const verGatitoPorQry = async ( idGatito, srvUri=mySrvUri ) => {
-    const contenido = await axios.get(`${srvUri}/api/ver/gato?id=${idGatito}`).catch( (error) => {
+const verGatitoPorQry = async ( idGatito, srvUri=mySrvUri, responder ) => {
+    (srvUri) 
+    ? (srvUri.length<9)
+        ? srvUri=mySrvUri
+        :  srvUri= srvUri
+    : srvUri=mySrvUri
+    ;
+
+    const contenido = await axios.get(`${srvUri}/api/cats/ver/gato?id=${idGatito}`, { timeout: 10000 }).catch( (error) => {
         if (error.response && consologuearErrores) {
             console.log(error.response.data);
             console.log(error.response.status);
@@ -61,7 +79,9 @@ const verGatitoPorQry = async ( idGatito, srvUri=mySrvUri ) => {
         throw error;
     });
 
-    return(contenido.data)
+    responder(contenido);
+    //return(contenido.data)
+    return;
 }
 
 
@@ -69,8 +89,22 @@ const verGatitoPorQry = async ( idGatito, srvUri=mySrvUri ) => {
  * Ver un gatito (por body) 
  * api/ver/gato
  */
-const verGatitoPorBody = async ( body, srvUri=mySrvUri ) => {
-    const contenido = await axios.get(`${srvUri}/api/ver/gato`, {body}).catch( (error) => {
+const verGatitoPorBody = async ( body, srvUri = mySrvUri, responder ) => {
+    // const {_id} ={body};
+    // console.log('verGatitoPorBody ({_id)-> ',_id);
+    let myBody ={}
+    myBody=JSON.parse(body);
+    //console.log()`verGatitoPorBody (body)-> ${myBody}`)
+    
+    (srvUri) 
+    ? (srvUri.length<9)
+        ? srvUri=mySrvUri
+        :  srvUri= srvUri
+    : srvUri=mySrvUri
+    ;
+    
+    /* 
+    const contenido = await axios.get(`${srvUri}/api/cats/ver/gato`, {body}, { timeout: 10000 }).catch( (error) => {
         if (error.response && consologuearErrores) {
             console.log(error.response.data);
             console.log(error.response.status);
@@ -79,8 +113,15 @@ const verGatitoPorBody = async ( body, srvUri=mySrvUri ) => {
         error.origin = 'Error al obtener la ruta';
         throw error;
     });
-
-    return(contenido.data)
+     */
+    try {
+        const contenido = await axios.get(`${srvUri}/api/cats/ver/gato`, {myBody}, { timeout: 10000 })    
+    } catch (error) {
+        console.log('Error al recuperar los datos.',error); 
+    }
+    responder(contenido);
+    //return(contenido.data)
+    return;
 }
 
 

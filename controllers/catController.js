@@ -1,5 +1,6 @@
 const {Cat} = require('../models/model');
 const { validationResult } = require('express-validator');
+//const {responder} =require('../consultas/catsCrudResponse')
 
 /* const vistaInicio = (req, res) => {
     res.render('index', { title: 'Express' });
@@ -18,6 +19,8 @@ const apiCatInfo = async (req, res) => {
         res.status(400).send({msg: 'Hubo un error',error});    
     };
 };
+
+
 
 
 /**
@@ -239,6 +242,171 @@ const elininarGatito = async (req, res) => {
 };
 
 
+
+/**
+ * Muestro pagina de prueba de la api
+ */
+ const {catPrueba} = require('../PaginasJs/catsPrueba');
+ const apiCatPrueba = async (req, res) => {
+     
+     try {
+         const contenido = catPrueba();
+         res.send(contenido);    
+     } catch (error) {
+         res.status(400).send({msg: 'Hubo un error',error});    
+     };
+ };
+ 
+
+/**
+ * Muestro pagina con el resultado de la prueba de la api
+ */
+function catResultado(req, res){
+    //const myAction = req.params.accion;
+    //const myValues = req.params.listaDeValores;
+    
+    const { accion, listaDeValores } = req.body;
+    
+    const myAction = (accion) 
+        ? accion 
+        : (req.params.accion)
+            ? req.params.accion
+            : req.query.accion
+        ;    
+    console.log('catResultado -> (accion): ',myAction);
+
+        const myValues = (listaDeValores) 
+        ? listaDeValores 
+        : (req.params.listaDeValores)
+            ? req.params.listaDeValores
+            : req.query.listaDeValores
+        ;  
+    console.log('catResultado -> (listaDeValores): ',myValues);  
+
+    const {TYPES} = require('../consultas/catsCrudAccion');
+    const { verGatitoPorParams,
+            verGatitoPorQry,
+            verGatitoPorBody,
+            crearGatitoPorParams,
+            crearGatitoPorQry,
+            crearGatitoPorBody,
+            editarGatitoPorParams,
+            editarGatitoPorQry,
+            editarGatitoPorBody,
+            eliminarGatitoPorParams,
+            eliminarGatitoPorQry,
+            eliminarGatitoPorBody} = require('../consultas/catsCrudHandler');
+    let contenido = {};
+    let respuesta = '';
+
+    // envio respuesta al servidor
+    try {
+        //console.log(TYPES)
+        switch (myAction) {
+            case TYPES.verPorParams:
+                //console.log(TYPES.verPorParams);
+                console.log('catResultado -> Buscando el contenido por Params:',TYPES.verPorParams)
+                contenido = verGatitoPorParams( myValues, 
+                                                '', 
+                                                responder = async (contenido) => { 
+                                                                                    try {
+                                                                                        let respuesta = '';                        
+                                                                                        //console.log('callback-Responder,data -> ',contenido.data);
+                                                                                        respuesta = await `Id: ${contenido.data.gato._id}, Nombre: ${contenido.data.gato.name}`;
+                                                                                        //console.log('callback-Responder, id -> ',contenido.data.gato._id);
+                                                                                        //console.log('callback-Responder, name -> ',contenido.data.gato.name);
+                                                                                        res.send(respuesta);
+                                                                                        return;    
+                                                                                    } catch (error) {
+                                                                                        console.log('Error al recuperar los datos.',error);
+                                                                                        res.send('Error al recuperar los datos.');
+                                                                                    };
+                                                                                    return;
+                                                                                    }
+                                                );
+                //console.log(contenido)
+                //respuesta =`Id: ${contenido.data._id}, Nombre: ${contenido.data.name}`
+                //respuesta =`Nombre: ${contenido.data.name}`
+                //console.log(respuesta)
+                return;
+
+            case TYPES.verPorQry:
+                console.log('catResultado -> Buscando el contenido por Qry):',TYPES.verPorQry)
+                contenido = verGatitoPorQry(myValues, 
+                                            '', 
+                                            responder = async (contenido) => { 
+                                                        try {
+                                                            let respuesta = '';                        
+                                                            //console.log('callback-Responder,data -> ',contenido.data);
+                                                            respuesta = await `Id: ${contenido.data.gato._id}, Nombre: ${contenido.data.gato.name}`;
+                                                            //console.log('callback-Responder, id -> ',contenido.data.gato._id);
+                                                            //console.log('callback-Responder, name -> ',contenido.data.gato.name);
+                                                            res.send(respuesta);
+                                                            return;    
+                                                        } catch (error) {
+                                                            console.log('Error al recuperar los datos.',error);
+                                                            res.send('Error al recuperar los datos.');
+                                                        };
+                                                        return;
+                                                        }
+                                            );
+                return;                
+            
+            case TYPES.verPorBody:
+                console.log('catResultado -> Buscando el contenido por Body):',TYPES.verPorBody)
+                contenido = verGatitoPorBody(myValues, 
+                                            '', 
+                                            responder = async (contenido) => { 
+                                                        try {
+                                                            let respuesta = '';                        
+                                                            //console.log('callback-Responder,data -> ',contenido.data);
+                                                            respuesta = await `Id: ${contenido.data.gato._id}, Nombre: ${contenido.data.gato.name}`;
+                                                            //console.log('callback-Responder, id -> ',contenido.data.gato._id);
+                                                            //console.log('callback-Responder, name -> ',contenido.data.gato.name);
+                                                            res.send(respuesta);
+                                                            return;    
+                                                        } catch (error) {
+                                                            console.log('Error al recuperar los datos.',error);
+                                                            res.send('Error al recuperar los datos.');
+                                                        };
+                                                        return;
+                                                        }
+                                            );
+                return;
+
+            case TYPES.creaPorParams:
+                //return res.send(contenido);
+            case TYPES.crearPorQry:
+                //return 
+            case TYPES.crearPorBody:
+                //return 
+            case TYPES.editarPorParams:
+                //return 
+            case TYPES.editarPorQry:
+                //return 
+            case TYPES.editarPorBody:
+                //return 
+            case TYPES.eliminarPorParams:
+                //return 
+            case TYPES.eliminarPorQry:
+                //return 
+            case TYPES.eliminarPorBody:
+                //return 
+            default:
+                contenido='Accion desconocida.'
+                return res.send(contenido);    
+        };
+        return
+    } catch (error) {
+        console.log({msg: 'Hubo un error',error})
+        res.status(400).send({msg: 'Hubo un error',error}); 
+    };
+};
+
+
+
+
+
 /**
  * Exporto las funciones del contrlador
  */
@@ -248,5 +416,7 @@ module.exports = {
                     editarGatito, 
                     vistaGatitos,
                     verUnGatito,
-                    elininarGatito
+                    elininarGatito,
+                    apiCatPrueba,
+                    catResultado
                 };
