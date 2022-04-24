@@ -18,7 +18,11 @@ const myScripts =`
                 `
 
 const estilos=`<style>
-                  h1 {color:aquamarine;}
+                  h1 {
+                      color:aquamarine;
+                      text-shadow: 1px 2px;
+                    }
+
                   h2 {color:lawngreen;}
                   
                   p {
@@ -68,6 +72,7 @@ const estilos=`<style>
                     line-height: 200%;
                     font-size:large;
                     border-radius: 30px;
+                    box-shadow: 5px 5px #888888;
                   }
 
                   .codigo2 {
@@ -75,11 +80,12 @@ const estilos=`<style>
                     border: 1px solid blue;
                     color:white;
                     background-color: darkslategray;
-                    margin-right: 48rem;
+                    margin-right: 32rem;
                     margin-left: 2rem;
                     line-height: 200%;
                     font-size:large;
                     border-radius: 30px;
+                    box-shadow: 5px 5px red;
                   }
 
                   .firma {
@@ -96,7 +102,7 @@ const estilos=`<style>
 function catPrueba() {
   
   const contenido = `<head>
-                      <title>ApisCat-Informacion</title>
+                      <title>ProbarApiCats</title>
                       ${estilos}
                      </head>
                      <body  class="fondo">
@@ -127,14 +133,9 @@ function catPrueba() {
                         </li>
                         <li>
                             <p class='crud'><b>Construccion de la Uri de prueba </b></p>
-                            <div class='Codigo2'>
+                            <div class='Codigo'>
                                 <code>
-                                    ${tab}${tab}[ http://localhost:${srvPuerto}/api/cats/resultado/:accion/:listaDeValores ]${saltoLinea}    
-                                    ${saltoLinea}
-                                    ${tab}${tab}Ejemplos: ${saltoLinea}
-                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/VER_POR_PARAMS/6258d21ba60416c73341165e${saltoLinea}
-                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/VER_POR_QRY/6258d21ba60416c73341165e${saltoLinea}
-                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/VER_POR_BODY/{"_id": "6258d21ba60416c73341165e"}${saltoLinea}
+                                    ${tab}${tab}[ <mark><b>http://localhost:${srvPuerto}/api/cats/resultado/<i class='Destacar1'>[Accion]</i>/<i class='Destacar1'>[listaDeValores]</i></b></mark> ]${saltoLinea}    
                                 </code>
                             </div>
                         </li>
@@ -154,6 +155,30 @@ function catPrueba() {
                                     ${tab}${tab}ELIMINAR_POR_PARAMS${saltoLinea}
                                     ${tab}${tab}ELIMINAR_POR_QRY${saltoLinea}
                                     ${tab}${tab}ELIMINAR_POR_BODY${saltoLinea}
+                                </code>
+                            </div>
+                        </li>
+                        <li>
+                            <p class='crud'><b>Ejemplos de la construccion de la Uri de prueba </b></p>
+                            <div class='Codigo2'>
+                                <code>
+                                    ${tab}${tab}${b}Ver: ${saltoLinea}
+                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/VER_POR_PARAMS/6258d21ba60416c73341165e${saltoLinea}
+                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/VER_POR_QRY/6258d21ba60416c73341165e${saltoLinea}
+                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/VER_POR_BODY/{"_id": "6258d21ba60416c73341165e"}${saltoLinea}
+                                    ${tab}${tab}${b}Crear: ${saltoLinea}
+                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/CREAR_POR_PARAMS/Sofocles${saltoLinea}
+                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/CREAR_POR_QRY/Sofocles${saltoLinea}
+                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/CREAR_POR_BODY/{"name": "Sofocles"}${saltoLinea}
+                                    ${tab}${tab}${b}Editar: ${saltoLinea}
+                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/EDITAR_POR_PARAMS/{"_id": "6258d21ba60416c73341165e", "name": "Diogenes"}${saltoLinea}
+                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/EDITAR_POR_QRY/{"_id": "6258d21ba60416c73341165e", "name": "Diogenes"}${saltoLinea}
+                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/EDITAR_POR_BODY/{"_id": "6258d21ba60416c73341165e", "name": "Diogenes"}${saltoLinea}
+                                    ${tab}${tab}${b}Eliminar: ${saltoLinea}
+                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/ELIMINAR_POR_PARAMS/6258d21ba60416c73341165e${saltoLinea}
+                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/ELIMINAR_POR_QRY/6258d21ba60416c73341165e${saltoLinea}
+                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/ELIMINAR_POR_BODY/{"_id": "6258d21ba60416c73341165e"}${saltoLinea}
+
                                 </code>
                             </div>
                         </li>

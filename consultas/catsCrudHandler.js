@@ -38,9 +38,10 @@ const verGatitoPorParams = async ( idGatito, srvUri = mySrvUri, responder ) => {
         :  srvUri= srvUri
     : srvUri=mySrvUri
     ;
-
     //console.log('verGatitoPorParams -> param(srvUri):',srvUri)
-    const contenido = await axios.get(`${srvUri}/api/cats/ver/gato/${idGatito}`, { timeout: 10000 }).catch( (error) => {
+    
+    let contenido;
+    contenido = await axios.get(`${srvUri}/api/cats/ver/gato/${idGatito}`, { timeout: 10000 }).catch( (error) => {
         if (error.response && consologuearErrores) {
             console.log(error.response.data);
             console.log(error.response.status);
@@ -69,7 +70,8 @@ const verGatitoPorQry = async ( idGatito, srvUri=mySrvUri, responder ) => {
     : srvUri=mySrvUri
     ;
 
-    const contenido = await axios.get(`${srvUri}/api/cats/ver/gato?id=${idGatito}`, { timeout: 10000 }).catch( (error) => {
+    let contenido
+    contenido = await axios.get(`${srvUri}/api/cats/ver/gato?id=${idGatito}`, { timeout: 10000 }).catch( (error) => {
         if (error.response && consologuearErrores) {
             console.log(error.response.data);
             console.log(error.response.status);
@@ -90,12 +92,7 @@ const verGatitoPorQry = async ( idGatito, srvUri=mySrvUri, responder ) => {
  * api/ver/gato
  */
 const verGatitoPorBody = async ( body, srvUri = mySrvUri, responder ) => {
-    // const {_id} ={body};
-    // console.log('verGatitoPorBody ({_id)-> ',_id);
-    let myBody ={}
-    myBody=JSON.parse(body);
-    //console.log()`verGatitoPorBody (body)-> ${myBody}`)
-    
+
     (srvUri) 
     ? (srvUri.length<9)
         ? srvUri=mySrvUri
@@ -103,7 +100,17 @@ const verGatitoPorBody = async ( body, srvUri = mySrvUri, responder ) => {
     : srvUri=mySrvUri
     ;
     
+    let myBody; 
+    myBody = JSON.parse(body);
+    console.log(`verGatitoPorBody (body)-> ${myBody}`);
+    console.log(`verGatitoPorBody (body-Objeto): `, myBody);
+    
     /* 
+    // este codigo genera error:
+    // (Nodo: 13240) ADVERTENCIA DE REEMPLAZO DE PROMISIÓN UNHANDLED: ADVERTENCIA DE PROMISIÓN UNHANGLED. 
+    //   Este error se originó, lanzando dentro de una función de ASYNC sin un bloque de captura, o rechazando una promesa que no se manejó con .catch (). Para rescindir el proceso de nodo en el rechazo de la promesa sin controlar, use la bandera de CLI `- Redondeled-rechace = estrict` (ver https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (ID de rechazo: 2)
+    // (Nodo: 13240) [DEP0018] ADVERTENCIA DE DESPECACIÓN: Las rejecciones de promesa no controladas están en desuso. En el futuro, las rejillas prometedoras que no se manejan terminarán el proceso de nodo.js con un código de salida que no se encuentra.   
+
     const contenido = await axios.get(`${srvUri}/api/cats/ver/gato`, {body}, { timeout: 10000 }).catch( (error) => {
         if (error.response && consologuearErrores) {
             console.log(error.response.data);
@@ -114,11 +121,15 @@ const verGatitoPorBody = async ( body, srvUri = mySrvUri, responder ) => {
         throw error;
     });
      */
+    
+    let contenido
     try {
-        const contenido = await axios.get(`${srvUri}/api/cats/ver/gato`, {myBody}, { timeout: 10000 })    
+        contenido = await axios.get(`${srvUri}/api/cats/ver/gato`, {myBody}, { timeout: 10000 })    
     } catch (error) {
         console.log('Error al recuperar los datos.',error); 
-    }
+    };
+    
+    console.log(contenido);
     responder(contenido);
     //return(contenido.data)
     return;
@@ -133,8 +144,16 @@ const verGatitoPorBody = async ( body, srvUri = mySrvUri, responder ) => {
  * Crear un gatito (por params)
  * /api/cats/crear 
 */
-const crearGatitoPorParams = async ( nombreGatito, srvUri=mySrvUri ) => {
-    const contenido = await axios.post(`${srvUri}/api/cats/crear/${nombreGatito}`).catch( (error) => {
+const crearGatitoPorParams = async ( nombreGatito, srvUri=mySrvUri, responder ) => {   
+    (srvUri) 
+    ? (srvUri.length<9)
+        ? srvUri=mySrvUri
+        :  srvUri= srvUri
+    : srvUri=mySrvUri
+    ;
+
+    let contenido
+    contenido = await axios.post(`${srvUri}/api/cats/crear/${nombreGatito}`, { timeout: 10000 }).catch( (error) => {
         if (error.response && consologuearErrores) {
             console.log(error.response.data);
             console.log(error.response.status);
@@ -144,7 +163,10 @@ const crearGatitoPorParams = async ( nombreGatito, srvUri=mySrvUri ) => {
         throw error;
     });
 
-    return(contenido.data)
+    console.log(contenido);
+    responder(contenido);
+    //return(contenido.data)
+    return;
 }
 
 
@@ -152,8 +174,15 @@ const crearGatitoPorParams = async ( nombreGatito, srvUri=mySrvUri ) => {
  * Crear un gatito (por query) 
  * /api/cats/crear
  */
-const crearGatitoPorQry = async ( nombreGatito, srvUri=mySrvUri ) => {
-    const contenido = await axios.post(`${srvUri}/api/cats/crear?id=${nombreGatito}`).catch( (error) => {
+const crearGatitoPorQry = async ( nombreGatito, srvUri=mySrvUri, responder ) => {
+    (srvUri) 
+    ? (srvUri.length<9)
+        ? srvUri=mySrvUri
+        :  srvUri= srvUri
+    : srvUri=mySrvUri
+    ;
+
+    const contenido = await axios.post(`${srvUri}/api/cats/crear?id=${nombreGatito}`, { timeout: 10000 }).catch( (error) => {
         if (error.response && consologuearErrores) {
             console.log(error.response.data);
             console.log(error.response.status);
@@ -163,7 +192,10 @@ const crearGatitoPorQry = async ( nombreGatito, srvUri=mySrvUri ) => {
         throw error;
     });
 
-    return(contenido.data)
+    console.log(contenido);
+    responder(contenido);
+    //return(contenido.data)
+    return;
 }
 
 
@@ -175,8 +207,26 @@ const crearGatitoPorQry = async ( nombreGatito, srvUri=mySrvUri ) => {
  *      "name": "Patroclo"
  *  }
  */
-const crearGatitoPorBody = async ( body, srvUri=mySrvUri ) => {
-    const contenido = await axios.post(`${srvUri}/api/cats/crear`, {body}).catch( (error) => {
+const crearGatitoPorBody = async ( body, srvUri=mySrvUri, responder ) => {
+    (srvUri) 
+    ? (srvUri.length<9)
+        ? srvUri=mySrvUri
+        :  srvUri= srvUri
+    : srvUri=mySrvUri
+    ;
+
+    let myBody; 
+    myBody = JSON.parse(body);
+    console.log(`crearGatitoPorBody (body)-> ${myBody}`);
+    console.log(`crearGatitoPorBody (body-Objeto): `, myBody);
+
+   /* 
+   // este codigo genera error:
+   // (Nodo: 13240) ADVERTENCIA DE REEMPLAZO DE PROMISIÓN UNHANDLED: ADVERTENCIA DE PROMISIÓN UNHANGLED. 
+   //   Este error se originó, lanzando dentro de una función de ASYNC sin un bloque de captura, o rechazando una promesa que no se manejó con .catch (). Para rescindir el proceso de nodo en el rechazo de la promesa sin controlar, use la bandera de CLI `- Redondeled-rechace = estrict` (ver https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (ID de rechazo: 2)
+   // (Nodo: 13240) [DEP0018] ADVERTENCIA DE DESPECACIÓN: Las rejecciones de promesa no controladas están en desuso. En el futuro, las rejillas prometedoras que no se manejan terminarán el proceso de nodo.js con un código de salida que no se encuentra.   
+   
+   const contenido = await axios.post(`${srvUri}/api/cats/crear`, {myBody}, { timeout: 10000 }).catch( (error) => {
         if (error.response && consologuearErrores) {
             console.log(error.response.data);
             console.log(error.response.status);
@@ -184,9 +234,23 @@ const crearGatitoPorBody = async ( body, srvUri=mySrvUri ) => {
         };
         error.origin = 'Error al obtener la ruta';
         throw error;
-    });
+    }); 
+    */
 
-    return(contenido.data)
+    let contenido;
+    try {
+        contenido = await axios.post(`${srvUri}/api/cats/crear`, {myBody}, { timeout: 10000 })    
+    } catch (error) {
+        console.log('Error al crear el gatito.',error);  
+        (contenido)  
+            ?contenido = contenido
+            :contenido = 'Error al crear el gatito en la base de datos.'
+    }
+
+    console.log(contenido);
+    responder(contenido);
+    //return(contenido.data)
+    return;
 }
 
 
@@ -198,8 +262,15 @@ const crearGatitoPorBody = async ( body, srvUri=mySrvUri ) => {
  * Editar un gatito (por params)
  * /api/editar 
 */
-const editarGatitoPorParams = async ( idGatito, nombreGatito, srvUri=mySrvUri ) => {
-    const contenido = await axios.put(`${srvUri}/api/editar/${idGatito}/${nombreGatito}`).catch( (error) => {
+const editarGatitoPorParams = async ( idGatito, nombreGatito, srvUri=mySrvUri, responder ) => {
+    (srvUri) 
+    ? (srvUri.length<9)
+        ? srvUri=mySrvUri
+        :  srvUri= srvUri
+    : srvUri=mySrvUri
+    ;
+
+    const contenido = await axios.put(`${srvUri}/api/cats/editar/${idGatito}/${nombreGatito}`, { timeout: 10000 }).catch( (error) => {
         if (error.response && consologuearErrores) {
             console.log(error.response.data);
             console.log(error.response.status);
@@ -209,7 +280,10 @@ const editarGatitoPorParams = async ( idGatito, nombreGatito, srvUri=mySrvUri ) 
         throw error;
     });
 
-    return(contenido.data)
+    console.log(contenido);
+    responder(contenido);
+    //return(contenido.data)
+    return;
 }
 
 
@@ -217,8 +291,15 @@ const editarGatitoPorParams = async ( idGatito, nombreGatito, srvUri=mySrvUri ) 
  * Editar un gatito (por query) 
  * /api/editar
  */
-const editarGatitoPorQry = async ( idGatito, nombreGatito, srvUri=mySrvUri ) => {
-    const contenido = await axios.put(`${srvUri}/api/editar?id=${idGatito}&name=${nombreGatito}`).catch( (error) => {
+const editarGatitoPorQry = async ( idGatito, nombreGatito, srvUri=mySrvUri, responder ) => {
+    (srvUri) 
+    ? (srvUri.length<9)
+        ? srvUri=mySrvUri
+        :  srvUri= srvUri
+    : srvUri=mySrvUri
+    ;
+
+    const contenido = await axios.put(`${srvUri}/api/cats/editar?id=${idGatito}&name=${nombreGatito}`, { timeout: 10000 }).catch( (error) => {
         if (error.response && consologuearErrores) {
             console.log(error.response.data);
             console.log(error.response.status);
@@ -228,7 +309,10 @@ const editarGatitoPorQry = async ( idGatito, nombreGatito, srvUri=mySrvUri ) => 
         throw error;
     });
 
-    return(contenido.data)
+    console.log(contenido);
+    responder(contenido);
+    //return(contenido.data)
+    return;
 }
 
 
@@ -241,8 +325,19 @@ const editarGatitoPorQry = async ( idGatito, nombreGatito, srvUri=mySrvUri ) => 
  *      "name": "Patroclo"
  *  }
  */
-const editarGatitoPorBody = async ( body, srvUri=mySrvUri ) => {
-    const contenido = await axios.put(`${srvUri}/api/editar`, {body}).catch( (error) => {
+const editarGatitoPorBody = async ( body, srvUri=mySrvUri, responder ) => {
+    (srvUri) 
+    ? (srvUri.length<9)
+        ? srvUri=mySrvUri
+        :  srvUri= srvUri
+    : srvUri=mySrvUri
+    ;
+
+    let myBody ={}
+    myBody = JSON.parse(body);
+    console.log(`crearGatitoPorBody (body)-> ${myBody}`);
+
+    const contenido = await axios.put(`${srvUri}/api/cats/editar`, {myBody}, { timeout: 10000 }).catch( (error) => {
         if (error.response && consologuearErrores) {
             console.log(error.response.data);
             console.log(error.response.status);
@@ -252,7 +347,10 @@ const editarGatitoPorBody = async ( body, srvUri=mySrvUri ) => {
         throw error;
     });
 
-    return(contenido.data)
+    console.log(contenido);
+    responder(contenido);
+    //return(contenido.data)
+    return;
 }
 
 
@@ -264,8 +362,15 @@ const editarGatitoPorBody = async ( body, srvUri=mySrvUri ) => {
  * Eliminar un gatito (por params)
  * /api/eliminar 
 */
-const eliminarGatitoPorParams = async ( idGatito, srvUri=mySrvUri ) => {
-    const contenido = await axios.delete(`${srvUri}/api/eliminar/${idGatito}`).catch( (error) => {
+const eliminarGatitoPorParams = async ( idGatito, srvUri=mySrvUri, responder ) => {
+    (srvUri) 
+    ? (srvUri.length<9)
+        ? srvUri=mySrvUri
+        :  srvUri= srvUri
+    : srvUri=mySrvUri
+    ;
+
+     contenido = await axios.delete(`${srvUri}/api/cats/eliminar/${idGatito}`, { timeout: 10000 }).catch( (error) => {
         if (error.response && consologuearErrores) {
             console.log(error.response.data);
             console.log(error.response.status);
@@ -275,7 +380,10 @@ const eliminarGatitoPorParams = async ( idGatito, srvUri=mySrvUri ) => {
         throw error;
     });
 
-    return(contenido.data)
+    console.log(contenido);
+    responder(contenido);
+    //return(contenido.data)
+    return;
 }
 
 
@@ -283,8 +391,15 @@ const eliminarGatitoPorParams = async ( idGatito, srvUri=mySrvUri ) => {
  * Eliminar un gatito (por query) 
  * /api/eliminar
  */
-const eliminarGatitoPorQry = async ( idGatito, srvUri=mySrvUri ) => {
-    const contenido = await axios.delete(`${srvUri}/api/eliminar?id=${idGatito}`).catch( (error) => {
+const eliminarGatitoPorQry = async ( idGatito, srvUri=mySrvUri, responder ) => {
+    (srvUri) 
+    ? (srvUri.length<9)
+        ? srvUri=mySrvUri
+        :  srvUri= srvUri
+    : srvUri=mySrvUri
+    ;
+
+    const contenido = await axios.delete(`${srvUri}/api/cats/eliminar/?id=${idGatito}`, { timeout: 10000 }).catch( (error) => {
         if (error.response && consologuearErrores) {
             console.log(error.response.data);
             console.log(error.response.status);
@@ -294,7 +409,10 @@ const eliminarGatitoPorQry = async ( idGatito, srvUri=mySrvUri ) => {
         throw error;
     });
 
-    return(contenido.data)
+    console.log(contenido);
+    responder(contenido);
+    //return(contenido.data)
+    return;
 }
 
 
@@ -306,8 +424,19 @@ const eliminarGatitoPorQry = async ( idGatito, srvUri=mySrvUri ) => {
  *      "_id": "6258d21ba60416c73341165e"
  *  }
  */
-const eliminarGatitoPorBody = async ( body, srvUri=mySrvUri ) => {
-    const contenido = await axios.delete(`${srvUri}/api/eliminar`, {body}).catch( (error) => {
+const eliminarGatitoPorBody = async ( body, srvUri=mySrvUri, responder ) => {
+    (srvUri) 
+    ? (srvUri.length<9)
+        ? srvUri=mySrvUri
+        :  srvUri= srvUri
+    : srvUri=mySrvUri
+    ;
+
+    let myBody ={}
+    myBody = JSON.parse(body);
+    console.log(`crearGatitoPorBody (body)-> ${myBody}`);
+
+    const contenido = await axios.delete(`${srvUri}/api/cats/eliminar/`, {myBody}, { timeout: 10000 }).catch( (error) => {
         if (error.response && consologuearErrores) {
             console.log(error.response.data);
             console.log(error.response.status);
@@ -317,7 +446,10 @@ const eliminarGatitoPorBody = async ( body, srvUri=mySrvUri ) => {
         throw error;
     });
 
-    return(contenido.data)
+    console.log(contenido);
+    responder(contenido);
+    //return(contenido.data)
+    return;
 }
 
 
