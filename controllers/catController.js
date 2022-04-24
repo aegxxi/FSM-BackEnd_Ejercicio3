@@ -1,5 +1,6 @@
 const {Cat} = require('../models/model');
 const { validationResult } = require('express-validator');
+//const {responder} =require('../consultas/catsCrudResponse')
 
 /* const vistaInicio = (req, res) => {
     res.render('index', { title: 'Express' });
@@ -18,6 +19,8 @@ const apiCatInfo = async (req, res) => {
         res.status(400).send({msg: 'Hubo un error',error});    
     };
 };
+
+
 
 
 /**
@@ -40,6 +43,7 @@ const vistaGatitos = async (req, res) => {
 const verUnGatito = async (req, res) => {
     // extraer id del body (es elidentificador unico)
     const { _id } = req.body;
+    console.log(`verUnGatito (req.body) -> ${_id}`);
 
     // Almeceno el valor del id, si se paso por algun metodo (body, query, params)
     const valorClave = (_id) 
@@ -48,7 +52,8 @@ const verUnGatito = async (req, res) => {
             ? req.params.id
             : req.query.id
         ;  
-    
+    console.log(`verUnGatito (valorClave) -> ${valorClave}`);
+
     let gato;
     
     try {
@@ -93,6 +98,7 @@ const crearGatito = async (req, res) => {
             ? req.params.name
             : req.query.name
         ;  
+    console.log(`crearGatito (nameGato) -> ${nameGato}`);
 
     try {
         // Verificar si no se paso el name del gatito a bucar.
@@ -144,7 +150,9 @@ const editarGatito = async (req, res) => {
         : (req.params.id)
             ? req.params.id
             : req.query.id
-        ;  
+        ;
+        console.log(`editarGatito (valorClave) -> ${valorClave}`);
+
         // Almeceno el valor del name, si se paso por algun metodo (body, query, params)
         const valorNombre = (name) 
         ? name 
@@ -152,7 +160,8 @@ const editarGatito = async (req, res) => {
             ? req.params.name
             : req.query.name
         ;  
-    
+        console.log(`editarGatito (valorNombre) -> ${valorNombre}`);
+
         let gato;
         let editarGato;
 
@@ -210,6 +219,7 @@ const elininarGatito = async (req, res) => {
             ? req.params.id
             : req.query.id
         ;    
+        console.log(`elininarGatito (valorclave) -> ${valorclave}`);
 
     try {
     
@@ -239,6 +249,351 @@ const elininarGatito = async (req, res) => {
 };
 
 
+
+/**
+ * Muestro pagina de prueba de la api
+ */
+ const {catPrueba} = require('../PaginasJs/catsPrueba');
+ const apiCatPrueba = async (req, res) => {
+     
+     try {
+         const contenido = catPrueba();
+         res.send(contenido);    
+     } catch (error) {
+         res.status(400).send({msg: 'Hubo un error',error});    
+     };
+ };
+ 
+
+/**
+ * Muestro pagina con el resultado de la prueba de la api
+ */
+function catResultado(req, res){
+    //const myAction = req.params.accion;
+    //const myValues = req.params.listaDeValores;
+    
+    const { accion, listaDeValores } = req.body;
+    
+    const myAction = (accion) 
+        ? accion 
+        : (req.params.accion)
+            ? req.params.accion
+            : req.query.accion
+        ;    
+    console.log('catResultado -> (accion): ',myAction);
+
+        const myValues = (listaDeValores) 
+        ? listaDeValores 
+        : (req.params.listaDeValores)
+            ? req.params.listaDeValores
+            : req.query.listaDeValores
+        ;  
+    console.log('catResultado -> (listaDeValores): ',myValues);  
+
+    const {TYPES} = require('../consultas/catsCrudAccion');
+    const { verGatitoPorParams,
+            verGatitoPorQry,
+            verGatitoPorBody,
+            crearGatitoPorParams,
+            crearGatitoPorQry,
+            crearGatitoPorBody,
+            editarGatitoPorParams,
+            editarGatitoPorQry,
+            editarGatitoPorBody,
+            eliminarGatitoPorParams,
+            eliminarGatitoPorQry,
+            eliminarGatitoPorBody} = require('../consultas/catsCrudHandler');
+    let contenido = {};
+    let respuesta = '';
+
+    // envio respuesta al servidor
+    try {
+        //console.log(TYPES)
+        switch (myAction) {
+            case TYPES.verPorParams:
+                //console.log(TYPES.verPorParams);
+                console.log('catResultado -> Buscando el contenido por Params:',TYPES.verPorParams)
+                contenido = verGatitoPorParams( myValues, 
+                                                '', 
+                                                responder = async (contenido) => { 
+                                                                                    try {
+                                                                                        let respuesta = '';                        
+                                                                                        //console.log('callback-Responder,data -> ',contenido.data);
+                                                                                        respuesta = await `Id: ${contenido.data.gato._id}, Nombre: ${contenido.data.gato.name}`;
+                                                                                        //console.log('callback-Responder, id -> ',contenido.data.gato._id);
+                                                                                        //console.log('callback-Responder, name -> ',contenido.data.gato.name);
+                                                                                        res.send(respuesta);
+                                                                                        return;    
+                                                                                    } catch (error) {
+                                                                                        console.log('Error al recuperar los datos.',error);
+                                                                                        res.send('Error al recuperar los datos.');
+                                                                                    };
+                                                                                    return;
+                                                                                    }
+                                                );
+                //console.log(contenido)
+                //respuesta =`Id: ${contenido.data._id}, Nombre: ${contenido.data.name}`
+                //respuesta =`Nombre: ${contenido.data.name}`
+                //console.log(respuesta)
+                return;
+
+            case TYPES.verPorQry:
+                console.log('catResultado -> Buscando el contenido por Qry):',TYPES.verPorQry)
+                contenido = verGatitoPorQry(myValues, 
+                                            '', 
+                                            responder = async (contenido) => { 
+                                                        try {
+                                                            let respuesta = '';                        
+                                                            //console.log('callback-Responder,data -> ',contenido.data);
+                                                            respuesta = await `Id: ${contenido.data.gato._id}, Nombre: ${contenido.data.gato.name}`;
+                                                            //console.log('callback-Responder, id -> ',contenido.data.gato._id);
+                                                            //console.log('callback-Responder, name -> ',contenido.data.gato.name);
+                                                            res.send(respuesta);
+                                                            return;    
+                                                        } catch (error) {
+                                                            console.log('Error al recuperar los datos.',error);
+                                                            res.send('Error al recuperar los datos.');
+                                                        };
+                                                        return;
+                                                        }
+                                            );
+                return;                
+            
+            case TYPES.verPorBody:
+                console.log('catResultado -> Buscando el contenido por Body):',TYPES.verPorBody)
+                contenido = verGatitoPorBody(myValues, 
+                                            '', 
+                                            responder = async (contenido) => { 
+                                                        try {
+                                                            let respuesta = '';                        
+                                                            //console.log('callback-Responder,data -> ',contenido.data);
+                                                            respuesta = await `Id: ${contenido.data.gato._id}, Nombre: ${contenido.data.gato.name}`;
+                                                            //console.log('callback-Responder, id -> ',contenido.data.gato._id);
+                                                            //console.log('callback-Responder, name -> ',contenido.data.gato.name);
+                                                            res.send(respuesta);
+                                                            return;    
+                                                        } catch (error) {
+                                                            console.log('Error al recuperar los datos.',error);
+                                                            res.send('Error al recuperar los datos.');
+                                                        };
+                                                        return;
+                                                        }
+                                            );
+                return;
+
+            case TYPES.creaPorParams:
+                console.log('catResultado -> Creando un nuevo gatito por Params):',TYPES.creaPorParams)
+                contenido = crearGatitoPorParams(myValues, 
+                                            '', 
+                                            responder = async (contenido) => { 
+                                                        try {
+                                                            let respuesta = '';                        
+                                                            //console.log('callback-Responder,data -> ',contenido.data);
+                                                            respuesta = await `Id: ${contenido.data.gato._id}, Nombre: ${contenido.data.gato.name}`;
+                                                            //console.log('callback-Responder, id -> ',contenido.data.gato._id);
+                                                            //console.log('callback-Responder, name -> ',contenido.data.gato.name);
+                                                            res.send(respuesta);
+                                                            return;    
+                                                        } catch (error) {
+                                                            console.log('Error al crear los datos.',error);
+                                                            res.send('Error al crear los datos.');
+                                                        };
+                                                        return;
+                                                        }
+                                            );
+                return;
+
+            case TYPES.crearPorQry:
+                console.log('catResultado -> Creando un nuevo gatito por Qry):',TYPES.crearPorQry)
+                contenido = crearGatitoPorQry(myValues, 
+                                            '', 
+                                            responder = async (contenido) => { 
+                                                        try {
+                                                            let respuesta = '';                        
+                                                            //console.log('callback-Responder,data -> ',contenido.data);
+                                                            respuesta = await `Id: ${contenido.data.gato._id}, Nombre: ${contenido.data.gato.name}`;
+                                                            //console.log('callback-Responder, id -> ',contenido.data.gato._id);
+                                                            //console.log('callback-Responder, name -> ',contenido.data.gato.name);
+                                                            res.send(respuesta);
+                                                            return;    
+                                                        } catch (error) {
+                                                            console.log('Error al crear los datos.',error);
+                                                            res.send('Error al crear los datos.');
+                                                        };
+                                                        return;
+                                                        }
+                                            );
+                return;
+
+            case TYPES.crearPorBody:
+                console.log('catResultado -> Creando un nuevo gatito por Body):',TYPES.crearPorBody)
+                contenido = crearGatitoPorBody(myValues, 
+                                            '', 
+                                            responder = async (contenido) => { 
+                                                        try {
+                                                            let respuesta = '';                        
+                                                            //console.log('callback-Responder,data -> ',contenido.data);
+                                                            respuesta = await `Id: ${contenido.data.gato._id}, Nombre: ${contenido.data.gato.name}`;
+                                                            //console.log('callback-Responder, id -> ',contenido.data.gato._id);
+                                                            //console.log('callback-Responder, name -> ',contenido.data.gato.name);
+                                                            res.send(respuesta);
+                                                            return;    
+                                                        } catch (error) {
+                                                            console.log('Error al crear los datos.',error);
+                                                            res.send('Error al crear los datos.');
+                                                        };
+                                                        return;
+                                                        }
+                                            );
+                return;
+
+            case TYPES.editarPorParams:
+                console.log('catResultado -> Editando un gatito por Params):',TYPES.editarPorParams)
+                contenido = editarGatitoPorParams(myValues, 
+                                            '', 
+                                            responder = async (contenido) => { 
+                                                        try {
+                                                            let respuesta = '';                        
+                                                            //console.log('callback-Responder,data -> ',contenido.data);
+                                                            respuesta = await `Id: ${contenido.data.gato._id}, Nombre: ${contenido.data.gato.name}`;
+                                                            //console.log('callback-Responder, id -> ',contenido.data.gato._id);
+                                                            //console.log('callback-Responder, name -> ',contenido.data.gato.name);
+                                                            res.send(respuesta);
+                                                            return;    
+                                                        } catch (error) {
+                                                            console.log('Error al crear los datos.',error);
+                                                            res.send('Error al crear los datos.');
+                                                        };
+                                                        return;
+                                                        }
+                                            );
+                return;
+
+            case TYPES.editarPorQry:
+                console.log('catResultado -> Editando un gatito por Qry):',TYPES.editarPorQry)
+                contenido = editarGatitoPorQry(myValues, 
+                                            '', 
+                                            responder = async (contenido) => { 
+                                                        try {
+                                                            let respuesta = '';                        
+                                                            //console.log('callback-Responder,data -> ',contenido.data);
+                                                            respuesta = await `Id: ${contenido.data.gato._id}, Nombre: ${contenido.data.gato.name}`;
+                                                            //console.log('callback-Responder, id -> ',contenido.data.gato._id);
+                                                            //console.log('callback-Responder, name -> ',contenido.data.gato.name);
+                                                            res.send(respuesta);
+                                                            return;    
+                                                        } catch (error) {
+                                                            console.log('Error al crear los datos.',error);
+                                                            res.send('Error al crear los datos.');
+                                                        };
+                                                        return;
+                                                        }
+                                            );
+                return;
+
+            case TYPES.editarPorBody:
+                console.log('catResultado -> Editando un gatito por Body):',TYPES.editarPorBody)
+                contenido = editarGatitoPorBody(myValues, 
+                                            '', 
+                                            responder = async (contenido) => { 
+                                                        try {
+                                                            let respuesta = '';                        
+                                                            //console.log('callback-Responder,data -> ',contenido.data);
+                                                            respuesta = await `Id: ${contenido.data.gato._id}, Nombre: ${contenido.data.gato.name}`;
+                                                            //console.log('callback-Responder, id -> ',contenido.data.gato._id);
+                                                            //console.log('callback-Responder, name -> ',contenido.data.gato.name);
+                                                            res.send(respuesta);
+                                                            return;    
+                                                        } catch (error) {
+                                                            console.log('Error al crear los datos.',error);
+                                                            res.send('Error al crear los datos.');
+                                                        };
+                                                        return;
+                                                        }
+                                            );
+                return;
+
+            case TYPES.eliminarPorParams:
+                console.log('catResultado -> Eliminando un gatito por Params):',TYPES.eliminarPorParams)
+                contenido = eliminarGatitoPorParams(myValues, 
+                                            '', 
+                                            responder = async (contenido) => { 
+                                                        try {
+                                                            let respuesta = '';                        
+                                                            //console.log('callback-Responder,data -> ',contenido.data);
+                                                            respuesta = await `Id: ${contenido.data.gato._id}, Nombre: ${contenido.data.gato.name}`;
+                                                            //console.log('callback-Responder, id -> ',contenido.data.gato._id);
+                                                            //console.log('callback-Responder, name -> ',contenido.data.gato.name);
+                                                            res.send(respuesta);
+                                                            return;    
+                                                        } catch (error) {
+                                                            console.log('Error al crear los datos.',error);
+                                                            res.send('Error al crear los datos.');
+                                                        };
+                                                        return;
+                                                        }
+                                            );
+                return;
+
+            case TYPES.eliminarPorQry:
+                console.log('catResultado -> Eliminando un gatito por Qry):',TYPES.eliminarPorQry)
+                contenido = eliminarGatitoPorQry(myValues, 
+                                            '', 
+                                            responder = async (contenido) => { 
+                                                        try {
+                                                            let respuesta = '';                        
+                                                            //console.log('callback-Responder,data -> ',contenido.data);
+                                                            respuesta = await `Id: ${contenido.data.gato._id}, Nombre: ${contenido.data.gato.name}`;
+                                                            //console.log('callback-Responder, id -> ',contenido.data.gato._id);
+                                                            //console.log('callback-Responder, name -> ',contenido.data.gato.name);
+                                                            res.send(respuesta);
+                                                            return;    
+                                                        } catch (error) {
+                                                            console.log('Error al crear los datos.',error);
+                                                            res.send('Error al crear los datos.');
+                                                        };
+                                                        return;
+                                                        }
+                                            );
+                return;
+
+            case TYPES.eliminarPorBody:
+                console.log('catResultado -> Eliminando un gatito por Body):',TYPES.eliminarPorBody)
+                contenido = eliminarGatitoPorBody(myValues, 
+                                            '', 
+                                            responder = async (contenido) => { 
+                                                        try {
+                                                            let respuesta = '';                        
+                                                            //console.log('callback-Responder,data -> ',contenido.data);
+                                                            respuesta = await `Id: ${contenido.data.gato._id}, Nombre: ${contenido.data.gato.name}`;
+                                                            //console.log('callback-Responder, id -> ',contenido.data.gato._id);
+                                                            //console.log('callback-Responder, name -> ',contenido.data.gato.name);
+                                                            res.send(respuesta);
+                                                            return;    
+                                                        } catch (error) {
+                                                            console.log('Error al crear los datos.',error);
+                                                            res.send('Error al crear los datos.');
+                                                        };
+                                                        return;
+                                                        }
+                                            );
+                return;
+
+            default:
+                contenido='Accion desconocida.'
+                return res.send(contenido);    
+        };
+        return
+    } catch (error) {
+        console.log({msg: 'Hubo un error en el manejador (catResultado) en la rura /resultado...',error})
+        res.status(400).send({msg: 'Hubo un error en el manejador (catResultado) en la rura /resultado...',error}); 
+    };
+};
+
+
+
+
+
 /**
  * Exporto las funciones del contrlador
  */
@@ -248,5 +603,7 @@ module.exports = {
                     editarGatito, 
                     vistaGatitos,
                     verUnGatito,
-                    elininarGatito
+                    elininarGatito,
+                    apiCatPrueba,
+                    catResultado
                 };

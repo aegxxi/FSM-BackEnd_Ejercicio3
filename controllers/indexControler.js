@@ -31,40 +31,12 @@ function apiInfo(req, res){
     res.send(contenido);
 };
 
-function resultado(req, res){
-    const contenido = ''; 
-    //const {} = 
-
-    // envio respuesta al servidor
-    /* 
-    function reponder(action) {
-        switch (action.type) {
-            case TYPES.incrementar:
-                return res.send(contenido);
-            case TYPES.incrementar2:
-                return {contador: state.contador + action.payload};
-            case TYPES.decrementar:
-                return {contador: state.contador - 1};
-            case TYPES.decrementar2:
-                return {contador: state.contador - action.payload};
-            case TYPES.resetear:
-                return 
-            default:
-                return ;
-        }
-    }
-
-    */
-    
-    res.send(contenido);
-};
 
 
 module.exports = {
                     informacion,
                     vistaInicio,
                     apiInfo,
-                    resultado
                 };
 
                 

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router(); 
 const { check } = require('express-validator');
-const { apiCatInfo, vistaGatitos, verUnGatito, crearGatito, editarGatito, elininarGatito } = require('../controllers/catController.js');
+const { apiCatInfo, apiCatPrueba, catResultado, vistaGatitos, verUnGatito, crearGatito, editarGatito, elininarGatito } = require('../controllers/catController.js');
 
 /**
  *  GET 
@@ -10,6 +10,39 @@ const { apiCatInfo, vistaGatitos, verUnGatito, crearGatito, editarGatito, elinin
  * */
 // 
 router.get('/', apiCatInfo);
+
+
+/**
+ *  GET 
+ *  Probar la api
+ *  Ruta: /api/cats
+ * */
+// 
+router.get('/prueba', apiCatPrueba);
+
+
+/**
+ *  GET (Por Params)
+ *  Mostrar Resultado de la prueba de la api
+ *  Ruta: /api/cats
+ * */
+// 
+router.get('/resultado/:accion/:listaDeValores', catResultado);
+
+
+/**
+ *  GET (Por Qry o Body)
+ *  Mostrar Resultado de la prueba de la api
+ *  Ruta: /api/cats
+ * */
+// 
+router.get('/resultado', catResultado);
+
+
+
+// Rutas para el CRUD.
+// ------------------
+
 
 /**
  * Get Obtener un gatito por id  (Por Parametro)
