@@ -101,7 +101,8 @@ const verGatitoPorBody = async ( body, srvUri = mySrvUri, responder ) => {
     ;
     
     let myBody; 
-    myBody = JSON.parse(body);
+    myBody = decodeURIComponent(body);
+    myBody = JSON.parse(myBody);
     console.log(`verGatitoPorBody (body)-> ${myBody}`);
     console.log(`verGatitoPorBody (body-Objeto): `, myBody);
     
@@ -216,7 +217,9 @@ const crearGatitoPorBody = async ( body, srvUri=mySrvUri, responder ) => {
     ;
 
     let myBody; 
-    myBody = JSON.parse(body);
+    myBody = decodeURIComponent(body);
+    myBody = JSON.parse(myBody);
+    //const decodedComponent = decodeURIComponent(component);
     console.log(`crearGatitoPorBody (body)-> ${myBody}`);
     console.log(`crearGatitoPorBody (body-Objeto): `, myBody);
 
