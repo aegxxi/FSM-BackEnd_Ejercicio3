@@ -178,4 +178,22 @@ Error 1
  --------------
 	Funciona Ok
 	
+
+
+Desinstalar NodeJS de Ubuntu
+
+Si desea desinstalar NodeJS de su sistema Ubuntu, ejecute el siguiente comando.
+
+sudo apt-get remove nodejs
+
+El comando eliminará el paquete pero conservará los archivos de configuración.
+
+Para eliminar tanto el paquete como los archivos de configuración, ejecute:
+
+sudo apt-get purge nodejs
+
+Como paso final, puede ejecutar el siguiente comando para eliminar los archivos no utilizados y liberar espacio en el disco
+
+sudo apt-get autoremove
+
 	
