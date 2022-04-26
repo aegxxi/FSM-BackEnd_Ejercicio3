@@ -160,7 +160,7 @@ const crearGatitoPorParams = async ( nombreGatito, srvUri=mySrvUri, responder ) 
 
 
     let contenido
-    contenido = await axios.post(url, { timeout: 10000 }).catch( (error) => {
+    contenido = await axios.post(`${srvUri}/api/cats/crear/${nombreGatito}`, { timeout: 10000 }).catch( (error) => {
     
         if (error.response && consologuearErrores) {
             console.log(error.response.data);
