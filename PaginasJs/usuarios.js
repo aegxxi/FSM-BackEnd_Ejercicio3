@@ -60,6 +60,7 @@ const estilos=`<style>
                     line-height: 200%;
                     font-size:large;
                     border-radius: 30px;
+                    box-shadow: 3px 3px #888888;
                   }
                   
                   .firma {

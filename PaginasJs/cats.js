@@ -68,6 +68,7 @@ const estilos=`<style>
                     line-height: 200%;
                     font-size:large;
                     border-radius: 30px;
+                    box-shadow: 3px 3px #888888;
                   }
 
                   .firma {
@@ -96,8 +97,8 @@ function catInfo() {
                       </h2>
                       <p><b>Proposito general:</b>${b} CRUD de gatitos.</p>
                        ${saltoLinea}
-                       <p>${tab}Probar las api del Crud de gatitos${b}
-                       <a href="http://localhost:${srvPuerto}/api/cats/prueba" target="_blank">Ver</a>
+                       <p>${tab}Probar las api del Crud de gatitos con axios${b}
+                       <a href="http://localhost:${srvPuerto}/api/cats/prueba" target="_blank">Probar</a>
                        </p> 
                        ${saltoLinea}
                        <h3>

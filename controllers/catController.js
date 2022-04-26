@@ -43,7 +43,7 @@ const vistaGatitos = async (req, res) => {
 const verUnGatito = async (req, res) => {
     // extraer id del body (es elidentificador unico)
     const { _id } = req.body;
-    console.log(`verUnGatito (req.body) -> ${_id}`);
+    //console.log(`verUnGatito (req.body) -> ${_id}`);
 
     // Almeceno el valor del id, si se paso por algun metodo (body, query, params)
     const valorClave = (_id) 
@@ -273,7 +273,7 @@ function catResultado(req, res){
     //const myValues = req.params.listaDeValores;
     
     const { accion, listaDeValores } = req.body;
-    
+
     const myAction = (accion) 
         ? accion 
         : (req.params.accion)

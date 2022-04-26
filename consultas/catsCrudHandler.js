@@ -338,7 +338,7 @@ const editarGatitoPorBody = async ( body, srvUri=mySrvUri, responder ) => {
 
     let myBody ={}
     myBody = JSON.parse(body);
-    console.log(`crearGatitoPorBody (body)-> ${myBody}`);
+    console.log(`editarGatitoPorBody (body)-> ${myBody}`);
 
     const contenido = await axios.put(`${srvUri}/api/cats/editar`, {myBody}, { timeout: 10000 }).catch( (error) => {
         if (error.response && consologuearErrores) {
@@ -437,7 +437,7 @@ const eliminarGatitoPorBody = async ( body, srvUri=mySrvUri, responder ) => {
 
     let myBody ={}
     myBody = JSON.parse(body);
-    console.log(`crearGatitoPorBody (body)-> ${myBody}`);
+    console.log(`eliminarGatitoPorBody (body)-> ${myBody}`);
 
     const contenido = await axios.delete(`${srvUri}/api/cats/eliminar/`, {myBody}, { timeout: 10000 }).catch( (error) => {
         if (error.response && consologuearErrores) {

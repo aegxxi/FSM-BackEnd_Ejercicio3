@@ -14,10 +14,10 @@ const mySrvUri = `http://localhost:${srvPuerto}`;
 const consologuearErrores = false;
 
 const nombreTest = {
-    testVerGatitoPorParams: false,
-    testVerGatitoPorQry: false,
+    testVerGatitoPorParams: true,
+    testVerGatitoPorQry: true,
     testVerGatitoPorBody: false,           //Creo el objeto body parseando el parametro(Tipo:Texto) pasado a la funcion
-    testVerGatitoPorBody2: true,           //Creo el objeto body dentro de la llamada a Axios
+    testVerGatitoPorBody2: false,           //Creo el objeto body dentro de la llamada a Axios
     testCrearGatitoPorParams: false,
     testCrearGatitoPorQry: false,
     testCrearGatitoPorBody: false,
@@ -43,9 +43,14 @@ function test() {
     let testFunction;
     let testResultado;
 
-    console.log()
+    console.log();
+    console.log('* Recuerda que debes seleccionar los test a ejecutar:');
+    console.log('  Debes asignar el valor true o false a cada test en el objeto "nombreTest",');
+    console.log('  en el archivo ./consultas/catsCrudAxiosTest.js'  );
+    console.log();
     console.log('-----------------------------------------------------')
     console.log('Iniciando el test de Axios para el CRUD de gatitos...');
+    console.log();
 
     if (nombreTest.testVerGatitoPorParams) {
         //testVerGatitoPorParams
@@ -298,9 +303,7 @@ async function testVerGatitoPorBody( body, srvUri = mySrvUri ) {
         ? srvUri=mySrvUri
         :  srvUri= srvUri
     : srvUri=mySrvUri
-    ;
-    
-    
+    ; 
     
     /* 
     // este codigo genera error:
@@ -350,7 +353,7 @@ async function testVerGatitoPorBody( body, srvUri = mySrvUri ) {
         return; 
     };
     
-    console.log('TestVerGatitoPorBody -> Gatito encontrado: ',contenido.data);
+    console.log('TestVerGatitoPorBody2 -> Gatito encontrado: ',contenido.data);
     return(contenido.data);
 };
 

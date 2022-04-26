@@ -107,7 +107,7 @@ function catPrueba() {
                      </head>
                      <body  class="fondo">
                       <h1>
-                        Apis Cat - Informacion
+                        Apis Cat - Prueba axios
                       </h1>
                       <h2>
                         Informacion para el uso de las api cats

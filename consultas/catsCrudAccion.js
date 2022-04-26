@@ -13,38 +13,5 @@ const TYPES = {
     eliminarPorBody: "ELIMINAR_POR_BODY",
     }
 
-
-/* 
-                {
-                    Acciones:
-                    verPorParams
-                    verPorQry
-                    verPorBody
-                    creaPorParams
-                    crearPorQry
-                    crearPorBody
-                    editarPorParams
-                    editarPorQry
-                    editarPorBody
-                    eliminarPorParams
-                    eliminarPorQry
-                    eliminarPorBody
-                    
-                    Metodos (funciones)
-                    verGatitoPorParams,
-                    verGatitoPorQry,
-                    verGatitoPorBody,
-                    crearGatitoPorParams,
-                    crearGatitoPorQry,
-                    crearGatitoPorBody,
-                    editarGatitoPorParams,
-                    editarGatitoPorQry,
-                    editarGatitoPorBody,
-                    eliminarGatitoPorParams,
-                    eliminarGatitoPorQry,
-                    eliminarGatitoPorBody
-                }
-*/  
-
-
 module.exports = {TYPES}
+
