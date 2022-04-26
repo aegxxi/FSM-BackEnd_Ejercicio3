@@ -41,6 +41,11 @@ const vistaGatitos = async (req, res) => {
  * Muestro un gatito
  */
 const verUnGatito = async (req, res) => {
+    //consologueo los valores recibidos
+    console.log('verUnGatito (req.params) ->',req.params);
+    console.log('verUnGatito (req.query) ->',req.query);
+    console.log('verUnGatito (req.body) ->',req.body);
+
     // extraer id del body (es elidentificador unico)
     const { _id } = req.body;
     //console.log(`verUnGatito (req.body) -> ${_id}`);
@@ -88,6 +93,11 @@ const verUnGatito = async (req, res) => {
  * Creo un gatito nuevo
  */
 const crearGatito = async (req, res) => {
+    //consologueo los valores recibidos
+    console.log('crearGatito (req.params) ->',req.params);
+    console.log('crearGatito (req.query) ->',req.query);
+    console.log('crearGatito (req.body) ->',req.body);
+
     // extraer name del body (es un identificador unico en este caso)
     const { name } = req.body;
 
@@ -141,6 +151,11 @@ const crearGatito = async (req, res) => {
  * Modifico un gatito
  */
 const editarGatito = async (req, res) => {
+    //consologueo los valores recibidos
+    console.log('editarGatito (req.params) ->',req.params);
+    console.log('editarGatito (req.query) ->',req.query);
+    console.log('editarGatito (req.body) ->',req.body);
+
     // extraer id del body (es elidentificador unico)
     const { _id, name } = req.body;
 
@@ -209,6 +224,11 @@ const editarGatito = async (req, res) => {
  * Elimino un gatito
  */
 const elininarGatito = async (req, res) => {
+    //consologueo los valores recibidos
+    console.log('elininarGatito (req.params) ->',req.params);
+    console.log('elininarGatito (req.query) ->',req.query);
+    console.log('elininarGatito (req.body) ->',req.body);
+
     // extraer id del body (es elidentificador unico)
     const { _id, } = req.body;
 

@@ -125,7 +125,7 @@ const verGatitoPorBody = async ( body, srvUri = mySrvUri, responder ) => {
     
     let contenido
     try {
-        contenido = await axios.get(`${srvUri}/api/cats/ver/gato`, {myBody}, { timeout: 10000 })    
+        contenido = await axios.get(`${srvUri}/api/cats/ver/gato`,myBody , { timeout: 10000 })    
     } catch (error) {
         console.log('Error al recuperar los datos.',error); 
     };
@@ -153,8 +153,15 @@ const crearGatitoPorParams = async ( nombreGatito, srvUri=mySrvUri, responder ) 
     : srvUri=mySrvUri
     ;
 
+    // let url = `${srvUri}/api/cats/crear/${nombreGatito}`
+    // let params = new URLSearchParams();
+    // params.append('name', nombreGatito);
+    // contenido = await axios.post(url, params).catch( (error) => {
+
+
     let contenido
-    contenido = await axios.post(`${srvUri}/api/cats/crear/${nombreGatito}`, { timeout: 10000 }).catch( (error) => {
+    contenido = await axios.post(url, { timeout: 10000 }).catch( (error) => {
+    
         if (error.response && consologuearErrores) {
             console.log(error.response.data);
             console.log(error.response.status);
