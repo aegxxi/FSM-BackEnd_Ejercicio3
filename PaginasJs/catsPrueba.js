@@ -171,13 +171,13 @@ function catPrueba() {
                                     ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/CREAR_POR_QRY/Sofocles${saltoLinea}
                                     ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/CREAR_POR_BODY/{"name": "Sofocles"}${saltoLinea}
                                     ${tab}${tab}${b}Editar: ${saltoLinea}
-                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/EDITAR_POR_PARAMS/{"_id": "6258d21ba60416c73341165e", "name": "Diogenes"}${saltoLinea}
-                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/EDITAR_POR_QRY/{"_id": "6258d21ba60416c73341165e", "name": "Diogenes"}${saltoLinea}
-                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/EDITAR_POR_BODY/{"_id": "6258d21ba60416c73341165e", "name": "Diogenes"}${saltoLinea}
+                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/EDITAR_POR_PARAMS/{"_id": "escribeElIdDelGatitoAqui", "name": "Diogenes"}${saltoLinea}
+                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/EDITAR_POR_QRY/{"_id": "escribeElIdDelGatitoAqui", "name": "Diogenes"}${saltoLinea}
+                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/EDITAR_POR_BODY/{"_id": "escribeElIdDelGatitoAqui", "name": "Diogenes"}${saltoLinea}
                                     ${tab}${tab}${b}Eliminar: ${saltoLinea}
-                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/ELIMINAR_POR_PARAMS/6258d21ba60416c73341165e${saltoLinea}
-                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/ELIMINAR_POR_QRY/6258d21ba60416c73341165e${saltoLinea}
-                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/ELIMINAR_POR_BODY/{"_id": "6258d21ba60416c73341165e"}${saltoLinea}
+                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/ELIMINAR_POR_PARAMS/escribeElIdDelGatitoAqui${saltoLinea}
+                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/ELIMINAR_POR_QRY/escribeElIdDelGatitoAqui${saltoLinea}
+                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/ELIMINAR_POR_BODY/{"_id": "escribeElIdDelGatitoAqui"}${saltoLinea}
 
                                 </code>
                             </div>

@@ -59,6 +59,12 @@ const verUnGatito = async (req, res) => {
         ;  
     console.log(`verUnGatito (valorClave) -> ${valorClave}`);
 
+    // si no se recuperaron datos de la ruta termino el proceso
+    if (!valorClave) {
+        console.log(`verUnGatito (valorClave) -> ${valorClave} . No se recuperaron datos de Params. Query, o Body`);
+        return res.status(400).json({ msg: 'No se recuperaron datos de Params. Query, o Body' });
+    }
+
     let gato;
     
     try {
@@ -79,12 +85,13 @@ const verUnGatito = async (req, res) => {
         
         //Busco gatipo (por su id), si gato resulta vacio rompe por el catch
         gato = await Cat.findById(valorClave);
+        console.log(`verUnGatito (gato ${valorClave}) -> ${gato}`);
         
         res.status(200).json({msg: 'Gatito encontrado', gato}); 
         
     } catch (error) {
         //console.log(gato)
-        res.status(400).send({msg: 'Hubo un error al buscar el gatito, o el gattito no se encuentra en la base',error});      
+        res.status(400).send({msg: 'verUnGatito -> Hubo un error al buscar el gatito, o el gattito no se encuentra en la base',error});      
     };
 };
 
@@ -128,9 +135,11 @@ const crearGatito = async (req, res) => {
         }; 
            
         // Revisar que el gatito registrado sea unico 
+        console.log(`crearGatito (Completando kitty si el gato '${nameGato}' existe):`);
         let kitty = await Cat.findOne({ nameGato });
+        console.log('crearGatito (kitty) ->',kitty);
 
-        if(kitty) {
+        if(kitty && kitty==nameGato) {
             return res.json({ msg: 'El gattito ya existe' });
         }; 
         
@@ -259,6 +268,7 @@ const elininarGatito = async (req, res) => {
         
         // Eliminar un gatito por su id, si gato resulta vacio rompe por el catch
         const gato = await Cat.findByIdAndDelete( valorclave );
+        console.log(`elininarGatito (Gatito Eliminado) -> `, gato);
         
         res.status(200).json({msg: 'Gatito Eliminado', gato});   
 
@@ -345,7 +355,7 @@ function catResultado(req, res){
                                                                                         res.send(respuesta);
                                                                                         return;    
                                                                                     } catch (error) {
-                                                                                        console.log('Error al recuperar los datos.',error);
+                                                                                        console.log('catResultado (responder) -> Error al recuperar los datos.',error);
                                                                                         res.send('Error al recuperar los datos.');
                                                                                     };
                                                                                     return;
@@ -371,7 +381,7 @@ function catResultado(req, res){
                                                             res.send(respuesta);
                                                             return;    
                                                         } catch (error) {
-                                                            console.log('Error al recuperar los datos.',error);
+                                                            console.log('catResultado (responder) -> Error al recuperar los datos.',error);
                                                             res.send('Error al recuperar los datos.');
                                                         };
                                                         return;
@@ -393,7 +403,7 @@ function catResultado(req, res){
                                                             res.send(respuesta);
                                                             return;    
                                                         } catch (error) {
-                                                            console.log('Error al recuperar los datos.',error);
+                                                            console.log('catResultado (responder) -> Error al recuperar los datos.',error);
                                                             res.send('Error al recuperar los datos.');
                                                         };
                                                         return;
@@ -415,7 +425,7 @@ function catResultado(req, res){
                                                             res.send(respuesta);
                                                             return;    
                                                         } catch (error) {
-                                                            console.log('Error al crear los datos.',error);
+                                                            console.log('catResultado (responder) -> Error al crear los datos.',error);
                                                             res.send('Error al crear los datos.');
                                                         };
                                                         return;
@@ -437,7 +447,7 @@ function catResultado(req, res){
                                                             res.send(respuesta);
                                                             return;    
                                                         } catch (error) {
-                                                            console.log('Error al crear los datos.',error);
+                                                            console.log('catResultado (responder) -> Error al crear los datos.',error);
                                                             res.send('Error al crear los datos.');
                                                         };
                                                         return;
@@ -459,7 +469,7 @@ function catResultado(req, res){
                                                             res.send(respuesta);
                                                             return;    
                                                         } catch (error) {
-                                                            console.log('Error al crear los datos.',error);
+                                                            console.log('catResultado (responder) -> Error al crear los datos.',error);
                                                             res.send('Error al crear los datos.');
                                                         };
                                                         return;
@@ -481,8 +491,8 @@ function catResultado(req, res){
                                                             res.send(respuesta);
                                                             return;    
                                                         } catch (error) {
-                                                            console.log('Error al crear los datos.',error);
-                                                            res.send('Error al crear los datos.');
+                                                            console.log('catResultado (responder) -> Error al editar los datos.',error);
+                                                            res.send('Error al editar los datos.');
                                                         };
                                                         return;
                                                         }
@@ -503,8 +513,8 @@ function catResultado(req, res){
                                                             res.send(respuesta);
                                                             return;    
                                                         } catch (error) {
-                                                            console.log('Error al crear los datos.',error);
-                                                            res.send('Error al crear los datos.');
+                                                            console.log('catResultado (responder) -> Error al editar los datos.',error);
+                                                            res.send('Error al editar los datos.');
                                                         };
                                                         return;
                                                         }
@@ -525,8 +535,8 @@ function catResultado(req, res){
                                                             res.send(respuesta);
                                                             return;    
                                                         } catch (error) {
-                                                            console.log('Error al crear los datos.',error);
-                                                            res.send('Error al crear los datos.');
+                                                            console.log('catResultado (responder) -> Error al editar los datos.',error);
+                                                            res.send('Error al editar los datos.');
                                                         };
                                                         return;
                                                         }
@@ -547,7 +557,7 @@ function catResultado(req, res){
                                                             res.send(respuesta);
                                                             return;    
                                                         } catch (error) {
-                                                            console.log('Error al crear los datos.',error);
+                                                            console.log('catResultado (responder) -> Error al eliminar los datos.',error);
                                                             res.send('Error al crear los datos.');
                                                         };
                                                         return;
@@ -569,8 +579,8 @@ function catResultado(req, res){
                                                             res.send(respuesta);
                                                             return;    
                                                         } catch (error) {
-                                                            console.log('Error al crear los datos.',error);
-                                                            res.send('Error al crear los datos.');
+                                                            console.log('catResultado (responder) -> Error al eliminar los datos.',error);
+                                                            res.send('Error al eliminar los datos.');
                                                         };
                                                         return;
                                                         }
@@ -591,8 +601,8 @@ function catResultado(req, res){
                                                             res.send(respuesta);
                                                             return;    
                                                         } catch (error) {
-                                                            console.log('Error al crear los datos.',error);
-                                                            res.send('Error al crear los datos.');
+                                                            console.log('catResultado (responder) -> Error al eliminar los datos.',error);
+                                                            res.send('Error al eliminar los datos.');
                                                         };
                                                         return;
                                                         }

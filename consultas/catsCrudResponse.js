@@ -1,5 +1,5 @@
 //async await
-function responder(req, res, contenido) { 
+function responder(err, req, res, contenido) { 
     try {
         let respuesta = '';                        
         console.log('callback-Responder,data -> ',contenido.data);

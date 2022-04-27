@@ -1,5 +1,6 @@
 const axios = require('axios');
 const entorno = require('../appSrvEntorno');
+//const qs = require('qs');
 
 const {fnMiServidor}= entorno
 let {srvPuerto} = fnMiServidor()
@@ -40,14 +41,16 @@ const verGatitoPorParams = async ( idGatito, srvUri = mySrvUri, responder ) => {
     ;
     //console.log('verGatitoPorParams -> param(srvUri):',srvUri)
     
+    let url = `${srvUri}/api/cats/ver/gato/${idGatito}`;
+
     let contenido;
-    contenido = await axios.get(`${srvUri}/api/cats/ver/gato/${idGatito}`, { timeout: 10000 }).catch( (error) => {
+    contenido = await axios.get(url , { timeout: 10000 }).catch( (error) => {
         if (error.response && consologuearErrores) {
             console.log(error.response.data);
             console.log(error.response.status);
             console.log(error.response.headers);
         };
-        error.origin = 'Error al obtener la ruta';
+        error.origin = 'verGatitoPorParams -> Error al obtener la ruta';
         throw error;
     });
 
@@ -70,19 +73,21 @@ const verGatitoPorQry = async ( idGatito, srvUri=mySrvUri, responder ) => {
     : srvUri=mySrvUri
     ;
 
-    let contenido
-    contenido = await axios.get(`${srvUri}/api/cats/ver/gato?id=${idGatito}`, { timeout: 10000 }).catch( (error) => {
+    let url = `${srvUri}/api/cats/ver/gato?id=${idGatito}`;
+
+    let contenido;
+    contenido = await axios.get(url, { timeout: 10000 }).catch( (error) => {
         if (error.response && consologuearErrores) {
             console.log(error.response.data);
             console.log(error.response.status);
             console.log(error.response.headers);
         };
-        error.origin = 'Error al obtener la ruta';
+        error.origin = 'verGatitoPorQry -> Error al obtener la ruta';
         throw error;
     });
 
     responder(contenido);
-    //return(contenido.data)
+    //return(contenido.data);
     return;
 }
 
@@ -100,11 +105,10 @@ const verGatitoPorBody = async ( body, srvUri = mySrvUri, responder ) => {
     : srvUri=mySrvUri
     ;
     
-    let myBody; 
-    myBody = decodeURIComponent(body);
-    myBody = JSON.parse(myBody);
-    console.log(`verGatitoPorBody (body)-> ${myBody}`);
-    console.log(`verGatitoPorBody (body-Objeto): `, myBody);
+    //console.log(`verGatitoPorBody (body-qs.stringify): `, qs.stringify(myBody));
+
+    //const qs = require('qs');
+    //axios.post('/foo', qs.stringify({ 'bar': 123 }));
     
     /* 
     // este codigo genera error:
@@ -123,16 +127,37 @@ const verGatitoPorBody = async ( body, srvUri = mySrvUri, responder ) => {
     });
      */
     
-    let contenido
+    let url = `${srvUri}/api/cats/ver/gato`;
+
+    let myBody; 
+    myBody = decodeURIComponent(body);      // Reemplazo caracteres %x de la url por caracteres equivalentes
+    myBody = JSON.parse(myBody);            // parseo el string como objeto Json
+    console.log(`crearGatitoPorBody (body)-> ${myBody}`);
+    console.log(`crearGatitoPorBody (body-Objeto): `, myBody);
+    const {_id} = myBody;                   // deconstruyo el objeto myBody y tomo el id
+    myBody = { params: { id: `${_id}` } };  // armo el objeto para el parametro body de axios
+    console.log(`crearGatitoPorBody (body Destructurado_&_Restructurado)-> ${myBody}`,myBody);
+    // axios.get(
+    //     '/bezkoder.com/tutorials',
+    //     { params: { title: 'ios' }  }
+    //   );
+
+
+    const headers = {
+        "Content-Type": "application/json"
+        //{ timeout: 10000 }
+    }
+    
+    let contenido;
     try {
-        contenido = await axios.get(`${srvUri}/api/cats/ver/gato`,myBody , { timeout: 10000 })    
+        contenido = await axios.get(url ,myBody , { timeout: 10000 });    
     } catch (error) {
-        console.log('Error al recuperar los datos.',error); 
+        console.log('verGatitoPorBody -> Error al recuperar los datos.',error); 
     };
     
     console.log(contenido);
     responder(contenido);
-    //return(contenido.data)
+    //return(contenido.data);
     return;
 }
 
@@ -153,27 +178,23 @@ const crearGatitoPorParams = async ( nombreGatito, srvUri=mySrvUri, responder ) 
     : srvUri=mySrvUri
     ;
 
-    // let url = `${srvUri}/api/cats/crear/${nombreGatito}`
-    // let params = new URLSearchParams();
-    // params.append('name', nombreGatito);
-    // contenido = await axios.post(url, params).catch( (error) => {
+    let url = `${srvUri}/api/cats/crear/${nombreGatito}`;
+    let body = { name: nombreGatito };
 
-
-    let contenido
-    contenido = await axios.post(`${srvUri}/api/cats/crear/${nombreGatito}`, { timeout: 10000 }).catch( (error) => {
-    
+    let contenido;
+    contenido = await axios.post(url ,body ,{ timeout: 10000 } ).catch( (error) => {
         if (error.response && consologuearErrores) {
             console.log(error.response.data);
             console.log(error.response.status);
             console.log(error.response.headers);
         };
-        error.origin = 'Error al obtener la ruta';
+        error.origin = 'crearGatitoPorParams -> Error al obtener la ruta';
         throw error;
     });
 
     console.log(contenido);
     responder(contenido);
-    //return(contenido.data)
+    //return(contenido.data);
     return;
 }
 
@@ -190,19 +211,23 @@ const crearGatitoPorQry = async ( nombreGatito, srvUri=mySrvUri, responder ) => 
     : srvUri=mySrvUri
     ;
 
-    const contenido = await axios.post(`${srvUri}/api/cats/crear?id=${nombreGatito}`, { timeout: 10000 }).catch( (error) => {
+    let url = `${srvUri}/api/cats/crear?id=${nombreGatito}`;
+    let body = { name: nombreGatito };
+
+    let contenido;
+    contenido = await axios.post(url ,body ,{ timeout: 10000 } ).catch( (error) => {
         if (error.response && consologuearErrores) {
             console.log(error.response.data);
             console.log(error.response.status);
             console.log(error.response.headers);
         };
-        error.origin = 'Error al obtener la ruta';
+        error.origin = 'crearGatitoPorQry -> Error al obtener la ruta';
         throw error;
     });
 
     console.log(contenido);
     responder(contenido);
-    //return(contenido.data)
+    //return(contenido.data);
     return;
 }
 
@@ -223,13 +248,6 @@ const crearGatitoPorBody = async ( body, srvUri=mySrvUri, responder ) => {
     : srvUri=mySrvUri
     ;
 
-    let myBody; 
-    myBody = decodeURIComponent(body);
-    myBody = JSON.parse(myBody);
-    //const decodedComponent = decodeURIComponent(component);
-    console.log(`crearGatitoPorBody (body)-> ${myBody}`);
-    console.log(`crearGatitoPorBody (body-Objeto): `, myBody);
-
    /* 
    // este codigo genera error:
    // (Nodo: 13240) ADVERTENCIA DE REEMPLAZO DE PROMISIÓN UNHANDLED: ADVERTENCIA DE PROMISIÓN UNHANGLED. 
@@ -246,33 +264,43 @@ const crearGatitoPorBody = async ( body, srvUri=mySrvUri, responder ) => {
         throw error;
     }); 
     */
+    
+    let url = `${srvUri}/api/cats/crear`;
+    
+    let myBody; 
+    myBody = decodeURIComponent(body);      // Reemplazo caracteres %x de la url por caracteres equivalentes
+    myBody = JSON.parse(myBody);            // parseo el string como objeto Json
+    console.log(`crearGatitoPorBody (body)-> ${myBody}`);
+    console.log(`crearGatitoPorBody (body-Objeto): `, myBody);
+    // const {_id} = myBody;
+    // myBody = { _id: `"${_id}"` };
 
     let contenido;
     try {
-        contenido = await axios.post(`${srvUri}/api/cats/crear`, {myBody}, { timeout: 10000 })    
+        contenido = await axios.post(url, myBody, { timeout: 10000 });    
     } catch (error) {
-        console.log('Error al crear el gatito.',error);  
+        console.log('crearGatitoPorBody -> Error al crear el gatito.',error);  
         (contenido)  
             ?contenido = contenido
-            :contenido = 'Error al crear el gatito en la base de datos.'
+            :contenido = 'crearGatitoPorBody -> Error al crear el gatito en la base de datos.'
     }
 
     console.log(contenido);
     responder(contenido);
-    //return(contenido.data)
+    //return(contenido.data);
     return;
 }
+
 
 
 // Metodos PUT (Modificar Gatito)
 // ------------------------------
 
-
 /** 
  * Editar un gatito (por params)
  * /api/editar 
 */
-const editarGatitoPorParams = async ( idGatito, nombreGatito, srvUri=mySrvUri, responder ) => {
+const editarGatitoPorParams = async ( body, srvUri=mySrvUri, responder ) => {
     (srvUri) 
     ? (srvUri.length<9)
         ? srvUri=mySrvUri
@@ -280,19 +308,40 @@ const editarGatitoPorParams = async ( idGatito, nombreGatito, srvUri=mySrvUri, r
     : srvUri=mySrvUri
     ;
 
-    const contenido = await axios.put(`${srvUri}/api/cats/editar/${idGatito}/${nombreGatito}`, { timeout: 10000 }).catch( (error) => {
+    // axios.post(
+    //     '/bezkoder.com/tutorials',
+    //     {
+    //       title: title,
+    //       description: description,
+    //     }
+    //   );
+
+    let myBody = {}
+    myBody = JSON.parse(body);
+    console.log(`editarGatitoPorBody (body)-> ${myBody}`);
+    console.log(`editaratitoPorBody (body-Objeto): `, myBody);
+    const {_id, name} = myBody;
+    myBody = { _id: _id,
+                name: name
+            };
+    console.log(`editaratitoPorBody (body Destructurado_&_Restructurado)-> ${myBody}`,myBody);
+
+    url = `${srvUri}/api/cats/editar/${_id}/${name}`;
+
+    let contenido
+    contenido = await axios.put(url, myBody, { timeout: 10000 }).catch( (error) => {
         if (error.response && consologuearErrores) {
             console.log(error.response.data);
             console.log(error.response.status);
             console.log(error.response.headers);
         };
-        error.origin = 'Error al obtener la ruta';
+        error.origin = 'editarGatitoPorParams -> Error al obtener la ruta';
         throw error;
     });
 
     console.log(contenido);
     responder(contenido);
-    //return(contenido.data)
+    //return(contenido.data);
     return;
 }
 
@@ -301,7 +350,7 @@ const editarGatitoPorParams = async ( idGatito, nombreGatito, srvUri=mySrvUri, r
  * Editar un gatito (por query) 
  * /api/editar
  */
-const editarGatitoPorQry = async ( idGatito, nombreGatito, srvUri=mySrvUri, responder ) => {
+const editarGatitoPorQry = async ( body, srvUri=mySrvUri, responder ) => {
     (srvUri) 
     ? (srvUri.length<9)
         ? srvUri=mySrvUri
@@ -309,19 +358,32 @@ const editarGatitoPorQry = async ( idGatito, nombreGatito, srvUri=mySrvUri, resp
     : srvUri=mySrvUri
     ;
 
-    const contenido = await axios.put(`${srvUri}/api/cats/editar?id=${idGatito}&name=${nombreGatito}`, { timeout: 10000 }).catch( (error) => {
+    let myBody ={}
+    myBody = JSON.parse(body);
+    console.log(`editarGatitoPorBody (body)-> ${myBody}`);
+    console.log(`editaratitoPorBody (body-Objeto): `, myBody);
+    const {_id, name} = myBody;
+    myBody = { _id: _id,
+                name: name
+            };
+    console.log(`editaratitoPorBody (body Destructurado_&_Restructurado)-> ${myBody}`,myBody);
+    
+    let url = `${srvUri}/api/cats/editar?id=${_id}&name=${name}`;
+
+    let contenido;
+    contenido = await axios.put(url, myBody, { timeout: 10000 }).catch( (error) => {
         if (error.response && consologuearErrores) {
             console.log(error.response.data);
             console.log(error.response.status);
             console.log(error.response.headers);
         };
-        error.origin = 'Error al obtener la ruta';
+        error.origin = 'editarGatitoPorQry -> Error al obtener la ruta';
         throw error;
     });
 
     console.log(contenido);
     responder(contenido);
-    //return(contenido.data)
+    //return(contenido.data);
     return;
 }
 
@@ -342,24 +404,32 @@ const editarGatitoPorBody = async ( body, srvUri=mySrvUri, responder ) => {
         :  srvUri= srvUri
     : srvUri=mySrvUri
     ;
-
+    let url = `${srvUri}/api/cats/editar`;
+    
     let myBody ={}
     myBody = JSON.parse(body);
     console.log(`editarGatitoPorBody (body)-> ${myBody}`);
+    console.log(`editaratitoPorBody (body-Objeto): `, myBody);
+    const {_id, name} = myBody;
+    myBody = { _id: _id,
+                name: name
+            };
+    console.log(`editaratitoPorBody (body Destructurado_&_Restructurado)-> ${myBody}`,myBody);
 
-    const contenido = await axios.put(`${srvUri}/api/cats/editar`, {myBody}, { timeout: 10000 }).catch( (error) => {
+    let contenido;
+    contenido = await axios.put(url, myBody, { timeout: 10000 }).catch( (error) => {
         if (error.response && consologuearErrores) {
             console.log(error.response.data);
             console.log(error.response.status);
             console.log(error.response.headers);
         };
-        error.origin = 'Error al obtener la ruta';
+        error.origin = 'editarGatitoPorBody -> Error al obtener la ruta';
         throw error;
     });
 
     console.log(contenido);
     responder(contenido);
-    //return(contenido.data)
+    //return(contenido.data);
     return;
 }
 
@@ -380,19 +450,22 @@ const eliminarGatitoPorParams = async ( idGatito, srvUri=mySrvUri, responder ) =
     : srvUri=mySrvUri
     ;
 
-     contenido = await axios.delete(`${srvUri}/api/cats/eliminar/${idGatito}`, { timeout: 10000 }).catch( (error) => {
+    let url = `${srvUri}/api/cats/eliminar/${idGatito}`;
+
+    let contenido;
+    contenido = await axios.delete(url, { timeout: 10000 }).catch( (error) => {
         if (error.response && consologuearErrores) {
             console.log(error.response.data);
             console.log(error.response.status);
             console.log(error.response.headers);
         };
-        error.origin = 'Error al obtener la ruta';
+        error.origin = 'eliminarGatitoPorParams -> Error al obtener la ruta';
         throw error;
     });
 
     console.log(contenido);
     responder(contenido);
-    //return(contenido.data)
+    //return(contenido.data);
     return;
 }
 
@@ -409,19 +482,22 @@ const eliminarGatitoPorQry = async ( idGatito, srvUri=mySrvUri, responder ) => {
     : srvUri=mySrvUri
     ;
 
-    const contenido = await axios.delete(`${srvUri}/api/cats/eliminar/?id=${idGatito}`, { timeout: 10000 }).catch( (error) => {
+    let url = `${srvUri}/api/cats/eliminar/?id=${idGatito}`;
+
+    let contenido;
+    contenido = await axios.delete(url, { timeout: 10000 }).catch( (error) => {
         if (error.response && consologuearErrores) {
             console.log(error.response.data);
             console.log(error.response.status);
             console.log(error.response.headers);
         };
-        error.origin = 'Error al obtener la ruta';
+        error.origin = 'eliminarGatitoPorQry -> Error al obtener la ruta';
         throw error;
     });
 
     console.log(contenido);
     responder(contenido);
-    //return(contenido.data)
+    //return(contenido.data);
     return;
 }
 
@@ -442,23 +518,30 @@ const eliminarGatitoPorBody = async ( body, srvUri=mySrvUri, responder ) => {
     : srvUri=mySrvUri
     ;
 
-    let myBody ={}
-    myBody = JSON.parse(body);
-    console.log(`eliminarGatitoPorBody (body)-> ${myBody}`);
+    let url = `${srvUri}/api/cats/eliminar/`;
 
-    const contenido = await axios.delete(`${srvUri}/api/cats/eliminar/`, {myBody}, { timeout: 10000 }).catch( (error) => {
+    let myBody; 
+    myBody = decodeURIComponent(body);      // Reemplazo caracteres %x de la url por caracteres equivalentes
+    myBody = JSON.parse(myBody);            // parseo el string como objeto Json
+    console.log(`crearGatitoPorBody (body)-> ${myBody}`);
+    console.log(`crearGatitoPorBody (body-Objeto): `, myBody);
+    const {_id} = myBody;                   // Destructuro el id
+    myBody = { _id: `"${_id}"` };           // Construyo el parametro del body
+
+    let contenido;
+    contenido = await axios.delete(url, {myBody}, { timeout: 10000 }).catch( (error) => {
         if (error.response && consologuearErrores) {
             console.log(error.response.data);
             console.log(error.response.status);
             console.log(error.response.headers);
         };
-        error.origin = 'Error al obtener la ruta';
+        error.origin = 'eliminarGatitoPorBody ->Error al obtener la ruta';
         throw error;
     });
 
     console.log(contenido);
     responder(contenido);
-    //return(contenido.data)
+    //return(contenido.data);
     return;
 }
 
