@@ -292,7 +292,7 @@ const crearGatitoPorBody = async ( body, srvUri=mySrvUri, responder ) => {
 }
 
 
-
+// ------------------------------
 // Metodos PUT (Modificar Gatito)
 // ------------------------------
 
@@ -307,14 +307,6 @@ const editarGatitoPorParams = async ( body, srvUri=mySrvUri, responder ) => {
         :  srvUri= srvUri
     : srvUri=mySrvUri
     ;
-
-    // axios.post(
-    //     '/bezkoder.com/tutorials',
-    //     {
-    //       title: title,
-    //       description: description,
-    //     }
-    //   );
 
     let myBody = {}
     myBody = JSON.parse(body);
@@ -434,9 +426,10 @@ const editarGatitoPorBody = async ( body, srvUri=mySrvUri, responder ) => {
 }
 
 
+
+// --------------------------------
 // Metodos DELETE (Eliminar Gatito)
 // --------------------------------
-
 
 /** 
  * Eliminar un gatito (por params)
@@ -523,8 +516,8 @@ const eliminarGatitoPorBody = async ( body, srvUri=mySrvUri, responder ) => {
     let myBody; 
     myBody = decodeURIComponent(body);      // Reemplazo caracteres %x de la url por caracteres equivalentes
     myBody = JSON.parse(myBody);            // parseo el string como objeto Json
-    console.log(`crearGatitoPorBody (body)-> ${myBody}`);
-    console.log(`crearGatitoPorBody (body-Objeto): `, myBody);
+    console.log(`eliminarGatitoPorBody (body)-> ${myBody}`);
+    console.log(`eliminarGatitoPorBody (body-Objeto): `, myBody);
     const {_id} = myBody;                   // Destructuro el id
     myBody = { _id: `"${_id}"` };           // Construyo el parametro del body
 

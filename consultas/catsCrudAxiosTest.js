@@ -1,8 +1,22 @@
 const axios = require('axios');
 
+/** Ejecutar Test
+ * --------------
+ * Comando:
+ *      node  ./consultas/catsCrudAxiosTest.js 
+ * 
+ * Script:
+ *      npm run testCatsAxios 
+*/
+
+
+
+
 // const entorno = require('../appSrvEntorno');
 // const {fnMiServidor}= entorno;
 // let {srvPuerto} = fnMiServidor();
+
+
 
 // Establer el puerto de sevidor
 let srvPuerto = '4001';
@@ -11,13 +25,13 @@ let srvPuerto = '4001';
 const mySrvUri = `http://localhost:${srvPuerto}`;
 
 //Establecer si se muestran los errores de Axios
-const consologuearErrores = false;
+const consologuearErroresAxios = false;
 
+// Definir que test seran corridos
 const nombreTest = {
-    testVerGatitoPorParams: true,
-    testVerGatitoPorQry: true,
-    testVerGatitoPorBody: false,           //Creo el objeto body parseando el parametro(Tipo:Texto) pasado a la funcion
-    testVerGatitoPorBody2: false,           //Creo el objeto body dentro de la llamada a Axios
+    testVerGatitoPorParams: false,
+    testVerGatitoPorQry: false,
+    testVerGatitoPorBody: false,             
     testCrearGatitoPorParams: false,
     testCrearGatitoPorQry: false,
     testCrearGatitoPorBody: false,
@@ -29,12 +43,15 @@ const nombreTest = {
     testEliminarGatitoPorBody: false
 }
 
-/** Ejecutar Test
- * --------------
- * Comando:
- *          node  ./consultas/catsCrudAxiosTest.js  
-*/
+// Establecer los valores para los test que seran corridos
+const testValores = {
+    id: "6269ae7c71de5bd7eb580ad2",                 // name: "Pericles", _id: 6258d21ba60416c73341165e
+    name: "Tormento",
+    newName: "Salvaje"
+}
 
+
+// Llamo a la funcion test(), la cual correra los test seleccionados con los valores asignados previamente
 test()
 
 
@@ -44,19 +61,22 @@ function test() {
     let testResultado;
 
     console.log();
-    console.log('* Recuerda que debes seleccionar los test a ejecutar:');
-    console.log('  Debes asignar el valor true o false a cada test en el objeto "nombreTest",');
-    console.log('  en el archivo ./consultas/catsCrudAxiosTest.js'  );
+    console.log('* Recuerda que debes seleccionar los test a ejecutar y los valores para el mismo:');
+    console.log('   - Debes asignar el valor true o false a cada test en el objeto "nombreTest",');
+    console.log('   - Debes asignar los valores que utilizaran los test en el objeto "testValores",');
+    console.log('  Pudes hacerlo en el archivo ./consultas/catsCrudAxiosTest.js'  );
     console.log();
-    console.log('-----------------------------------------------------')
+    console.log('-----------------------------------------------------');
     console.log('Iniciando el test de Axios para el CRUD de gatitos...');
     console.log();
+
+    // inicio la ejecucion de los Test que se hayan seleccionado en el objeto nombreTest
 
     if (nombreTest.testVerGatitoPorParams) {
         //testVerGatitoPorParams
         testFunction = 'testVerGatitoPorParams';
         console.log(`Llamando a ${testFunction}:`);
-        testResultado = testVerGatitoPorParams('6258d21ba60416c73341165e');
+        testResultado = testVerGatitoPorParams( testValores.id );       // name: "Pericles", _id: 6258d21ba60416c73341165e
         console.log(`${testFunction} -> Valor devuelto en variable testResultado:`,testResultado);
         console.log();    
     }
@@ -66,34 +86,25 @@ function test() {
         
         testFunction = 'TestVerGatitoPorQry';
         console.log(`Llamando a ${testFunction}:`);
-        testResultado = testVerGatitoPorQry('6258d21ba60416c73341165e');
+        testResultado = testVerGatitoPorQry( testValores.id );
         console.log(`${testFunction} -> Valor devuelto en variable testResultado:`,testResultado);
-        console.log()
+        console.log();
     };
 
     //testVerGatitoPorBody
     if (nombreTest.testVerGatitoPorBody) {
         testFunction = 'testVerGatitoPorBody';
         console.log(`Llamando a ${testFunction}:`);
-        testResultado = testVerGatitoPorBody('{"_id": "6258d21ba60416c73341165e"}');
+        testResultado = testVerGatitoPorBody(`{"_id": ${testValores.id}}`);
         console.log(`${testFunction} -> Valor devuelto en variable testResultado:`,testResultado);
-        console.log()
-    }
-
-    //testVerGatitoPorBody2 - Creo el objeto body dentro de la llamada a Axios
-    if (nombreTest.testVerGatitoPorBody2) {
-        testFunction = 'testVerGatitoPorBody2';
-        console.log(`Llamando a ${testFunction}:`);
-        testResultado = testVerGatitoPorBody2();
-        console.log(`${testFunction} -> Valor devuelto en variable testResultado:`,testResultado);
-        console.log()
+        console.log();
     }
 
     //testCrearGatitoPorParams
     if (nombreTest.testCrearGatitoPorParams) {
         testFunction = 'testCrearGatitoPorParams';
         console.log(`Llamando a ${testFunction}:`);
-        testResultado = testCrearGatitoPorParams('Diogenes');
+        testResultado = testCrearGatitoPorParams( testValores.name );
         console.log(`${testFunction} -> Valor devuelto en variable testResultado:`,testResultado);
         console.log();    
     }
@@ -102,7 +113,7 @@ function test() {
      if (nombreTest.testCrearGatitoPorQry) {
         testFunction = 'testCrearGatitoPorQry';
         console.log(`Llamando a ${testFunction}:`);
-        testResultado = testCrearGatitoPorQry('Diogenes');
+        testResultado = testCrearGatitoPorQry( testValores.name );
         console.log(`${testFunction} -> Valor devuelto en variable testResultado:`,testResultado);
         console.log();    
     }
@@ -111,7 +122,7 @@ function test() {
     if (nombreTest.testEditarGatitoPorBody) {
         testFunction = 'testCrearGatitoPorBody';
         console.log(`Llamando a ${testFunction}:`);
-        testResultado = testCrearGatitoPorBody('{"name": "Diogenes"}');
+        testResultado = testCrearGatitoPorBody(`{"name": ${testValores.name}}`);
         console.log(`${testFunction} -> Valor devuelto en variable testResultado:`,testResultado);
         console.log();    
     }
@@ -120,7 +131,7 @@ function test() {
     if (nombreTest.testEditarGatitoPorParams) {
         testFunction = 'testEditarGatitoPorParams';
         console.log(`Llamando a ${testFunction}:`);
-        testResultado = testEditarGatitoPorParams('{"_id": "6258d21ba60416c73341165e", "name": "Rodas"}');
+        testResultado = testEditarGatitoPorParams(`{_id": ${testValores.id}","name": ${testValores.name}}`);
         console.log(`${testFunction} -> Valor devuelto en variable testResultado:`,testResultado);
         console.log();    
     }
@@ -129,7 +140,7 @@ function test() {
     if (nombreTest.testEditarGatitoPorQry) {
         testFunction = 'testEditarGatitoPorQry';
         console.log(`Llamando a ${testFunction}:`);
-        testResultado = testEditarGatitoPorQry('{"_id": "6258d21ba60416c73341165e", "name": "Rodas"}');
+        testResultado = testEditarGatitoPorQry(`{_id": ${testValores.id}","name": ${testValores.name}}`);
         console.log(`${testFunction} -> Valor devuelto en variable testResultado:`,testResultado);
         console.log();    
     }
@@ -138,7 +149,7 @@ function test() {
     if (nombreTest.testEditarGatitoPorBody) {
         testFunction = 'testEditarGatitoPorBody';
         console.log(`Llamando a ${testFunction}:`);
-        testResultado = testEditarGatitoPorBody('{"_id": "6258d21ba60416c73341165e", "name": "Rodas"}');
+        testResultado = testEditarGatitoPorBody( `{_id": ${testValores.id}","name": ${testValores.name}}` );
         console.log(`${testFunction} -> Valor devuelto en variable testResultado:`,testResultado);
         console.log();    
     }
@@ -147,7 +158,7 @@ function test() {
     if (nombreTest.testEliminarGatitoPorParams) {
         testFunction = 'testEliminarGatitoPorParams';
         console.log(`Llamando a ${testFunction}:`);
-        testResultado = testEliminarGatitoPorParams('{"_id": "6258d21ba60416c73341165e"}');
+        testResultado = testEliminarGatitoPorParams( testValores.id );
         console.log(`${testFunction} -> Valor devuelto en variable testResultado:`,testResultado);
         console.log();    
     }
@@ -156,7 +167,7 @@ function test() {
     if (nombreTest.testEliminarGatitoPorQry) {
         testFunction = 'testEliminarGatitoPorQry';
         console.log(`Llamando a ${testFunction}:`);
-        testResultado = testEliminarGatitoPorQry('{"_id": "6258d21ba60416c73341165e"}');
+        testResultado = testEliminarGatitoPorQry( testValores.id );
         console.log(`${testFunction} -> Valor devuelto en variable testResultado:`,testResultado);
         console.log();    
     }
@@ -165,14 +176,14 @@ function test() {
     if (nombreTest.testEliminarGatitoPorBody) {
         testFunction = 'testEliminarGatitoPorBody';
         console.log(`Llamando a ${testFunction}:`);
-        testResultado = testEliminarGatitoPorBody('{"_id": "6258d21ba60416c73341165e"}');
+        testResultado = testEliminarGatitoPorBody(`{_id": ${testValores.id}}`);
         console.log(`${testFunction} -> Valor devuelto en variable testResultado:`,testResultado);
         console.log();    
     }
 
     console.log('Finalizado el test de Axios para el CRUD de gatitos.');
     console.log('----------------------------------------------------');
-    console.log()
+    console.log();
 
 }
 
@@ -180,10 +191,9 @@ function test() {
 
 
 
-
+// ------------------------
 // Metodos GET (Ver Gatito)
 // ------------------------
-
 
 /** 
  * Ver un gatito (por params)
@@ -198,20 +208,21 @@ async function testVerGatitoPorParams( idGatito, srvUri = mySrvUri) {
     ;
     //console.log('verGatitoPorParams -> param(srvUri):',srvUri)
     
+    let url = `${srvUri}/api/cats/ver/gato/${idGatito}`;
+
     let contenido;
-    contenido = await axios.get(`${srvUri}/api/cats/ver/gato/${idGatito}`, { timeout: 10000 }).catch( (error) => {
-        if (error.response && consologuearErrores) {
+    contenido = await axios.get(url , { timeout: 10000 }).catch( (error) => {
+        if (error.response && consologuearErroresAxios) {
             console.log(error.response.data);
             console.log(error.response.status);
             console.log(error.response.headers);
         };
-        error.origin = 'Error al obtener la ruta';
+        error.origin = 'verGatitoPorParams -> Error al obtener la ruta';
         throw error;
     });
 
     console.log('TestVerGatitoPorParams -> Gatito encontrado: ',contenido.data);
     return(contenido.data);
-   
 }
 
 
@@ -227,14 +238,16 @@ async function testVerGatitoPorQry( idGatito, srvUri=mySrvUri ) {
     : srvUri=mySrvUri
     ;
 
-    let contenido
-    contenido = await axios.get(`${srvUri}/api/cats/ver/gato?id=${idGatito}`, { timeout: 10000 }).catch( (error) => {
-        if (error.response && consologuearErrores) {
+    let url = `${srvUri}/api/cats/ver/gato?id=${idGatito}`;
+
+    let contenido;
+    contenido = await axios.get(url, { timeout: 10000 }).catch( (error) => {
+        if (error.response && consologuearErroresAxios) {
             console.log(error.response.data);
             console.log(error.response.status);
             console.log(error.response.headers);
         };
-        error.origin = 'Error al obtener la ruta';
+        error.origin = 'verGatitoPorQry -> Error al obtener la ruta';
         throw error;
     });
 
@@ -248,20 +261,13 @@ async function testVerGatitoPorQry( idGatito, srvUri=mySrvUri ) {
  * api/ver/gato
  */
 async function testVerGatitoPorBody( body, srvUri = mySrvUri ) {
-
     (srvUri) 
     ? (srvUri.length<9)
         ? srvUri=mySrvUri
         :  srvUri= srvUri
     : srvUri=mySrvUri
     ;
-    
-    let myBody; 
-    myBody = decodeURIComponent(body);
-    myBody = JSON.parse(myBody);
-    console.log(`verGatitoPorBody (body)-> ${myBody}`);
-    console.log(`verGatitoPorBody (body-Objeto): `, myBody);
-    
+        
     /* 
     // este codigo genera error:
     // (Nodo: 13240) ADVERTENCIA DE REEMPLAZO DE PROMISIÓN UNHANDLED: ADVERTENCIA DE PROMISIÓN UNHANGLED. 
@@ -279,12 +285,22 @@ async function testVerGatitoPorBody( body, srvUri = mySrvUri ) {
     });
      */
     
-    let contenido
+    let url = `${srvUri}/api/cats/ver/gato`;
+
+    let myBody; 
+    myBody = decodeURIComponent(body);      // Reemplazo caracteres %x de la url por caracteres equivalentes
+    myBody = JSON.parse(myBody);            // parseo el string como objeto Json
+    console.log(`TestVerGatitoPorBody (body)-> ${myBody}`);
+    console.log(`TestVerGatitoPorBody (body-Objeto): `, myBody);
+    const {_id} = myBody;                   // deconstruyo el objeto myBody y tomo el id
+    myBody = { params: { id: `${_id}` } };  // armo el objeto para el parametro body de axios
+    console.log(`TestVerGatitoPorBody (body Destructurado_&_Restructurado)-> ${myBody}`,myBody);
+
+    let contenido;
     try {
-        contenido = await axios.get(`${srvUri}/api/cats/ver/gato`, {myBody}, { timeout: 10000 })    
+        contenido = await axios.get(url ,myBody , { timeout: 10000 });    
     } catch (error) {
-        console.log('Error al recuperar los datos.',error);
-        return; 
+        console.log('TestVerGatitoPorBody -> Error al recuperar los datos.',error); 
     };
     
     console.log('TestVerGatitoPorBody -> Gatito encontrado: ',contenido.data);
@@ -292,78 +308,10 @@ async function testVerGatitoPorBody( body, srvUri = mySrvUri ) {
 }
 
 
-/** 
- * Ver un gatito (por body) 
- * api/ver/gato
- */
- async function testVerGatitoPorBody2( srvUri = mySrvUri ) {
 
-    (srvUri) 
-    ? (srvUri.length<9)
-        ? srvUri=mySrvUri
-        :  srvUri= srvUri
-    : srvUri=mySrvUri
-    ; 
-    
-    /* 
-    // este codigo genera error:
-    // (Nodo: 12964) ADVERTENCIA DE REEMPLAZO DE PROMISIÓN UNHANDLED: ADVERTENCIA DE PROMISIÓN UNHANGLED. 
-    //   Este error se originó, lanzando dentro de una función de ASYNC sin un bloque de captura, o rechazando una promesa que no se manejó con .catch (). Para rescindir el proceso de nodo en el rechazo de la promesa sin controlar, use la bandera de CLI `- Redondeled-rechace = estrict` (ver https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (ID de rechazo: 2)
-    // (Nodo: 12964) [DEP0018] ADVERTENCIA DE DESPECACIÓN: Las rejecciones de promesa no controladas están en desuso. En el futuro, las rejillas prometedoras que no se manejan terminarán el proceso de nodo.js con un código de salida que no se encuentra.   
-
-    const contenido = await axios.get(
-                                        `${srvUri}/api/cats/ver/gato`, 
-                                        { _id: "6258d21ba60416c73341165e" }, 
-                                        { timeout: 10000 }).catch( (error) => {
-        if (error.response && consologuearErrores) {
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-        };
-        error.origin = 'Error al obtener la ruta';
-        throw error;
-    });
-    console.log('TestVerGatitoPorBody -> Gatito encontrado: ',contenido.data);
-    return(contenido.data);
-    */
-   
-    /* 
-    let myBody; 
-    myBody = decodeURIComponent(body);
-    myBody = JSON.parse(myBody);
-    console.log(`verGatitoPorBody (body)-> ${myBody}`);
-    console.log(`verGatitoPorBody (body-Objeto): `, myBody); 
-     */
-     
-    let contenido
-    try {
-        contenido = await axios.get(
-                                    `${srvUri}/api/cats/ver/gato`,
-                                    { _id: "6258d21ba60416c73341165e" }, 
-                                    { timeout: 10000 }
-                                    )    
-    } catch (error) {
-        console.log('Error al recuperar los datos.',error);
-        // console.log('Error al recuperar los datos (config) -> _id: ',error.config._id);
-        // console.log('Error al recuperar los datos (config) -> method: ',error.config.method);
-        // console.log('Error al recuperar los datos (config) -> url: ',error.config.url);
-        // console.log('Error al recuperar los datos (config) -> data:',error.config.data);
-        // console.log('Error al recuperar los datos (request) -> data:',error.request.data);
-
-        return; 
-    };
-    
-    console.log('TestVerGatitoPorBody2 -> Gatito encontrado: ',contenido.data);
-    return(contenido.data);
-};
-
-
-
-
-
+// ---------------------------
 // Metodos POST (Crear Gatito)
 // ---------------------------
-
 
 /** 
  * Crear un gatito (por params)
@@ -377,14 +325,17 @@ async function testCrearGatitoPorParams( nombreGatito, srvUri=mySrvUri ) {
     : srvUri=mySrvUri
     ;
 
-    let contenido
-    contenido = await axios.post(`${srvUri}/api/cats/crear/${nombreGatito}`, { timeout: 10000 }).catch( (error) => {
-        if (error.response && consologuearErrores) {
+    let url = `${srvUri}/api/cats/crear/${nombreGatito}`;
+    let body = { name: nombreGatito };
+
+    let contenido;
+    contenido = await axios.post(url ,body ,{ timeout: 10000 } ).catch( (error) => {
+        if (error.response && consologuearErroresAxios) {
             console.log(error.response.data);
             console.log(error.response.status);
             console.log(error.response.headers);
         };
-        error.origin = 'Error al obtener la ruta';
+        error.origin = 'crearGatitoPorParams -> Error al obtener la ruta';
         throw error;
     });
 
@@ -405,13 +356,17 @@ async function testCrearGatitoPorQry( nombreGatito, srvUri=mySrvUri ) {
     : srvUri=mySrvUri
     ;
 
-    const contenido = await axios.post(`${srvUri}/api/cats/crear?id=${nombreGatito}`, { timeout: 10000 }).catch( (error) => {
-        if (error.response && consologuearErrores) {
+    let url = `${srvUri}/api/cats/crear?id=${nombreGatito}`;
+    let body = { name: nombreGatito };
+
+    let contenido;
+    contenido = await axios.post(url ,body ,{ timeout: 10000 } ).catch( (error) => {
+        if (error.response && consologuearErroresAxios) {
             console.log(error.response.data);
             console.log(error.response.status);
             console.log(error.response.headers);
         };
-        error.origin = 'Error al obtener la ruta';
+        error.origin = 'testCrearGatitoPorQry -> Error al obtener la ruta';
         throw error;
     });
 
@@ -436,13 +391,6 @@ async function testCrearGatitoPorBody ( body, srvUri=mySrvUri ) {
     : srvUri=mySrvUri
     ;
 
-    let myBody; 
-    myBody = decodeURIComponent(body);
-    myBody = JSON.parse(myBody);
-    //const decodedComponent = decodeURIComponent(component);
-    console.log(`crearGatitoPorBody (body)-> ${myBody}`);
-    console.log(`crearGatitoPorBody (body-Objeto): `, myBody);
-
    /* 
    // este codigo genera error:
    // (Nodo: 13240) ADVERTENCIA DE REEMPLAZO DE PROMISIÓN UNHANDLED: ADVERTENCIA DE PROMISIÓN UNHANGLED. 
@@ -459,15 +407,25 @@ async function testCrearGatitoPorBody ( body, srvUri=mySrvUri ) {
         throw error;
     }); 
     */
+    
+    let url = `${srvUri}/api/cats/crear`;
+    
+    let myBody; 
+    myBody = decodeURIComponent(body);      // Reemplazo caracteres %x de la url por caracteres equivalentes
+    myBody = JSON.parse(myBody);            // parseo el string como objeto Json
+    console.log(`testCrearGatitoPorBody (body)-> ${myBody}`);
+    console.log(`testCrearGatitoPorBody (body-Objeto): `, myBody);
+    // const {_id} = myBody;
+    // myBody = { _id: `"${_id}"` };
 
     let contenido;
     try {
-        contenido = await axios.post(`${srvUri}/api/cats/crear`, {myBody}, { timeout: 10000 })    
+        contenido = await axios.post(url, myBody, { timeout: 10000 });    
     } catch (error) {
-        console.log('Error al crear el gatito.',error);  
+        console.log('testCrearGatitoPorBody -> Error al crear el gatito.',error);  
         (contenido)  
             ?contenido = contenido
-            :contenido = 'Error al crear el gatito en la base de datos.'
+            :contenido = 'testCrearGatitoPorBody -> Error al crear el gatito en la base de datos.'
     }
 
     console.log('testCrearGatitoPorBody -> Gatito creado: ',contenido.data);
@@ -475,15 +433,16 @@ async function testCrearGatitoPorBody ( body, srvUri=mySrvUri ) {
 }
 
 
+
+// ------------------------------
 // Metodos PUT (Modificar Gatito)
 // ------------------------------
-
 
 /** 
  * Editar un gatito (por params)
  * /api/editar 
 */
-async function testEditarGatitoPorParams( idGatito, nombreGatito, srvUri=mySrvUri ) {
+async function testEditarGatitoPorParams( body , srvUri=mySrvUri ) {
     (srvUri) 
     ? (srvUri.length<9)
         ? srvUri=mySrvUri
@@ -491,13 +450,26 @@ async function testEditarGatitoPorParams( idGatito, nombreGatito, srvUri=mySrvUr
     : srvUri=mySrvUri
     ;
 
-    const contenido = await axios.put(`${srvUri}/api/cats/editar/${idGatito}/${nombreGatito}`, { timeout: 10000 }).catch( (error) => {
-        if (error.response && consologuearErrores) {
+    let myBody = {}
+    myBody = JSON.parse(body);
+    console.log(`testEditarGatitoPorParams (body)-> ${myBody}`);
+    console.log(`testEditarGatitoPorParams (body-Objeto): `, myBody);
+    const {_id, name} = myBody;
+    myBody = { _id: _id,
+                name: name
+            };
+    console.log(`testEditarGatitoPorParams (body Destructurado_&_Restructurado)-> ${myBody}`,myBody);
+
+    url = `${srvUri}/api/cats/editar/${_id}/${name}`;
+
+    let contenido
+    contenido = await axios.put(url, myBody, { timeout: 10000 }).catch( (error) => {
+        if (error.response && consologuearErroresAxios) {
             console.log(error.response.data);
             console.log(error.response.status);
             console.log(error.response.headers);
         };
-        error.origin = 'Error al obtener la ruta';
+        error.origin = 'testEditarGatitoPorParams -> Error al obtener la ruta';
         throw error;
     });
 
@@ -510,7 +482,7 @@ async function testEditarGatitoPorParams( idGatito, nombreGatito, srvUri=mySrvUr
  * Editar un gatito (por query) 
  * /api/editar
  */
-async function testEditarGatitoPorQry( idGatito, nombreGatito, srvUri=mySrvUri ) {
+async function testEditarGatitoPorQry( body, srvUri=mySrvUri ) {
     (srvUri) 
     ? (srvUri.length<9)
         ? srvUri=mySrvUri
@@ -518,17 +490,30 @@ async function testEditarGatitoPorQry( idGatito, nombreGatito, srvUri=mySrvUri )
     : srvUri=mySrvUri
     ;
 
-    const contenido = await axios.put(`${srvUri}/api/cats/editar?id=${idGatito}&name=${nombreGatito}`, { timeout: 10000 }).catch( (error) => {
-        if (error.response && consologuearErrores) {
+    let myBody ={}
+    myBody = JSON.parse(body);
+    console.log(`testEditarGatitoPorQry (body)-> ${myBody}`);
+    console.log(`testEditarGatitoPorQry (body-Objeto): `, myBody);
+    const {_id, name} = myBody;
+    myBody = { _id: _id,
+                name: name
+            };
+    console.log(`testEditarGatitoPorQry (body Destructurado_&_Restructurado)-> ${myBody}`,myBody);
+    
+    let url = `${srvUri}/api/cats/editar?id=${_id}&name=${name}`;
+
+    let contenido;
+    contenido = await axios.put(url, myBody, { timeout: 10000 }).catch( (error) => {
+        if (error.response && consologuearErroresAxios) {
             console.log(error.response.data);
             console.log(error.response.status);
             console.log(error.response.headers);
         };
-        error.origin = 'Error al obtener la ruta';
+        error.origin = 'testEditarGatitoPorQry -> Error al obtener la ruta';
         throw error;
     });
 
-    console.log('editarGatitoPorQry -> Gatito modificado: ',contenido.data);
+    console.log('testEditarGatitoPorQry -> Gatito modificado: ',contenido.data);
     return(contenido.data);
 }
 
@@ -549,18 +534,26 @@ async function testEditarGatitoPorBody( body, srvUri=mySrvUri ) {
         :  srvUri= srvUri
     : srvUri=mySrvUri
     ;
-
+    let url = `${srvUri}/api/cats/editar`;
+    
     let myBody ={}
     myBody = JSON.parse(body);
     console.log(`testEditarGatitoPorBody (body)-> ${myBody}`);
+    console.log(`testEditarGatitoPorBody (body-Objeto): `, myBody);
+    const {_id, name} = myBody;
+    myBody = { _id: _id,
+                name: name
+            };
+    console.log(`testEditarGatitoPorBody (body Destructurado_&_Restructurado)-> ${myBody}`,myBody);
 
-    const contenido = await axios.put(`${srvUri}/api/cats/editar`, {myBody}, { timeout: 10000 }).catch( (error) => {
-        if (error.response && consologuearErrores) {
+    let contenido;
+    contenido = await axios.put(url, myBody, { timeout: 10000 }).catch( (error) => {
+        if (error.response && consologuearErroresAxios) {
             console.log(error.response.data);
             console.log(error.response.status);
             console.log(error.response.headers);
         };
-        error.origin = 'Error al obtener la ruta';
+        error.origin = 'testEditarGatitoPorBody -> Error al obtener la ruta';
         throw error;
     });
 
@@ -569,9 +562,10 @@ async function testEditarGatitoPorBody( body, srvUri=mySrvUri ) {
 }
 
 
+
+// --------------------------------
 // Metodos DELETE (Eliminar Gatito)
 // --------------------------------
-
 
 /** 
  * Eliminar un gatito (por params)
@@ -585,13 +579,16 @@ async function testEliminarGatitoPorParams( idGatito, srvUri=mySrvUri ) {
     : srvUri=mySrvUri
     ;
 
-     contenido = await axios.delete(`${srvUri}/api/cats/eliminar/${idGatito}`, { timeout: 10000 }).catch( (error) => {
-        if (error.response && consologuearErrores) {
+    let url = `${srvUri}/api/cats/eliminar/${idGatito}`;
+
+    let contenido;
+    contenido = await axios.delete(url, { timeout: 10000 }).catch( (error) => {
+        if (error.response && consologuearErroresAxios) {
             console.log(error.response.data);
             console.log(error.response.status);
             console.log(error.response.headers);
         };
-        error.origin = 'Error al obtener la ruta';
+        error.origin = 'testEliminarGatitoPorParams -> Error al obtener la ruta';
         throw error;
     });
 
@@ -612,19 +609,21 @@ async function testEliminarGatitoPorQry( idGatito, srvUri=mySrvUri ) {
     : srvUri=mySrvUri
     ;
 
-    const contenido = await axios.delete(`${srvUri}/api/cats/eliminar/?id=${idGatito}`, { timeout: 10000 }).catch( (error) => {
-        if (error.response && consologuearErrores) {
+    let url = `${srvUri}/api/cats/eliminar/?id=${idGatito}`;
+
+    let contenido;
+    contenido = await axios.delete(url, { timeout: 10000 }).catch( (error) => {
+        if (error.response && consologuearErroresAxios) {
             console.log(error.response.data);
             console.log(error.response.status);
             console.log(error.response.headers);
         };
-        error.origin = 'Error al obtener la ruta';
+        error.origin = 'eliminarGatitoPorQry -> Error al obtener la ruta';
         throw error;
     });
 
     console.log('testEliminarGatitoPorQry -> Gatito eliminado: ',contenido.data);
     return(contenido.data);
-    return;
 }
 
 
@@ -644,17 +643,24 @@ async function testEliminarGatitoPorBody( body, srvUri=mySrvUri ) {
     : srvUri=mySrvUri
     ;
 
-    let myBody ={}
-    myBody = JSON.parse(body);
-    console.log(`testEliminarGatitoPorBody (body)-> ${myBody}`);
+    let url = `${srvUri}/api/cats/eliminar/`;
 
-    const contenido = await axios.delete(`${srvUri}/api/cats/eliminar/`, {myBody}, { timeout: 10000 }).catch( (error) => {
-        if (error.response && consologuearErrores) {
+    let myBody; 
+    myBody = decodeURIComponent(body);      // Reemplazo caracteres %x de la url por caracteres equivalentes
+    myBody = JSON.parse(myBody);            // parseo el string como objeto Json
+    console.log(`testEliminarGatitoPorBody (body)-> ${myBody}`);
+    console.log(`testEliminarGatitoPorBody (body-Objeto): `, myBody);
+    const {_id} = myBody;                   // Destructuro el id
+    myBody = { _id: `"${_id}"` };           // Construyo el parametro del body
+
+    let contenido;
+    contenido = await axios.delete(url, {myBody}, { timeout: 10000 }).catch( (error) => {
+        if (error.response && consologuearErroresAxios) {
             console.log(error.response.data);
             console.log(error.response.status);
             console.log(error.response.headers);
         };
-        error.origin = 'Error al obtener la ruta';
+        error.origin = 'testEliminarGatitoPorBody ->Error al obtener la ruta';
         throw error;
     });
 

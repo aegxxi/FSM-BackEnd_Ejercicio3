@@ -6,22 +6,18 @@ const { validationResult } = require('express-validator');
     res.render('index', { title: 'Express' });
 } */
 
-/**
- * Muestro api info
- */
-const {catInfo} = require('../PaginasJs/cats');
-const apiCatInfo = async (req, res) => {
-    
-    try {
-        const contenido = catInfo();
-        res.send(contenido);    
-    } catch (error) {
-        res.status(400).send({msg: 'Hubo un error',error});    
-    };
-};
+
+//Defino que envio a la consola
+const consologuearProceso = true;
+const consologuearError = true;
 
 
 
+
+
+// --------------------------------------
+// Inicio - CRUD de la colleccion Gatitos
+// --------------------------------------
 
 /**
  * Muestro todos los gatitos
@@ -31,7 +27,7 @@ const vistaGatitos = async (req, res) => {
         const gatitos = await Cat.find();
         res.status(200).json({gatitos});    
     } catch (error) {
-        //console.log(gato)
+        (consologuearError) ? console.log(`vistaGatitos, Error: ) -> `, error) : null;
         res.status(400).send({msg: 'Hubo un error al mostrar los gatitos',error});          
     };   
 };
@@ -42,9 +38,9 @@ const vistaGatitos = async (req, res) => {
  */
 const verUnGatito = async (req, res) => {
     //consologueo los valores recibidos
-    console.log('verUnGatito (req.params) ->',req.params);
-    console.log('verUnGatito (req.query) ->',req.query);
-    console.log('verUnGatito (req.body) ->',req.body);
+    (consologuearProceso) ? console.log('verUnGatito (req.params) ->',req.params) : null;
+    (consologuearProceso) ? console.log('verUnGatito (req.query) ->',req.query) : null;
+    (consologuearProceso) ? console.log('verUnGatito (req.body) ->',req.body) : null;
 
     // extraer id del body (es elidentificador unico)
     const { _id } = req.body;
@@ -57,11 +53,11 @@ const verUnGatito = async (req, res) => {
             ? req.params.id
             : req.query.id
         ;  
-    console.log(`verUnGatito (valorClave) -> ${valorClave}`);
+        (consologuearProceso) ? console.log(`verUnGatito (valorClave) -> ${valorClave}`) : null;
 
     // si no se recuperaron datos de la ruta termino el proceso
     if (!valorClave) {
-        console.log(`verUnGatito (valorClave) -> ${valorClave} . No se recuperaron datos de Params. Query, o Body`);
+        (consologuearProceso) ? console.log(`verUnGatito (valorClave) -> ${valorClave} . No se recuperaron datos de Params. Query, o Body`) : null;
         return res.status(400).json({ msg: 'No se recuperaron datos de Params. Query, o Body' });
     }
 
@@ -77,7 +73,7 @@ const verUnGatito = async (req, res) => {
         if (_id) {
             // Revisar si hay errores en el body
             const errores = validationResult(req);
-            console.log(errores);
+            (consologuearProceso) ? console.log(errores) : null;
             if( !errores.isEmpty() ) {
                 return res.status(400).json({errores: errores.array() });
             };    
@@ -85,12 +81,12 @@ const verUnGatito = async (req, res) => {
         
         //Busco gatipo (por su id), si gato resulta vacio rompe por el catch
         gato = await Cat.findById(valorClave);
-        console.log(`verUnGatito (gato ${valorClave}) -> ${gato}`);
+        (consologuearProceso) ? console.log(`verUnGatito (gato ${valorClave}) -> ${gato}`) : null;
         
         res.status(200).json({msg: 'Gatito encontrado', gato}); 
         
     } catch (error) {
-        //console.log(gato)
+        (consologuearError) ? console.log(`verUnGatito (gato ${valorClave}, Error: ) -> `, error) : null;
         res.status(400).send({msg: 'verUnGatito -> Hubo un error al buscar el gatito, o el gattito no se encuentra en la base',error});      
     };
 };
@@ -101,9 +97,9 @@ const verUnGatito = async (req, res) => {
  */
 const crearGatito = async (req, res) => {
     //consologueo los valores recibidos
-    console.log('crearGatito (req.params) ->',req.params);
-    console.log('crearGatito (req.query) ->',req.query);
-    console.log('crearGatito (req.body) ->',req.body);
+    (consologuearProceso) ? console.log('crearGatito (req.params) ->',req.params) : null;
+    (consologuearProceso) ? console.log('crearGatito (req.query) ->',req.query) : null;
+    (consologuearProceso) ? console.log('crearGatito (req.body) ->',req.body) : null;
 
     // extraer name del body (es un identificador unico en este caso)
     const { name } = req.body;
@@ -115,7 +111,7 @@ const crearGatito = async (req, res) => {
             ? req.params.name
             : req.query.name
         ;  
-    console.log(`crearGatito (nameGato) -> ${nameGato}`);
+    (consologuearProceso) ? console.log(`crearGatito (nameGato) -> ${nameGato}`) : null;
 
     try {
         // Verificar si no se paso el name del gatito a bucar.
@@ -135,9 +131,9 @@ const crearGatito = async (req, res) => {
         }; 
            
         // Revisar que el gatito registrado sea unico 
-        console.log(`crearGatito (Completando kitty si el gato '${nameGato}' existe):`);
+        (consologuearProceso) ? console.log(`crearGatito (Completando kitty si el gato '${nameGato}' existe):`) : null;
         let kitty = await Cat.findOne({ nameGato });
-        console.log('crearGatito (kitty) ->',kitty);
+        (consologuearProceso) ? console.log('crearGatito (kitty) ->',kitty) : null;
 
         if(kitty && kitty==nameGato) {
             return res.json({ msg: 'El gattito ya existe' });
@@ -150,7 +146,7 @@ const crearGatito = async (req, res) => {
         res.status(200).json({msg: 'Gatito agregado', gato}); 
 
     } catch (error) {
-        //console.log({msg: 'Hubo un error al crear el gatito',error});
+        (consologuearError) ? console.log(`crearGatito (gato ${nameGato}, Error: ) -> `, error) : null;
         res.status(400).send({msg: 'Hubo un error al crear el gatito',error});   
     };
 };
@@ -161,9 +157,9 @@ const crearGatito = async (req, res) => {
  */
 const editarGatito = async (req, res) => {
     //consologueo los valores recibidos
-    console.log('editarGatito (req.params) ->',req.params);
-    console.log('editarGatito (req.query) ->',req.query);
-    console.log('editarGatito (req.body) ->',req.body);
+    (consologuearProceso) ? console.log('editarGatito (req.params) ->',req.params) : null;
+    (consologuearProceso) ? console.log('editarGatito (req.query) ->',req.query) : null;
+    (consologuearProceso) ? console.log('editarGatito (req.body) ->',req.body) : null;
 
     // extraer id del body (es elidentificador unico)
     const { _id, name } = req.body;
@@ -175,16 +171,16 @@ const editarGatito = async (req, res) => {
             ? req.params.id
             : req.query.id
         ;
-        console.log(`editarGatito (valorClave) -> ${valorClave}`);
+    (consologuearProceso) ? console.log(`editarGatito (valorClave) -> ${valorClave}`) : null;
 
-        // Almeceno el valor del name, si se paso por algun metodo (body, query, params)
-        const valorNombre = (name) 
+    // Almeceno el valor del name, si se paso por algun metodo (body, query, params)
+    const valorNombre = (name) 
         ? name 
         : (req.params.name)
             ? req.params.name
             : req.query.name
         ;  
-        console.log(`editarGatito (valorNombre) -> ${valorNombre}`);
+    (consologuearProceso) ? console.log(`editarGatito (valorNombre) -> ${valorNombre}`) : null;
 
         let gato;
         let editarGato;
@@ -204,7 +200,7 @@ const editarGatito = async (req, res) => {
         if ( name) {
             // Revisar si hay errores en el body
             const errores = validationResult(req);
-            console.log(errores);
+            (consologuearProceso) ? console.log(errores) : null;
             if( !errores.isEmpty() ) {
                 return res.status(400).json({errores: errores.array() });
             };    
@@ -222,7 +218,7 @@ const editarGatito = async (req, res) => {
         res.status(200).json({msg: `Gatito editado, nuevo nombre:${valorNombre}`, gato}); 
         
     } catch (error) {
-        //console.log(gato)
+        (consologuearError) ? console.log(`editarGatito (gato ${valorClave}, Error: ) -> `, error) : null;
         res.status(400).send({msg: 'Hubo un error al buscar el gatito, o el gattito no se encuentra en la base',error});      
     };
 };
@@ -234,9 +230,9 @@ const editarGatito = async (req, res) => {
  */
 const elininarGatito = async (req, res) => {
     //consologueo los valores recibidos
-    console.log('elininarGatito (req.params) ->',req.params);
-    console.log('elininarGatito (req.query) ->',req.query);
-    console.log('elininarGatito (req.body) ->',req.body);
+    (consologuearProceso) ? console.log('elininarGatito (req.params) ->',req.params) : null;
+    (consologuearProceso) ? console.log('elininarGatito (req.query) ->',req.query) : null;
+    (consologuearProceso) ? console.log('elininarGatito (req.body) ->',req.body) : null;
 
     // extraer id del body (es elidentificador unico)
     const { _id, } = req.body;
@@ -248,7 +244,7 @@ const elininarGatito = async (req, res) => {
             ? req.params.id
             : req.query.id
         ;    
-        console.log(`elininarGatito (valorclave) -> ${valorclave}`);
+    (consologuearProceso) ? console.log(`elininarGatito (valorclave) -> ${valorclave}`) : null;
 
     try {
     
@@ -268,20 +264,44 @@ const elininarGatito = async (req, res) => {
         
         // Eliminar un gatito por su id, si gato resulta vacio rompe por el catch
         const gato = await Cat.findByIdAndDelete( valorclave );
-        console.log(`elininarGatito (Gatito Eliminado) -> `, gato);
+        (consologuearProceso) ? console.log(`elininarGatito (Gatito Eliminado) -> `, gato) : null;
         
         res.status(200).json({msg: 'Gatito Eliminado', gato});   
 
     } catch (error) {
-        //console.log(error);
+        (consologuearError) ? console.log(`elininarGatito (gato ${valorclave}, Error: ) -> `, error) : null;
         res.status(400).send({msg: 'Hubo un error al eliminar el gatito',error});
     };
 };
 
+// -----------------------------------
+// Fin - CRUD de la colleccion Gatitos
+// -----------------------------------
+
+
 
 
 /**
- * Muestro pagina de prueba de la api
+ * Muestro informacion de la api:
+ * Este controlador muestra una pagina con informacion de apoyo para el uso de las api de la coleccion Cats.
+ */
+ const {catInfo} = require('../PaginasJs/cats');
+ const apiCatInfo = async (req, res) => {
+     
+     try {
+         const contenido = catInfo();
+         res.send(contenido);    
+     } catch (error) {
+         res.status(400).send({msg: 'Hubo un error',error});    
+     };
+ };
+
+
+/**
+ * Muestro pagina para la prueba de la api con Axios:
+ * - Este controlador muestra una pagina con instrucciones para probar las api de la coleccion Cats.
+ *   - Se pueden probar los metodos GET, POST, PUT y DELETE 
+ *   - Se le puede pasar los valores por Params, Query, o Body
  */
  const {catPrueba} = require('../PaginasJs/catsPrueba');
  const apiCatPrueba = async (req, res) => {
@@ -290,13 +310,22 @@ const elininarGatito = async (req, res) => {
          const contenido = catPrueba();
          res.send(contenido);    
      } catch (error) {
-         res.status(400).send({msg: 'Hubo un error',error});    
+        (consologuearError) ? console.log(`apiCatPrueba, Error: ) -> `, error) : null;
+        res.status(400).send({msg: 'Hubo un error',error});    
      };
  };
  
 
+
 /**
- * Muestro pagina con el resultado de la prueba de la api
+ * Muestro pagina con el resultado de la prueba de la api por Axios.
+ * - Este controlador:
+ *      - Recibe la ruta con los datos de prueba para axios
+ *      - En la ruta hay dos parametros:
+ *          Accion: valores fijos que indican como se ejecutara axios
+ *          ListaDeValores: son los valores que utilizara accios para la prueba
+ *      - Con el valor del parametro Accion determina a travz de un swicht el metodo a ejecutar
+ *  - Este controlador devuelve a la ruta el resultado del metodo ejecutado 
  */
 function catResultado(req, res){
     //const myAction = req.params.accion;
@@ -310,7 +339,7 @@ function catResultado(req, res){
             ? req.params.accion
             : req.query.accion
         ;    
-    console.log('catResultado -> (accion): ',myAction);
+    (consologuearProceso) ? console.log('catResultado -> (accion): ',myAction) : null;
 
         const myValues = (listaDeValores) 
         ? listaDeValores 
@@ -318,7 +347,7 @@ function catResultado(req, res){
             ? req.params.listaDeValores
             : req.query.listaDeValores
         ;  
-    console.log('catResultado -> (listaDeValores): ',myValues);  
+    (consologuearProceso) ? console.log('catResultado -> (listaDeValores): ',myValues) : null;  
 
     const {TYPES} = require('../consultas/catsCrudAccion');
     const { verGatitoPorParams,
@@ -342,7 +371,7 @@ function catResultado(req, res){
         switch (myAction) {
             case TYPES.verPorParams:
                 //console.log(TYPES.verPorParams);
-                console.log('catResultado -> Buscando el contenido por Params:',TYPES.verPorParams)
+                (consologuearProceso) ? console.log('catResultado -> Buscando el contenido por Params: ',TYPES.verPorParams) : null;
                 contenido = verGatitoPorParams( myValues, 
                                                 '', 
                                                 responder = async (contenido) => { 
@@ -355,7 +384,7 @@ function catResultado(req, res){
                                                                                         res.send(respuesta);
                                                                                         return;    
                                                                                     } catch (error) {
-                                                                                        console.log('catResultado (responder) -> Error al recuperar los datos.',error);
+                                                                                        (consologuearError) ? console.log('catResultado (responder) -> Error al recuperar los datos.',error) : null;
                                                                                         res.send('Error al recuperar los datos.');
                                                                                     };
                                                                                     return;
@@ -368,7 +397,7 @@ function catResultado(req, res){
                 return;
 
             case TYPES.verPorQry:
-                console.log('catResultado -> Buscando el contenido por Qry):',TYPES.verPorQry)
+                (consologuearProceso) ? console.log('catResultado -> Buscando el contenido por Qry: ',TYPES.verPorQry) : null;
                 contenido = verGatitoPorQry(myValues, 
                                             '', 
                                             responder = async (contenido) => { 
@@ -381,7 +410,7 @@ function catResultado(req, res){
                                                             res.send(respuesta);
                                                             return;    
                                                         } catch (error) {
-                                                            console.log('catResultado (responder) -> Error al recuperar los datos.',error);
+                                                            (consologuearError) ? console.log('catResultado (responder) -> Error al recuperar los datos.',error) : null;
                                                             res.send('Error al recuperar los datos.');
                                                         };
                                                         return;
@@ -390,7 +419,7 @@ function catResultado(req, res){
                 return;                
             
             case TYPES.verPorBody:
-                console.log('catResultado -> Buscando el contenido por Body):',TYPES.verPorBody)
+                (consologuearProceso) ? console.log('catResultado -> Buscando el contenido por Body: ',TYPES.verPorBody) : null;
                 contenido = verGatitoPorBody(myValues, 
                                             '', 
                                             responder = async (contenido) => { 
@@ -403,7 +432,7 @@ function catResultado(req, res){
                                                             res.send(respuesta);
                                                             return;    
                                                         } catch (error) {
-                                                            console.log('catResultado (responder) -> Error al recuperar los datos.',error);
+                                                            (consologuearError) ? console.log('catResultado (responder) -> Error al recuperar los datos.',error) : null;
                                                             res.send('Error al recuperar los datos.');
                                                         };
                                                         return;
@@ -412,7 +441,7 @@ function catResultado(req, res){
                 return;
 
             case TYPES.creaPorParams:
-                console.log('catResultado -> Creando un nuevo gatito por Params):',TYPES.creaPorParams)
+                (consologuearProceso) ? console.log('catResultado -> Creando un nuevo gatito por Params: ',TYPES.creaPorParams) : null;
                 contenido = crearGatitoPorParams(myValues, 
                                             '', 
                                             responder = async (contenido) => { 
@@ -425,7 +454,7 @@ function catResultado(req, res){
                                                             res.send(respuesta);
                                                             return;    
                                                         } catch (error) {
-                                                            console.log('catResultado (responder) -> Error al crear los datos.',error);
+                                                            (consologuearError) ? console.log('catResultado (responder) -> Error al crear los datos.',error) : null;
                                                             res.send('Error al crear los datos.');
                                                         };
                                                         return;
@@ -434,7 +463,7 @@ function catResultado(req, res){
                 return;
 
             case TYPES.crearPorQry:
-                console.log('catResultado -> Creando un nuevo gatito por Qry):',TYPES.crearPorQry)
+                (consologuearProceso) ? console.log('catResultado -> Creando un nuevo gatito por Qry: ',TYPES.crearPorQry) : null;
                 contenido = crearGatitoPorQry(myValues, 
                                             '', 
                                             responder = async (contenido) => { 
@@ -447,7 +476,7 @@ function catResultado(req, res){
                                                             res.send(respuesta);
                                                             return;    
                                                         } catch (error) {
-                                                            console.log('catResultado (responder) -> Error al crear los datos.',error);
+                                                            (consologuearError) ? console.log('catResultado (responder) -> Error al crear los datos.',error) : null;
                                                             res.send('Error al crear los datos.');
                                                         };
                                                         return;
@@ -456,7 +485,7 @@ function catResultado(req, res){
                 return;
 
             case TYPES.crearPorBody:
-                console.log('catResultado -> Creando un nuevo gatito por Body):',TYPES.crearPorBody)
+                (consologuearProceso) ? console.log('catResultado -> Creando un nuevo gatito por Body: ',TYPES.crearPorBody) : null;
                 contenido = crearGatitoPorBody(myValues, 
                                             '', 
                                             responder = async (contenido) => { 
@@ -469,7 +498,7 @@ function catResultado(req, res){
                                                             res.send(respuesta);
                                                             return;    
                                                         } catch (error) {
-                                                            console.log('catResultado (responder) -> Error al crear los datos.',error);
+                                                            (consologuearError) ? console.log('catResultado (responder) -> Error al crear los datos.',error) : null;
                                                             res.send('Error al crear los datos.');
                                                         };
                                                         return;
@@ -478,7 +507,7 @@ function catResultado(req, res){
                 return;
 
             case TYPES.editarPorParams:
-                console.log('catResultado -> Editando un gatito por Params):',TYPES.editarPorParams)
+                (consologuearProceso) ? console.log('catResultado -> Editando un gatito por Params: ',TYPES.editarPorParams) : null;
                 contenido = editarGatitoPorParams(myValues, 
                                             '', 
                                             responder = async (contenido) => { 
@@ -491,7 +520,7 @@ function catResultado(req, res){
                                                             res.send(respuesta);
                                                             return;    
                                                         } catch (error) {
-                                                            console.log('catResultado (responder) -> Error al editar los datos.',error);
+                                                            (consologuearError) ? console.log('catResultado (responder) -> Error al editar los datos.',error) : null;
                                                             res.send('Error al editar los datos.');
                                                         };
                                                         return;
@@ -500,7 +529,7 @@ function catResultado(req, res){
                 return;
 
             case TYPES.editarPorQry:
-                console.log('catResultado -> Editando un gatito por Qry):',TYPES.editarPorQry)
+                (consologuearProceso) ? console.log('catResultado -> Editando un gatito por Qry: ',TYPES.editarPorQry) : null;
                 contenido = editarGatitoPorQry(myValues, 
                                             '', 
                                             responder = async (contenido) => { 
@@ -513,7 +542,7 @@ function catResultado(req, res){
                                                             res.send(respuesta);
                                                             return;    
                                                         } catch (error) {
-                                                            console.log('catResultado (responder) -> Error al editar los datos.',error);
+                                                            (consologuearError) ? console.log('catResultado (responder) -> Error al editar los datos.',error) : null;
                                                             res.send('Error al editar los datos.');
                                                         };
                                                         return;
@@ -522,7 +551,7 @@ function catResultado(req, res){
                 return;
 
             case TYPES.editarPorBody:
-                console.log('catResultado -> Editando un gatito por Body):',TYPES.editarPorBody)
+                (consologuearProceso) ? console.log('catResultado -> Editando un gatito por Body: ',TYPES.editarPorBody) : null;
                 contenido = editarGatitoPorBody(myValues, 
                                             '', 
                                             responder = async (contenido) => { 
@@ -535,7 +564,7 @@ function catResultado(req, res){
                                                             res.send(respuesta);
                                                             return;    
                                                         } catch (error) {
-                                                            console.log('catResultado (responder) -> Error al editar los datos.',error);
+                                                            (consologuearError) ? console.log('catResultado (responder) -> Error al editar los datos.',error) : null;
                                                             res.send('Error al editar los datos.');
                                                         };
                                                         return;
@@ -544,7 +573,7 @@ function catResultado(req, res){
                 return;
 
             case TYPES.eliminarPorParams:
-                console.log('catResultado -> Eliminando un gatito por Params):',TYPES.eliminarPorParams)
+                (consologuearProceso) ? console.log('catResultado -> Eliminando un gatito por Params: ',TYPES.eliminarPorParams) : null;
                 contenido = eliminarGatitoPorParams(myValues, 
                                             '', 
                                             responder = async (contenido) => { 
@@ -557,7 +586,7 @@ function catResultado(req, res){
                                                             res.send(respuesta);
                                                             return;    
                                                         } catch (error) {
-                                                            console.log('catResultado (responder) -> Error al eliminar los datos.',error);
+                                                            (consologuearError) ? console.log('catResultado (responder) -> Error al eliminar los datos.',error) : null;
                                                             res.send('Error al crear los datos.');
                                                         };
                                                         return;
@@ -566,7 +595,7 @@ function catResultado(req, res){
                 return;
 
             case TYPES.eliminarPorQry:
-                console.log('catResultado -> Eliminando un gatito por Qry):',TYPES.eliminarPorQry)
+                (consologuearProceso) ? console.log('catResultado -> Eliminando un gatito por Qry: ',TYPES.eliminarPorQry) : null;
                 contenido = eliminarGatitoPorQry(myValues, 
                                             '', 
                                             responder = async (contenido) => { 
@@ -579,7 +608,7 @@ function catResultado(req, res){
                                                             res.send(respuesta);
                                                             return;    
                                                         } catch (error) {
-                                                            console.log('catResultado (responder) -> Error al eliminar los datos.',error);
+                                                            (consologuearError) ? console.log('catResultado (responder) -> Error al eliminar los datos.',error) : null;
                                                             res.send('Error al eliminar los datos.');
                                                         };
                                                         return;
@@ -588,7 +617,7 @@ function catResultado(req, res){
                 return;
 
             case TYPES.eliminarPorBody:
-                console.log('catResultado -> Eliminando un gatito por Body):',TYPES.eliminarPorBody)
+                (consologuearProceso) ? console.log('catResultado -> Eliminando un gatito por Body: ',TYPES.eliminarPorBody) : null;
                 contenido = eliminarGatitoPorBody(myValues, 
                                             '', 
                                             responder = async (contenido) => { 
@@ -601,7 +630,7 @@ function catResultado(req, res){
                                                             res.send(respuesta);
                                                             return;    
                                                         } catch (error) {
-                                                            console.log('catResultado (responder) -> Error al eliminar los datos.',error);
+                                                            (consologuearError) ? console.log('catResultado (responder) -> Error al eliminar los datos.',error) : null;
                                                             res.send('Error al eliminar los datos.');
                                                         };
                                                         return;
@@ -611,11 +640,12 @@ function catResultado(req, res){
 
             default:
                 contenido='Accion desconocida.'
+                (consologuearProceso) ? console.log('catResultado -> switch default: ',contenido) : null;
                 return res.send(contenido);    
         };
         return
     } catch (error) {
-        console.log({msg: 'Hubo un error en el manejador (catResultado) en la rura /resultado...',error})
+        (consologuearError) ? console.log({msg: 'Hubo un error en el manejador (catResultado) en la rura /resultado...',error}) : null;
         res.status(400).send({msg: 'Hubo un error en el manejador (catResultado) en la rura /resultado...',error}); 
     };
 };
