@@ -1,0 +1,52 @@
+/**
+ * Cotizacion Criptomonedas 
+ * ------------------------
+
+ cryptocompare:
+
+ *  - Devuelve los datos de las 10 criptomonedas mas relevantes
+ *  - Url: https://min-api.cryptocompare.com/data/top/mktcapfull?limit=10&tsym=USD 
+ *  - resultado.data.Data
+ *  <ResultadoDiv>
+ *           <Precio>El precio es: <span>{resultado.PRICE}</span> </Precio>
+ *           <Info>Precio más alto del día: <span>{resultado.HIGHDAY}</span> </Info>
+ *           <Info>Precio más bajo del día: <span>{resultado.LOWDAY}</span> </Info>
+ *           <Info>Variación últimas 24 horas: <span>{resultado.CHANGEPCT24HOUR}</span> </Info>
+ *           <Info>Última Actualización: <span>{resultado.LASTUPDATE}</span> </Info>
+ *   </ResultadoDiv>
+ *
+ *
+ *  Binance:
+
+ *  https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT
+ *
+ * BTCUSDT, ETHUSDT, ADAUSDT, ATOMUSDT, NEOUSDT, LINKUSDT, DAIUSDT
+* ICXUSDT
+* XTZUSDT
+* ZILUSDT
+* ICXUSDT
+ *
+ *
+ * Valor del Dolar en Argentina
+ * ----------------------------
+ *  - Url: https://api.bluelytics.com.ar/v2/latest
+ * 
+ * Clima:
+ * -----
+ *  - pais = ("US":Estados Unidos,"MX":México,"AR":Argentina;"CO">Colombia,"CR":Costa Rica:"ES":España,"PE":Perú)
+ *  - Url: http://api.openweathermap.org/data/2.5/weather?q=${ciudad},${pais}&appid=${appId}  
+ *  - Url: http://api.openweathermap.org/data/2.5/weather?q=${ciudad},${pais}&appid=${appId}
+ *  - Valores: temperatura { parseFloat( main.temp - kelvin, 10 ).toFixed(2) }
+ *              Temperatura Máxima: { parseFloat( main.temp_max - kelvin, 10 ).toFixed(2) }
+ *              Temperatura Minima: { parseFloat( main.temp_min - kelvin, 10 ).toFixed(2) }
+ *              // Grados kelvin: const kelvin = 273.15;
+ *
+ * Noticias:
+ * ---------
+ *  - Url: https://github.com/juanpablogdl/noticias_react               
+ * 
+ * */
+
+
+
+

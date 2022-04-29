@@ -1,3 +1,8 @@
+// En Desarrollo
+// Proposito: Normalizar (estandarizar) las respuestas en los response de catsCrudHandler
+
+
+
 //async await
 function responder(err, req, res, contenido) { 
     try {

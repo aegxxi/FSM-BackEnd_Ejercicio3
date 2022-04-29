@@ -22,12 +22,13 @@ app.use(cors());            // Controlo dede donde pueden venir las peticiones
 const indexRouter = require('./routes/index');
 const catsRouter = require('./routes/cats');
 const usersRouter = require('./routes/users');
+const externasRouter = require('./routes/externas');
 
 // Declaro rutas
 app.use('/', indexRouter);
 app.use('/api/cats', catsRouter);
 app.use('/api/usuarios', usersRouter);
-
+app.use('/api/externas', externasRouter);
 
 // Conecto la base de datos
 const  {conectarDB } = require('./db/db');

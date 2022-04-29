@@ -3,46 +3,11 @@ const router = express.Router();
 const { check } = require('express-validator');
 const { apiCatInfo, apiCatPrueba, catResultado, vistaGatitos, verUnGatito, crearGatito, editarGatito, elininarGatito } = require('../controllers/catController.js');
 
-/**
- *  GET 
- *  Mostrar Info de la api
- *  Ruta: /api/cats
- * */
-// 
-router.get('/', apiCatInfo);
 
 
-/**
- *  GET 
- *  Probar la api
- *  Ruta: /api/cats
- * */
-// 
-router.get('/prueba', apiCatPrueba);
-
-
-/**
- *  GET (Por Params)
- *  Mostrar Resultado de la prueba de la api
- *  Ruta: /api/cats
- * */
-// 
-router.get('/resultado/:accion/:listaDeValores', catResultado);
-
-
-/**
- *  GET (Por Qry o Body)
- *  Mostrar Resultado de la prueba de la api
- *  Ruta: /api/cats
- * */
-// 
-router.get('/resultado', catResultado);
-
-
-
-// Rutas para el CRUD.
-// ------------------
-
+// ----------------------------
+// Inicio - Rutas para el CRUD.
+// ----------------------------
 
 /**
  * Get Obtener un gatito por id  (Por Parametro)
@@ -148,6 +113,70 @@ router.delete('/eliminar',
             ],  
             elininarGatito
             ); 
+
+// ----------------------------
+// Fin - Rutas para el CRUD.
+// ----------------------------
+
+
+
+
+// ------------------------------------------------------------------
+// Inicio - Rutas para Informacion sobre las api de la coleccion Cat.
+// ------------------------------------------------------------------
+
+/**
+ *  GET 
+ *  Mostrar Info de la api
+ *  Ruta: /api/cats
+ * */
+// 
+router.get('/', apiCatInfo);
+
+// ---------------------------------------------------------------
+// Fin - Rutas para Informacion sobre las api de la coleccion Cat.
+// ---------------------------------------------------------------
+
+
+
+// ----------------------------------------------------------------------
+// Inicio - Rutas para el uso de Axios sobre las api de la coleccion Cat.
+// ----------------------------------------------------------------------
+
+/**
+ *  GET 
+ *  Probar la api 
+ *  Esta ruta muestra la informacion que se necesita para crear las rutas
+ *  que pueden ser utilizadas para trabajar con el CRUD de la coleccion Cats
+ *  usando Axios.
+ *  Ruta: /api/cats
+ * */
+// 
+router.get('/prueba', apiCatPrueba);
+
+
+/**
+ *  GET (Por Params)
+ *  llamar a el procedimiento Axios que sera ejecutado
+ *  Esta ruta define que procedimiento axis sera ejecutado y con que valores.
+ *  Ruta: /api/cats
+ * */
+// 
+router.get('/resultado/:accion/:listaDeValores', catResultado);
+
+
+/**
+ *  GET (Por Qry o Body)
+ *  Mostrar Resultado de la prueba de la api
+ *  Esta ruta muestra el resultado del procedimiento Axios llamado 
+ *  Ruta: /api/cats
+ * */
+// 
+router.get('/resultado', catResultado);
+
+// -------------------------------------------------------------------
+// Fin - Rutas para el uso de Axios sobre las api de la coleccion Cat.
+// -------------------------------------------------------------------
 
 
 module.exports = router;

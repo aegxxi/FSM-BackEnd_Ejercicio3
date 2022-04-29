@@ -24,6 +24,8 @@ const estilos=`<style>
                     }
 
                   h2 {color:lawngreen;}
+                  h3 {color:lawngreen;}
+                  h4 {color:lawngreen;}
                   
                   p {
                       color:aquamarine;

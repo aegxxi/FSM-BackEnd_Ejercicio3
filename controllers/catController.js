@@ -12,9 +12,6 @@ const consologuearProceso = true;
 const consologuearError = true;
 
 
-
-
-
 // --------------------------------------
 // Inicio - CRUD de la colleccion Gatitos
 // --------------------------------------
@@ -182,8 +179,8 @@ const editarGatito = async (req, res) => {
         ;  
     (consologuearProceso) ? console.log(`editarGatito (valorNombre) -> ${valorNombre}`) : null;
 
-        let gato;
-        let editarGato;
+    let gato;
+    let editarGato;
 
     try {
         // Verificar si no se paso el id del gatito a bucar.
@@ -643,7 +640,7 @@ function catResultado(req, res){
                 (consologuearProceso) ? console.log('catResultado -> switch default: ',contenido) : null;
                 return res.send(contenido);    
         };
-        return
+        return;
     } catch (error) {
         (consologuearError) ? console.log({msg: 'Hubo un error en el manejador (catResultado) en la rura /resultado...',error}) : null;
         res.status(400).send({msg: 'Hubo un error en el manejador (catResultado) en la rura /resultado...',error}); 
