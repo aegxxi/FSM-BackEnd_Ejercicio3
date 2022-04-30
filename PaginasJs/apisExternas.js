@@ -117,17 +117,17 @@ function Info() {
                         </li>
                         <li>
                             <p><b>Consulta por valores del Dolar Oficial </b></p>
-                            <p>${tab}Uri:${b}<i>""http://localhost:${srvPuerto}/api/externas/resultado/DOLAR_OFICIAL_HOY" </i>${b}
+                            <p>${tab}Uri:${b}<i>"http://localhost:${srvPuerto}/api/externas/resultado/DOLAR_OFICIAL_HOY" </i>${b}
                                 <a href="http://localhost:${srvPuerto}/api/externas/resultado/DOLAR_OFICIAL_HOY" target="_blank">Consultar</a></p>
                         </li>
                         <li>
                             <p><b>Consulta por valores del Dolar Blue </b></p>
-                            <p>${tab}Uri:${b}<i>""http://localhost:${srvPuerto}/api/externas/resultado/DOLAR_BLUE_HOY" </i>${b}
+                            <p>${tab}Uri:${b}<i>"http://localhost:${srvPuerto}/api/externas/resultado/DOLAR_BLUE_HOY" </i>${b}
                                 <a href="http://localhost:${srvPuerto}/api/externas/resultado/DOLAR_BLUE_HOY" target="_blank">Consultar</a></p>
                         </li>
                         <li>
                             <p><b>Consulta por valores del Euro </b></p>
-                            <p>${tab}Uri:${b}<i>""http://localhost:${srvPuerto}/api/externas/resultado/EURO_HOY" </i>${b}
+                            <p>${tab}Uri:${b}<i>"http://localhost:${srvPuerto}/api/externas/resultado/EURO_HOY" </i>${b}
                                 <a href="http://localhost:${srvPuerto}/api/externas/resultado/EURO_HOY" target="_blank">Consultar</a></p>
                         </li>
                       </ul> 
@@ -137,9 +137,14 @@ function Info() {
                       <p><b>${tab}Proposito general:</b>${b} Obtener las cotizaciones de las principales Criptomonedas hoy.</p>
                       <ul>
                         <li>
-                            <p><b>Ejemplo Url de las Api CriptosHoy  </b></p>
-                            <p>${tab}Uri:${b}<i>"https://min-api.cryptocompare.com/data/top/mktcapfull?limit=10&tsym=USD" </i>${b}
-                                <a href="https://min-api.cryptocompare.com/data/top/mktcapfull?limit=10&tsym=USD " target="_blank">Ver</a></p>
+                            <p><b>Lista de las Criptomonedas disponibles  </b></p>
+                            <p>${tab}Uri:${b}<i>"http://localhost:${srvPuerto}/api/externas/resultado/CRIPTO_LISTA_MONEDAS" </i>${b}
+                                <a href="http://localhost:${srvPuerto}/api/externas/resultado/CRIPTO_LISTA_MONEDAS" target="_blank">Consultar</a></p>
+                        </li>
+                        <li>
+                            <p><b>Cotizacion de Criptomoneda  </b></p>
+                            <p>${tab}Uri:${b}<i>"http://localhost:${srvPuerto}/api/externas/resultado/CRIPTO_HOY/{"token": "BTC", "moneda": "USD"}" </i>${b}
+                                <a href="!#" target="_blank">Consultar</a></p>
                         </li>
                       </ul> 
                       ${saltoLinea}

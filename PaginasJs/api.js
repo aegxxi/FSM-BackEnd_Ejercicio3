@@ -105,6 +105,18 @@ function Info() {
                         </li>
                       </ul> 
                       ${saltoLinea}
+                      <h3>
+                        Consultas a api externas (axios):
+                      </h3>
+                      <p><b>${tab}Proposito general:</b>${b} Consultar apis externas y devolver valores especificos.</p>
+                      <ul>
+                        <li>
+                            <p><b>Documentacion de las Api de consultas a apis externas  </b></p>
+                            <p>${tab}Uri:${b}<i>"http://localhost:${srvPuerto}/api/externas" </i>${b}
+                                <a href="http://localhost:${srvPuerto}/api/externas" target="_blank">Ver</a></p>
+                        </li>
+                      </ul> 
+                      ${saltoLinea}
                       ${saltoLinea} 
                       <p class="firma">
                       ${dA}Ejercicio realizado por: <b>Andres Eduardo Garcia </b>

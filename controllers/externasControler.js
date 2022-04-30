@@ -60,7 +60,9 @@ const dA = '&#174;'             // Derechos de Autor
     const { 
             dolarOficialHoy,
             dolarBlueHoy,
-            euroHoy
+            euroHoy,
+            criptoHoy,
+            criptoListaMonedas
         } = require('../consultas/consultasAxiosExternasHandler');
     
     let contenido = {};
@@ -148,28 +150,71 @@ const dA = '&#174;'             // Derechos de Autor
                                     );
                 return;                
             
-            case TYPES.btcHoy:
-                (consologuearProceso) ? console.log('extResultado -> Buscando el contenido por Body: ',TYPES.verPorBody) : null;
-                contenido = verGatitoPorBody(myValues, 
-                                            '', 
-                                            responder = async (contenido) => { 
-                                                        try {
-                                                            let respuesta = '';                        
-                                                            //console.log('callback-Responder,data -> ',contenido.data);
-                                                            respuesta = await `Id: ${contenido.data.gato._id}, Nombre: ${contenido.data.gato.name}`;
-                                                            //console.log('callback-Responder, id -> ',contenido.data.gato._id);
-                                                            //console.log('callback-Responder, name -> ',contenido.data.gato.name);
-                                                            res.send(respuesta);
-                                                            return;    
-                                                        } catch (error) {
-                                                            (consologuearError) ? console.log('extResultado (responder) -> Error al recuperar los datos.',error) : null;
-                                                            res.send('Error al recuperar los datos.');
-                                                        };
-                                                        return;
-                                                        }
-                                            );
-                return;
+            case TYPES.criptoListaMonedas:
+                (consologuearProceso) ? console.log('extResultado -> Buscando el contenido: ',TYPES.criptoListaMonedas) : null;
+                contenido = criptoListaMonedas( 
+                                                '', 
+                                                responder = async (contenido) => { 
+                                                            try {
+                                                                let respuesta = {};                        
+                                                                //console.log('callback-Responder,data -> ',contenido.data);
+                                                                                                                            /** 
+                                                                 * key = contenido.Data.CoinInfo.Id 
+                                                                 * Token = contenido.Data.CoinInfo.Name
+                                                                 * Nombre = contenido.Data.CoinInfo.FullName 
+                                                                 * */
 
+                                                                //console.log('extResultado (callback-Responder) -> ',contenido)
+
+                                                                //respuesta = await `Moneda: ${saltoLinea}${saltoLinea} ${tab}key: ${contenido.Data[1].CoinInfo.Id}, Token: ${contenido.Data[1].CoinInfo.Name}, Nombre: ${contenido.Data[1].CoinInfo.FullName }${saltoLinea}`   
+                                                                respuesta = await contenido.Data.map(moneda => (moneda.CoinInfo.Name + ',   ->   ' + moneda.CoinInfo.FullName));
+
+                                                                //console.log('callback-Responder, id -> ',contenido.data.gato._id);
+                                                                //console.log('callback-Responder, name -> ',contenido.data.gato.name);
+                                                                res.send(respuesta);
+                                                                return;    
+                                                            } catch (error) {
+                                                                (consologuearError) ? console.log('extResultado (responder) -> Error al recuperar los datos.',error) : null;
+                                                                res.send('Error al recuperar los datos.');
+                                                            };
+                                                            return;
+                                                            }
+                                                );
+                return;
+            
+                case TYPES.criptoHoy:
+                    (consologuearProceso) ? console.log('extResultado -> Buscando el contenido por Body: ',TYPES.criptoHoy) : null;
+                    contenido = criptoHoy(myValues, 
+                                                '', 
+                                                responder = async (contenido) => { 
+                                                            try {
+                                                                let respuesta = '';
+                                                                console.log('extResultado (callback-Responder) -> ',contenido)                        
+
+                                                                /** 
+                                                                 * key = contenido.CoinInfo.Id 
+                                                                 * Token = contenido.CoinInfo.Name
+                                                                 * Nombre = contenido.CoinInfo.FullName 
+                                                                 * */
+                                                                respuesta = await `Cotizacion: ${saltoLinea}${saltoLinea}` +
+                                                                                  `${tab}El precio es: ${contenido.PRICE} ${saltoLinea}` +
+                                                                                  `${tab}Precio más alto del día: ${contenido.HIGHDAY} ${saltoLinea}` + 
+                                                                                  `${tab}Precio más bajo del día: ${contenido.LOWDAY} ${saltoLinea}`  +
+                                                                                  `${tab}Variación últimas 24 horas: ${contenido.CHANGEPCT24HOUR} ${saltoLinea}` +
+                                                                                  `${tab}Última Actualización: ${contenido.LASTUPDATE} ${saltoLinea}`
+
+                                                                //console.log('callback-Responder, id -> ',contenido.data.gato._id);
+                                                                //console.log('callback-Responder, name -> ',contenido.data.gato.name);
+                                                                res.send(respuesta);
+                                                                return;    
+                                                            } catch (error) {
+                                                                (consologuearError) ? console.log('extResultado (responder) -> Error al recuperar los datos.',error) : null;
+                                                                res.send('Error al recuperar los datos.');
+                                                            };
+                                                            return;
+                                                            }
+                                                );
+                    return;
 
             default:
                 contenido='Accion desconocida.'

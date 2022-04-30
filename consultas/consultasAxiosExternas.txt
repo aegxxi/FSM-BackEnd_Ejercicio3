@@ -5,20 +5,36 @@
  cryptocompare:
 
  *  - Devuelve los datos de las 10 criptomonedas mas relevantes
- *  - Url: https://min-api.cryptocompare.com/data/top/mktcapfull?limit=10&tsym=USD 
+ *
+ *  - Monedas ej: 
+        codigo: 'USD', nombre: 'Dolar de Estados Unidos'
+        codigo: 'MXN', nombre: 'Peso Mexicano'
+        codigo: 'EUR', nombre: 'Euro'
+        codigo: 'GBP', nombre: 'Libra Esterlina'
+ *  - Url: 
+ *           https://min-api.cryptocompare.com/data/top/mktcapfull?limit=10&tsym=USD 
+ *           
+ *  - Datos:
+ *          key={resultado.CoinInfo.Id} value={resultado.CoinInfo.Name}>{resultado.CoinInfo.FullName}
+ *
  *  - resultado.data.Data
- *  <ResultadoDiv>
- *           <Precio>El precio es: <span>{resultado.PRICE}</span> </Precio>
- *           <Info>Precio más alto del día: <span>{resultado.HIGHDAY}</span> </Info>
- *           <Info>Precio más bajo del día: <span>{resultado.LOWDAY}</span> </Info>
- *           <Info>Variación últimas 24 horas: <span>{resultado.CHANGEPCT24HOUR}</span> </Info>
- *           <Info>Última Actualización: <span>{resultado.LASTUPDATE}</span> </Info>
- *   </ResultadoDiv>
+ *
+ *  - Devuelve una cotizacion
+ *  - Url:
+ *          https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${criptomoneda}&tsyms=${moneda}`;
  *
  *
- *  Binance:
-
- *  https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT
+ *           El precio es: resultado.PRICE
+ *           Precio más alto del día: resultado.HIGHDAY
+ *           Precio más bajo del día:resultado.LOWDAY
+ *           Variación últimas 24 horas: resultado.CHANGEPCT24HOUR
+ *           Última Actualización: resultado.LASTUPDATE
+ *
+ *
+ Binance:
+ *  - Devuelve una cotizacion
+ *  - Url:
+ *          https://api.binance.com/api/v3/ticker/price?symbol=BTCUSDT
  *
  * BTCUSDT, ETHUSDT, ADAUSDT, ATOMUSDT, NEOUSDT, LINKUSDT, DAIUSDT
 * ICXUSDT
