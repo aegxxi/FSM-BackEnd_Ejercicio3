@@ -87,7 +87,7 @@ const myhandler = {
     return(resultado);
   }
 
-}
+};
 
 module.exports = myhandler;
 

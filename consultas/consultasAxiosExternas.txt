@@ -2,34 +2,6 @@
  * Cotizacion Criptomonedas 
  * ------------------------
 
- cryptocompare:
-
- *  - Devuelve los datos de las 10 criptomonedas mas relevantes
- *
- *  - Monedas ej: 
-        codigo: 'USD', nombre: 'Dolar de Estados Unidos'
-        codigo: 'MXN', nombre: 'Peso Mexicano'
-        codigo: 'EUR', nombre: 'Euro'
-        codigo: 'GBP', nombre: 'Libra Esterlina'
- *  - Url: 
- *           https://min-api.cryptocompare.com/data/top/mktcapfull?limit=10&tsym=USD 
- *           
- *  - Datos:
- *          key={resultado.CoinInfo.Id} value={resultado.CoinInfo.Name}>{resultado.CoinInfo.FullName}
- *
- *  - resultado.data.Data
- *
- *  - Devuelve una cotizacion
- *  - Url:
- *          https://min-api.cryptocompare.com/data/pricemultifull?fsyms=${criptomoneda}&tsyms=${moneda}`;
- *
- *
- *           El precio es: resultado.PRICE
- *           Precio más alto del día: resultado.HIGHDAY
- *           Precio más bajo del día:resultado.LOWDAY
- *           Variación últimas 24 horas: resultado.CHANGEPCT24HOUR
- *           Última Actualización: resultado.LASTUPDATE
- *
  *
  Binance:
  *  - Devuelve una cotizacion

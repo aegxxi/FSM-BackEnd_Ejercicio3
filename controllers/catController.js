@@ -346,6 +346,12 @@ function catResultado(req, res){
         ;  
     (consologuearProceso) ? console.log('catResultado -> (listaDeValores): ',myValues) : null;  
 
+    // Valido el parametro lista de valores.
+    if (myValues && !IsJsonString(myValues)) {
+        res.send({msg: "Los valores pasados en el parametro 'listaDeValores' no son validos. "} );
+        return;    
+    };
+
     const {TYPES} = require('../consultas/catsCrudAccion');
     const { verGatitoPorParams,
             verGatitoPorQry,
@@ -648,6 +654,24 @@ function catResultado(req, res){
 };
 
 
+
+
+//---------------------------------------------------
+// Inicio - Funciones Auxiliares para la validaciones
+//---------------------------------------------------
+
+function IsJsonString(str) {
+    try {
+      var json = JSON.parse(str);
+      return (typeof json === 'object');
+    } catch (e) {
+      return false;
+    };
+  };
+
+//------------------------------------------------
+// Fin - Funciones Auxiliares para la validaciones
+//------------------------------------------------
 
 
 
