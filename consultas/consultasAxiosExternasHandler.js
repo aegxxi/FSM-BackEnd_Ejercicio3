@@ -12,13 +12,6 @@ const consologuearProcesos = true;
 
 
 /** 
- * dolarHoy,
- * euroHoy,
- * criptoHoy,
- * criptoListaMonedas
- * */
-
-/** 
  * Funcion: consultaBlueLytics
  * Obtener los valores del Dolar y el Euro desde la api:
  * https://api.bluelytics.com.ar/v2/latest
@@ -148,6 +141,48 @@ const consologuearProcesos = true;
     return (contenido.data.DISPLAY);
 }
 
+/** 
+ * Funcion: consultaBinanceCotizacion
+ * Obtener los valores del Dolar y el Euro desde la api:
+ * https://min-api.cryptocompare.com/data/pricemultifull?fsyms=BTC&tsyms=USD
+ */
+ const consultaBinanceCotizacion = async (srvUri = mySrvUri, par = "BTCUSDT") => {
+
+    const consologuearValorRetornado = true//consologuearValoresRetornados;
+    const consologuearErrorAxios = true //consologuearErroresAxios;
+
+    /* (srvUri) 
+    ? (srvUri.length<9)
+        ? srvUri=mySrvUri
+        :  srvUri= srvUri
+    : srvUri=mySrvUri
+    ; */
+    
+    let url = `https://api.binance.com/api/v3/ticker/price?symbol=${par}`;
+
+    let contenido;
+
+    try {
+        //contenido = await axios.get(url ,myBody , { timeout: 10000 } );
+        contenido = await axios.get(url, { timeout: 10000 } );    
+    } catch (error) {
+        (consologuearErrorAxios) ? console.log('consultaBinanceCotizacion -> Error al recuperar los datos.',error) : null; 
+        (!contenido)
+            ? contenido = {msg: "Axios no pudo recuperar los datos"}
+            : null
+    };
+    
+    (consologuearValorRetornado) 
+        ? console.log('consultaBinanceCotizacion -> (contenido): ', contenido.data) 
+        : null;    
+    
+    //responder(contenido.data);
+    //return(contenido.data);
+    return (contenido.data);
+};
+
+
+
 
 
 //------------------------------------------------------------
@@ -264,13 +299,13 @@ const consologuearProcesos = true;
 }
 
 /** 
- * Obtener la lista de monedas de Cryptocompare
+ * Obtener la cotizacion de monedas de Cryptocompare
  * api/externas
  * Dependencias (Funciones): consultaCryptocompareMonedas
  */
  const criptoHoy = async (listaValores, srvUri = mySrvUri, responder ) => {
 
-    const consologuearValorRetornado = false //consologuearValoresRetornados;
+    const consologuearValorRetornado = consologuearValoresRetornados;
     const consologuearProceso = consologuearProcesos;
 
     (srvUri) 
@@ -292,18 +327,65 @@ const consologuearProcesos = true;
     const moneda = mylistaValores.moneda;
     (consologuearProceso) ? console.log(`criptoHoy (moneda): `, moneda) : null;
 
-    const contenido = await consultaCryptocompareCotizacion('', criptoToken, moneda);
-    //const contenido = await consultaCryptocompareCotizacion('');
+    // Si criptoToken es undefine le asigno el valor por omisiom 'BTC'
+    (!criptoToken) ? criptoToken = 'BTC' : null;
     
+    // Si moneda es undefine le asigno el valor por omisiom 'USD'
+    (!moneda) ? moneda = 'USD' : null;
 
+    // Busco la cotizacion
+    const contenido = await consultaCryptocompareCotizacion('', criptoToken, moneda);
+    
     (consologuearValorRetornado) 
-        ? console.log('criptoListaMonedas -> (contenido): ', contenido[criptoToken][moneda]) 
+        ? console.log('criptoHoy -> (contenido): ', contenido[criptoToken][moneda]) 
         : null; 
 
     responder(contenido[criptoToken][moneda]);
     //responder(contenido);
     return;
 }
+
+
+/** 
+ * Obtener la cotizacion de monedas de Binance
+ * api/externas
+ * Dependencias (Funciones): consultaBinanceCotizacion
+ */
+const binanceHoy = async (listaValores, srvUri = mySrvUri, responder ) => {
+
+    const consologuearValorRetornado = true //consologuearValoresRetornados;
+    const consologuearProceso = true    //consologuearProcesos;
+
+    /* (srvUri) 
+    ? (srvUri.length<9)
+        ? srvUri=mySrvUri
+        :  srvUri= srvUri
+    : srvUri=mySrvUri
+    ; */
+    
+    let mylistaValores; 
+    mylistaValores = decodeURIComponent(listaValores);                  // Reemplazo caracteres %x de la url por caracteres equivalentes
+    mylistaValores = JSON.parse(mylistaValores);                        // parseo el string como objeto Json
+    (consologuearProceso) ? console.log(`binanceHoy (listaValores)-> ${mylistaValores}`) : null;
+    (consologuearProceso) ? console.log(`binanceHoy (listaValores-Objeto): `, mylistaValores) : null;
+
+    const par = mylistaValores.par;
+    (consologuearProceso) ? console.log(`binanceHoy (par): `, par) : null;
+
+    // Si par es undefine le asigno el valor por omisiom 'BTC'
+    (!par) ? par = 'BTCUSDT' : null;
+    
+    // Busco la cotizacion
+    const contenido = await consultaBinanceCotizacion('', par);
+    
+    (consologuearValorRetornado) 
+        ? console.log('binanceHoy -> (contenido): ', contenido) 
+        : null; 
+
+    responder(contenido);
+    //responder(contenido);
+    return;
+};
 
 //------------------------------------------------------------
 // Fin - Funciones llamadas por funcion controladora:
@@ -312,13 +394,32 @@ const consologuearProcesos = true;
 
 
 
+//---------------------------------------------------
+// Inicio - Funciones Auxiliares para la validaciones
+//---------------------------------------------------
+
+function IsJsonString(str) {
+    try {
+      var json = JSON.parse(str);
+      return (typeof json === 'object');
+    } catch (e) {
+      return false;
+    };
+  };
+
+//------------------------------------------------
+// Fin - Funciones Auxiliares para la validaciones
+//------------------------------------------------
+
+
 module.exports = 
                 {
                     dolarOficialHoy,
                     dolarBlueHoy,
                     euroHoy,
                     criptoListaMonedas,
-                    criptoHoy
+                    criptoHoy,
+                    binanceHoy
                 }
 
 
