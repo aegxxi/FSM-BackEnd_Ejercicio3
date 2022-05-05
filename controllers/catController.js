@@ -2,14 +2,15 @@ const {Cat} = require('../models/model');
 const { validationResult } = require('express-validator');
 //const {responder} =require('../consultas/catsCrudResponse')
 
-/* const vistaInicio = (req, res) => {
-    res.render('index', { title: 'Express' });
-} */
+
+// Defino que envio a la consola (Global)
+let consologuearProcesos = true;
+let consologuearErrores = true;
+// (Local), en cada controlador se puede usar el valor global, o definir el valor 
+    // const consologuearProceso = consologuearProcesos;   //Valores (true, false) PorDefecto = consologuearProcesos
+    // const consologuearError = consologuearErrores;      //Valores (true, false) PorDefecto = consologuearErrores
 
 
-//Defino que envio a la consola
-const consologuearProceso = true;
-const consologuearError = true;
 
 
 // --------------------------------------
@@ -20,11 +21,33 @@ const consologuearError = true;
  * Muestro todos los gatitos
  */
 const vistaGatitos = async (req, res) => {
+    // Defino que envio a la consola (Local)
+    const consologuearProceso = consologuearProcesos;   //Valores (true, false) PorDefecto = consologuearProcesos 
+    const consologuearError = consologuearErrores;      //Valores (true, false) PorDefecto = consologuearErrores
+    // Defino y consologueo el controlador en uso
+    const controladorEnUso= 'vistaGatitos';
+    (consologuearProceso) ? console.log(`* Controlador: ${controladorEnUso}...`) : null;
+
+    //consologueo los valores recibidos
+    (consologuearProceso) ? console.log(`${controladorEnUso} (req.params) ->`,req.params) : null;
+    (consologuearProceso) ? console.log(`${controladorEnUso} (req.query) ->`,req.query) : null;
+    (consologuearProceso) ? console.log(`${controladorEnUso} (req.body) ->`,req.body) : null;
+
     try {
-        const gatitos = await Cat.find();
-        res.status(200).json({gatitos});    
+        (consologuearProceso) ? console.log(`${controladorEnUso} Busco todos los gatitos (con find)...`) : null;
+        
+        const gatitos = await Cat.find();   // Busco todos los gatitos
+
+        // Verifico si encotre gatitos y consologueo resultado si corresponde
+        if (gatitos) {
+            (consologuearProceso) ? console.log(`${controladorEnUso} ${gatitos.length} gatitos encontrados`) : null;
+        } else {
+            (consologuearProceso) ? console.log(`${controladorEnUso} No se encontraron gatitos`) : null;
+        };
+
+        res.status(200).json({gatitos});    // Devuelvo todos los gatitos encontrados
     } catch (error) {
-        (consologuearError) ? console.log(`vistaGatitos, Error: ) -> `, error) : null;
+        (consologuearError) ? console.log(`${controladorEnUso}, Error: ) -> `, error) : null;
         res.status(400).send({msg: 'Hubo un error al mostrar los gatitos',error});          
     };   
 };
@@ -34,10 +57,17 @@ const vistaGatitos = async (req, res) => {
  * Muestro un gatito
  */
 const verUnGatito = async (req, res) => {
+    // Defino que envio a la consola (Local)
+    const consologuearProceso = consologuearProcesos;   //Valores (true, false) PorDefecto = consologuearProcesos 
+    const consologuearError = consologuearErrores;      //Valores (true, false) PorDefecto = consologuearErrores
+    // Defino y consologueo el controlador en uso
+    const controladorEnUso= 'verUnGatito';
+    (consologuearProceso) ? console.log(`* Controlador: ${controladorEnUso}...`) : null;
+
     //consologueo los valores recibidos
-    (consologuearProceso) ? console.log('verUnGatito (req.params) ->',req.params) : null;
-    (consologuearProceso) ? console.log('verUnGatito (req.query) ->',req.query) : null;
-    (consologuearProceso) ? console.log('verUnGatito (req.body) ->',req.body) : null;
+    (consologuearProceso) ? console.log(`${controladorEnUso} (req.params) ->`,req.params) : null;
+    (consologuearProceso) ? console.log(`${controladorEnUso} (req.query) ->`,req.query) : null;
+    (consologuearProceso) ? console.log(`${controladorEnUso} (req.body) ->`,req.body) : null;
 
     // extraer id del body (es elidentificador unico)
     const { _id } = req.body;
@@ -50,11 +80,11 @@ const verUnGatito = async (req, res) => {
             ? req.params.id
             : req.query.id
         ;  
-        (consologuearProceso) ? console.log(`verUnGatito (valorClave) -> ${valorClave}`) : null;
+    (consologuearProceso) ? console.log(`${controladorEnUso} (valorClave) -> ${valorClave}`) : null;
 
     // si no se recuperaron datos de la ruta termino el proceso
     if (!valorClave) {
-        (consologuearProceso) ? console.log(`verUnGatito (valorClave) -> ${valorClave} . No se recuperaron datos de Params. Query, o Body`) : null;
+        (consologuearProceso) ? console.log(`${controladorEnUso} (valorClave) -> ${valorClave} . No se recuperaron datos de Params. Query, o Body`) : null;
         return res.status(400).json({ msg: 'No se recuperaron datos de Params. Query, o Body' });
     }
 
@@ -78,13 +108,13 @@ const verUnGatito = async (req, res) => {
         
         //Busco gatipo (por su id), si gato resulta vacio rompe por el catch
         gato = await Cat.findById(valorClave);
-        (consologuearProceso) ? console.log(`verUnGatito (gato ${valorClave}) -> ${gato}`) : null;
+        (consologuearProceso) ? console.log(`${controladorEnUso} (gato ${valorClave}) -> ${gato}`) : null;
         
         res.status(200).json({msg: 'Gatito encontrado', gato}); 
         
     } catch (error) {
-        (consologuearError) ? console.log(`verUnGatito (gato ${valorClave}, Error: ) -> `, error) : null;
-        res.status(400).send({msg: 'verUnGatito -> Hubo un error al buscar el gatito, o el gattito no se encuentra en la base',error});      
+        (consologuearError) ? console.log(`${controladorEnUso} (gato ${valorClave}, Error: ) -> `, error) : null;
+        res.status(400).send({msg: `Hubo un error al buscar el gatito, o el gattito no se encuentra en la base`,error});      
     };
 };
 
@@ -93,10 +123,17 @@ const verUnGatito = async (req, res) => {
  * Creo un gatito nuevo
  */
 const crearGatito = async (req, res) => {
+    // Defino que envio a la consola (Local)
+    const consologuearProceso = consologuearProcesos;   //Valores (true, false) PorDefecto = consologuearProcesos 
+    const consologuearError = consologuearErrores;      //Valores (true, false) PorDefecto = consologuearErrores
+    // Defino y consologueo el controlador en uso
+    const controladorEnUso= 'crearGatito';
+    (consologuearProceso) ? console.log(`* Controlador: ${controladorEnUso}...`) : null;
+    
     //consologueo los valores recibidos
-    (consologuearProceso) ? console.log('crearGatito (req.params) ->',req.params) : null;
-    (consologuearProceso) ? console.log('crearGatito (req.query) ->',req.query) : null;
-    (consologuearProceso) ? console.log('crearGatito (req.body) ->',req.body) : null;
+    (consologuearProceso) ? console.log(`${controladorEnUso} (req.params) ->`,req.params) : null;
+    (consologuearProceso) ? console.log(`${controladorEnUso} (req.query) ->`,req.query) : null;
+    (consologuearProceso) ? console.log(`${controladorEnUso} (req.body) ->`,req.body) : null;
 
     // extraer name del body (es un identificador unico en este caso)
     const { name } = req.body;
@@ -108,7 +145,7 @@ const crearGatito = async (req, res) => {
             ? req.params.name
             : req.query.name
         ;  
-    (consologuearProceso) ? console.log(`crearGatito (nameGato) -> ${nameGato}`) : null;
+    (consologuearProceso) ? console.log(`${controladorEnUso} (nameGato) -> ${nameGato}`) : null;
 
     try {
         // Verificar si no se paso el name del gatito a bucar.
@@ -117,7 +154,9 @@ const crearGatito = async (req, res) => {
         };
         
         // Verificar si se paso el name en el body
+        //  - Comprobar si hay errores de Express-Validator con validationResult
         if (name) {
+            (consologuearProceso) ? console.log(`${controladorEnUso} Comprobando con Express-Validator si se paso por body...`) : null;
             // Revisar si hay errores en el body
             const errores = validationResult(req);
             //console.log(errores);
@@ -126,24 +165,50 @@ const crearGatito = async (req, res) => {
                 return res.status(400).json({errores: errores.array() });
             };    
         }; 
-           
-        // Revisar que el gatito registrado sea unico 
-        (consologuearProceso) ? console.log(`crearGatito (Completando kitty si el gato '${nameGato}' existe):`) : null;
-        let kitty = await Cat.findOne({ nameGato });
-        (consologuearProceso) ? console.log('crearGatito (kitty) ->',kitty) : null;
-
-        if(kitty && kitty==nameGato) {
-            return res.json({ msg: 'El gattito ya existe' });
-        }; 
         
-        // Agrego gatito, si kitty resulta vacio rompe por el catch
-        kitty = new Cat({ name: nameGato });
-        const gato = await kitty.save();
+        let kitty  // Defino la variable que contendra al gatito
+        
+        //-- Si el gatito lo pasaron por params o query
+        //   Revisar que el gatito registrado sea unico 
+        if (!name) {
+            // Revisar que el gatito registrado sea unico 
+            (consologuearProceso) ? console.log(`${controladorEnUso} Comprobando si el gato existe si se paso por Params o Query...`) : null;
+            (consologuearProceso) ? console.log(`${controladorEnUso} (Buscando si el gato '${nameGato}' existe y llenando resultado en kitty ):`) : null;
+            
+            kitty = await Cat.findOne({ name: nameGato });  //Busco el gatito
+            
+            if (consologuearProceso) {
+                if (kitty) {
+                    console.log(`${controladorEnUso} (gato buscado'${nameGato}', Gato encontrado '${kitty.name}')`);
+                    console.log(`${controladorEnUso} (objeto kitty):`,kitty);
+                } else {
+                    console.log(`${controladorEnUso} (kitty), el ojeto no se ha creado, gatito no encontrado:`,kitty);
+                };
+            };
+           
+            // Compruebo el el objeto kitty se haya creado, 
+            // Tambien compruebo que su valor (el valor hallado),
+            // sea igual al gatino buscado (esto ultimo no es necesario, pero ...)
+            if(kitty && kitty.name==nameGato) {
+                (consologuearProceso) ? console.log(`${controladorEnUso} (Devuelvo "Estado 200" El gatito ya existe . Buscado '${nameGato}' = Encontrado '${kitty.name}')`) : null;
+                return res.status(200).json({ msg: 'El gattito ya existe' });
+            };
+        }; 
+        //--
 
-        res.status(200).json({msg: 'Gatito agregado', gato}); 
+        // Agrego gatito, si kitty resulta vacio rompe por el catch
+        (consologuearProceso) ? console.log(`${controladorEnUso} Creando el gatito...`) : null;
+        (consologuearProceso) ? console.log(`${controladorEnUso} (objeto kitty) ->`,kitty) : null;
+        
+        kitty = new Cat({ name: nameGato });    // Creo el nuevo gatito, segun el modelo.
+        const gato = await kitty.save();        // Agrego el gatito a la coleccion.
+        
+        (consologuearProceso) ? console.log(`${controladorEnUso} (objeto kitty) ->`,kitty) : null;
+
+        res.status(201).json({msg: 'Gatito agregado', gato}); 
 
     } catch (error) {
-        (consologuearError) ? console.log(`crearGatito (gato ${nameGato}, Error: ) -> `, error) : null;
+        (consologuearError) ? console.log(`${controladorEnUso} (gato ${nameGato}, Error: ) -> `, error) : null;
         res.status(400).send({msg: 'Hubo un error al crear el gatito',error});   
     };
 };
@@ -153,10 +218,17 @@ const crearGatito = async (req, res) => {
  * Modifico un gatito
  */
 const editarGatito = async (req, res) => {
+    // Defino que envio a la consola (Local)
+    const consologuearProceso = consologuearProcesos;   //Valores (true, false) PorDefecto = consologuearProcesos 
+    const consologuearError = consologuearErrores;      //Valores (true, false) PorDefecto = consologuearErrores
+    // Defino y consologueo el controlador en uso
+    const controladorEnUso= 'editarGatito';
+    (consologuearProceso) ? console.log(`* Controlador: ${controladorEnUso}...`) : null;
+
     //consologueo los valores recibidos
-    (consologuearProceso) ? console.log('editarGatito (req.params) ->',req.params) : null;
-    (consologuearProceso) ? console.log('editarGatito (req.query) ->',req.query) : null;
-    (consologuearProceso) ? console.log('editarGatito (req.body) ->',req.body) : null;
+    (consologuearProceso) ? console.log(`${controladorEnUso} (req.params) ->`,req.params) : null;
+    (consologuearProceso) ? console.log(`${controladorEnUso} (req.query) ->`,req.query) : null;
+    (consologuearProceso) ? console.log(`${controladorEnUso} (req.body) ->`,req.body) : null;
 
     // extraer id del body (es elidentificador unico)
     const { _id, name } = req.body;
@@ -168,7 +240,7 @@ const editarGatito = async (req, res) => {
             ? req.params.id
             : req.query.id
         ;
-    (consologuearProceso) ? console.log(`editarGatito (valorClave) -> ${valorClave}`) : null;
+    (consologuearProceso) ? console.log(`${controladorEnUso} (valorClave) -> ${valorClave}`) : null;
 
     // Almeceno el valor del name, si se paso por algun metodo (body, query, params)
     const valorNombre = (name) 
@@ -177,7 +249,7 @@ const editarGatito = async (req, res) => {
             ? req.params.name
             : req.query.name
         ;  
-    (consologuearProceso) ? console.log(`editarGatito (valorNombre) -> ${valorNombre}`) : null;
+    (consologuearProceso) ? console.log(`${controladorEnUso} (valorNombre) -> ${valorNombre}`) : null;
 
     let gato;
     let editarGato;
@@ -194,6 +266,7 @@ const editarGatito = async (req, res) => {
         };
 
         // Verificar si se paso el nombre en el body (si no usara params o qry en las rutas (_id || name))
+        //  - Comprobar si hay errores de Express-Validator con validationResult
         if ( name) {
             // Revisar si hay errores en el body
             const errores = validationResult(req);
@@ -215,21 +288,27 @@ const editarGatito = async (req, res) => {
         res.status(200).json({msg: `Gatito editado, nuevo nombre:${valorNombre}`, gato}); 
         
     } catch (error) {
-        (consologuearError) ? console.log(`editarGatito (gato ${valorClave}, Error: ) -> `, error) : null;
+        (consologuearError) ? console.log(`${controladorEnUso} (gato ${valorClave}, Error: ) -> `, error) : null;
         res.status(400).send({msg: 'Hubo un error al buscar el gatito, o el gattito no se encuentra en la base',error});      
     };
 };
-
 
 
 /**
  * Elimino un gatito
  */
 const elininarGatito = async (req, res) => {
+    // Defino que envio a la consola (Local)
+    const consologuearProceso = consologuearProcesos;   //Valores (true, false) PorDefecto = consologuearProcesos 
+    const consologuearError = consologuearErrores;      //Valores (true, false) PorDefecto = consologuearErrores
+    // Defino y consologueo el controlador en uso
+    const controladorEnUso= 'elininarGatito';
+    (consologuearProceso) ? console.log(`* Controlador: ${controladorEnUso}...`) : null;
+
     //consologueo los valores recibidos
-    (consologuearProceso) ? console.log('elininarGatito (req.params) ->',req.params) : null;
-    (consologuearProceso) ? console.log('elininarGatito (req.query) ->',req.query) : null;
-    (consologuearProceso) ? console.log('elininarGatito (req.body) ->',req.body) : null;
+    (consologuearProceso) ? console.log(`${controladorEnUso} (req.params) ->`,req.params) : null;
+    (consologuearProceso) ? console.log(`${controladorEnUso} (req.query) ->`,req.query) : null;
+    (consologuearProceso) ? console.log(`${controladorEnUso} (req.body) ->`,req.body) : null;
 
     // extraer id del body (es elidentificador unico)
     const { _id, } = req.body;
@@ -251,6 +330,7 @@ const elininarGatito = async (req, res) => {
         };
         
         // Verificar si se paso el id en el body
+        //  - Comprobar si hay errores de Express-Validator con validationResult
         if (_id) {
             // Revisar si hay errores en el body
             const errores = validationResult(req);
@@ -261,12 +341,12 @@ const elininarGatito = async (req, res) => {
         
         // Eliminar un gatito por su id, si gato resulta vacio rompe por el catch
         const gato = await Cat.findByIdAndDelete( valorclave );
-        (consologuearProceso) ? console.log(`elininarGatito (Gatito Eliminado) -> `, gato) : null;
+        (consologuearProceso) ? console.log(`${controladorEnUso} (Gatito Eliminado) -> `, gato) : null;
         
         res.status(200).json({msg: 'Gatito Eliminado', gato});   
 
     } catch (error) {
-        (consologuearError) ? console.log(`elininarGatito (gato ${valorclave}, Error: ) -> `, error) : null;
+        (consologuearError) ? console.log(`${controladorEnUso} (gato ${valorclave}, Error: ) -> `, error) : null;
         res.status(400).send({msg: 'Hubo un error al eliminar el gatito',error});
     };
 };
@@ -284,7 +364,13 @@ const elininarGatito = async (req, res) => {
  */
  const {catInfo} = require('../PaginasJs/cats');
  const apiCatInfo = async (req, res) => {
-     
+    // Defino que envio a la consola (Local)
+    const consologuearProceso = consologuearProcesos;   //Valores (true, false) PorDefecto = consologuearProcesos 
+    const consologuearError = consologuearErrores;      //Valores (true, false) PorDefecto = consologuearErrores
+    // Defino y consologueo el controlador en uso
+    const controladorEnUso= 'apiCatInfo';
+    (consologuearProceso) ? console.log(`* Controlador: ${controladorEnUso}...`) : null;
+
      try {
          const contenido = catInfo();
          res.send(contenido);    
@@ -302,7 +388,13 @@ const elininarGatito = async (req, res) => {
  */
  const {catPrueba} = require('../PaginasJs/catsPrueba');
  const apiCatPrueba = async (req, res) => {
-     
+    // Defino que envio a la consola (Local)
+    const consologuearProceso = consologuearProcesos;   //Valores (true, false) PorDefecto = consologuearProcesos 
+    const consologuearError = consologuearErrores;      //Valores (true, false) PorDefecto = consologuearErrores
+    // Defino y consologueo el controlador en uso
+    const controladorEnUso= 'apiCatPrueba';
+    (consologuearProceso) ? console.log(`* Controlador: ${controladorEnUso}...`) : null;
+
      try {
          const contenido = catPrueba();
          res.send(contenido);    
@@ -325,6 +417,13 @@ const elininarGatito = async (req, res) => {
  *  - Este controlador devuelve a la ruta el resultado del metodo ejecutado 
  */
 function catResultado(req, res){
+    // Defino que envio a la consola (Local)
+    const consologuearProceso = consologuearProcesos;   //Valores (true, false) PorDefecto = consologuearProcesos 
+    const consologuearError = consologuearErrores;      //Valores (true, false) PorDefecto = consologuearErrores
+    // Defino y consologueo el controlador en uso
+    const controladorEnUso= 'catResultado';
+    (consologuearProceso) ? console.log(`* Controlador: ${controladorEnUso}...`) : null;
+
     //const myAction = req.params.accion;
     //const myValues = req.params.listaDeValores;
     
@@ -336,7 +435,7 @@ function catResultado(req, res){
             ? req.params.accion
             : req.query.accion
         ;    
-    (consologuearProceso) ? console.log('catResultado -> (accion): ',myAction) : null;
+    (consologuearProceso) ? console.log(`${controladorEnUso} -> (accion): `,myAction) : null;
 
         const myValues = (listaDeValores) 
         ? listaDeValores 
@@ -344,7 +443,7 @@ function catResultado(req, res){
             ? req.params.listaDeValores
             : req.query.listaDeValores
         ;  
-    (consologuearProceso) ? console.log('catResultado -> (listaDeValores): ',myValues) : null;  
+    (consologuearProceso) ? console.log(`${controladorEnUso} -> (listaDeValores): `,myValues) : null;  
 
     // Valido el parametro lista de valores.
     if (myValues && !IsJsonString(myValues)) {
@@ -374,7 +473,7 @@ function catResultado(req, res){
         switch (myAction) {
             case TYPES.verPorParams:
                 //console.log(TYPES.verPorParams);
-                (consologuearProceso) ? console.log('catResultado -> Buscando el contenido por Params: ',TYPES.verPorParams) : null;
+                (consologuearProceso) ? console.log(`${controladorEnUso} -> Buscando el contenido por Params: `,TYPES.verPorParams) : null;
                 contenido = verGatitoPorParams( myValues, 
                                                 '', 
                                                 responder = async (contenido) => { 
@@ -387,7 +486,7 @@ function catResultado(req, res){
                                                                                         res.send(respuesta);
                                                                                         return;    
                                                                                     } catch (error) {
-                                                                                        (consologuearError) ? console.log('catResultado (responder) -> Error al recuperar los datos.',error) : null;
+                                                                                        (consologuearError) ? console.log(`${controladorEnUso} (responder) -> Error al recuperar los datos.`,error) : null;
                                                                                         res.send('Error al recuperar los datos.');
                                                                                     };
                                                                                     return;
@@ -400,7 +499,7 @@ function catResultado(req, res){
                 return;
 
             case TYPES.verPorQry:
-                (consologuearProceso) ? console.log('catResultado -> Buscando el contenido por Qry: ',TYPES.verPorQry) : null;
+                (consologuearProceso) ? console.log(`${controladorEnUso} -> Buscando el contenido por Qry: `,TYPES.verPorQry) : null;
                 contenido = verGatitoPorQry(myValues, 
                                             '', 
                                             responder = async (contenido) => { 
@@ -413,7 +512,7 @@ function catResultado(req, res){
                                                             res.send(respuesta);
                                                             return;    
                                                         } catch (error) {
-                                                            (consologuearError) ? console.log('catResultado (responder) -> Error al recuperar los datos.',error) : null;
+                                                            (consologuearError) ? console.log(`${controladorEnUso} (responder) -> Error al recuperar los datos.`,error) : null;
                                                             res.send('Error al recuperar los datos.');
                                                         };
                                                         return;
@@ -422,7 +521,7 @@ function catResultado(req, res){
                 return;                
             
             case TYPES.verPorBody:
-                (consologuearProceso) ? console.log('catResultado -> Buscando el contenido por Body: ',TYPES.verPorBody) : null;
+                (consologuearProceso) ? console.log(`${controladorEnUso} -> Buscando el contenido por Body: `,TYPES.verPorBody) : null;
                 contenido = verGatitoPorBody(myValues, 
                                             '', 
                                             responder = async (contenido) => { 
@@ -435,7 +534,7 @@ function catResultado(req, res){
                                                             res.send(respuesta);
                                                             return;    
                                                         } catch (error) {
-                                                            (consologuearError) ? console.log('catResultado (responder) -> Error al recuperar los datos.',error) : null;
+                                                            (consologuearError) ? console.log(`${controladorEnUso} (responder) -> Error al recuperar los datos.`,error) : null;
                                                             res.send('Error al recuperar los datos.');
                                                         };
                                                         return;
@@ -444,7 +543,7 @@ function catResultado(req, res){
                 return;
 
             case TYPES.creaPorParams:
-                (consologuearProceso) ? console.log('catResultado -> Creando un nuevo gatito por Params: ',TYPES.creaPorParams) : null;
+                (consologuearProceso) ? console.log(`${controladorEnUso} -> Creando un nuevo gatito por Params: `,TYPES.creaPorParams) : null;
                 contenido = crearGatitoPorParams(myValues, 
                                             '', 
                                             responder = async (contenido) => { 
@@ -457,7 +556,7 @@ function catResultado(req, res){
                                                             res.send(respuesta);
                                                             return;    
                                                         } catch (error) {
-                                                            (consologuearError) ? console.log('catResultado (responder) -> Error al crear los datos.',error) : null;
+                                                            (consologuearError) ? console.log(`${controladorEnUso} (responder) -> Error al crear los datos.`,error) : null;
                                                             res.send('Error al crear los datos.');
                                                         };
                                                         return;
@@ -466,7 +565,7 @@ function catResultado(req, res){
                 return;
 
             case TYPES.crearPorQry:
-                (consologuearProceso) ? console.log('catResultado -> Creando un nuevo gatito por Qry: ',TYPES.crearPorQry) : null;
+                (consologuearProceso) ? console.log(`${controladorEnUso} -> Creando un nuevo gatito por Qry: `,TYPES.crearPorQry) : null;
                 contenido = crearGatitoPorQry(myValues, 
                                             '', 
                                             responder = async (contenido) => { 
@@ -479,7 +578,7 @@ function catResultado(req, res){
                                                             res.send(respuesta);
                                                             return;    
                                                         } catch (error) {
-                                                            (consologuearError) ? console.log('catResultado (responder) -> Error al crear los datos.',error) : null;
+                                                            (consologuearError) ? console.log(`${controladorEnUso} (responder) -> Error al crear los datos.`,error) : null;
                                                             res.send('Error al crear los datos.');
                                                         };
                                                         return;
@@ -488,7 +587,7 @@ function catResultado(req, res){
                 return;
 
             case TYPES.crearPorBody:
-                (consologuearProceso) ? console.log('catResultado -> Creando un nuevo gatito por Body: ',TYPES.crearPorBody) : null;
+                (consologuearProceso) ? console.log(`${controladorEnUso} -> Creando un nuevo gatito por Body: `,TYPES.crearPorBody) : null;
                 contenido = crearGatitoPorBody(myValues, 
                                             '', 
                                             responder = async (contenido) => { 
@@ -501,7 +600,7 @@ function catResultado(req, res){
                                                             res.send(respuesta);
                                                             return;    
                                                         } catch (error) {
-                                                            (consologuearError) ? console.log('catResultado (responder) -> Error al crear los datos.',error) : null;
+                                                            (consologuearError) ? console.log(`${controladorEnUso} (responder) -> Error al crear los datos.`,error) : null;
                                                             res.send('Error al crear los datos.');
                                                         };
                                                         return;
@@ -510,7 +609,7 @@ function catResultado(req, res){
                 return;
 
             case TYPES.editarPorParams:
-                (consologuearProceso) ? console.log('catResultado -> Editando un gatito por Params: ',TYPES.editarPorParams) : null;
+                (consologuearProceso) ? console.log(`${controladorEnUso} -> Editando un gatito por Params: `,TYPES.editarPorParams) : null;
                 contenido = editarGatitoPorParams(myValues, 
                                             '', 
                                             responder = async (contenido) => { 
@@ -523,7 +622,7 @@ function catResultado(req, res){
                                                             res.send(respuesta);
                                                             return;    
                                                         } catch (error) {
-                                                            (consologuearError) ? console.log('catResultado (responder) -> Error al editar los datos.',error) : null;
+                                                            (consologuearError) ? console.log(`${controladorEnUso} (responder) -> Error al editar los datos.`,error) : null;
                                                             res.send('Error al editar los datos.');
                                                         };
                                                         return;
@@ -532,7 +631,7 @@ function catResultado(req, res){
                 return;
 
             case TYPES.editarPorQry:
-                (consologuearProceso) ? console.log('catResultado -> Editando un gatito por Qry: ',TYPES.editarPorQry) : null;
+                (consologuearProceso) ? console.log(`${controladorEnUso} -> Editando un gatito por Qry: `,TYPES.editarPorQry) : null;
                 contenido = editarGatitoPorQry(myValues, 
                                             '', 
                                             responder = async (contenido) => { 
@@ -545,7 +644,7 @@ function catResultado(req, res){
                                                             res.send(respuesta);
                                                             return;    
                                                         } catch (error) {
-                                                            (consologuearError) ? console.log('catResultado (responder) -> Error al editar los datos.',error) : null;
+                                                            (consologuearError) ? console.log(`${controladorEnUso} (responder) -> Error al editar los datos.`,error) : null;
                                                             res.send('Error al editar los datos.');
                                                         };
                                                         return;
@@ -554,7 +653,7 @@ function catResultado(req, res){
                 return;
 
             case TYPES.editarPorBody:
-                (consologuearProceso) ? console.log('catResultado -> Editando un gatito por Body: ',TYPES.editarPorBody) : null;
+                (consologuearProceso) ? console.log(`${controladorEnUso} -> Editando un gatito por Body: `,TYPES.editarPorBody) : null;
                 contenido = editarGatitoPorBody(myValues, 
                                             '', 
                                             responder = async (contenido) => { 
@@ -567,7 +666,7 @@ function catResultado(req, res){
                                                             res.send(respuesta);
                                                             return;    
                                                         } catch (error) {
-                                                            (consologuearError) ? console.log('catResultado (responder) -> Error al editar los datos.',error) : null;
+                                                            (consologuearError) ? console.log(`${controladorEnUso} (responder) -> Error al editar los datos.`,error) : null;
                                                             res.send('Error al editar los datos.');
                                                         };
                                                         return;
@@ -576,7 +675,7 @@ function catResultado(req, res){
                 return;
 
             case TYPES.eliminarPorParams:
-                (consologuearProceso) ? console.log('catResultado -> Eliminando un gatito por Params: ',TYPES.eliminarPorParams) : null;
+                (consologuearProceso) ? console.log(`${controladorEnUso} -> Eliminando un gatito por Params: `,TYPES.eliminarPorParams) : null;
                 contenido = eliminarGatitoPorParams(myValues, 
                                             '', 
                                             responder = async (contenido) => { 
@@ -589,7 +688,7 @@ function catResultado(req, res){
                                                             res.send(respuesta);
                                                             return;    
                                                         } catch (error) {
-                                                            (consologuearError) ? console.log('catResultado (responder) -> Error al eliminar los datos.',error) : null;
+                                                            (consologuearError) ? console.log(`${controladorEnUso} (responder) -> Error al eliminar los datos.`,error) : null;
                                                             res.send('Error al crear los datos.');
                                                         };
                                                         return;
@@ -598,7 +697,7 @@ function catResultado(req, res){
                 return;
 
             case TYPES.eliminarPorQry:
-                (consologuearProceso) ? console.log('catResultado -> Eliminando un gatito por Qry: ',TYPES.eliminarPorQry) : null;
+                (consologuearProceso) ? console.log(`${controladorEnUso} -> Eliminando un gatito por Qry: `,TYPES.eliminarPorQry) : null;
                 contenido = eliminarGatitoPorQry(myValues, 
                                             '', 
                                             responder = async (contenido) => { 
@@ -611,7 +710,7 @@ function catResultado(req, res){
                                                             res.send(respuesta);
                                                             return;    
                                                         } catch (error) {
-                                                            (consologuearError) ? console.log('catResultado (responder) -> Error al eliminar los datos.',error) : null;
+                                                            (consologuearError) ? console.log(`${controladorEnUso} (responder) -> Error al eliminar los datos.`,error) : null;
                                                             res.send('Error al eliminar los datos.');
                                                         };
                                                         return;
@@ -620,7 +719,7 @@ function catResultado(req, res){
                 return;
 
             case TYPES.eliminarPorBody:
-                (consologuearProceso) ? console.log('catResultado -> Eliminando un gatito por Body: ',TYPES.eliminarPorBody) : null;
+                (consologuearProceso) ? console.log(`${controladorEnUso} -> Eliminando un gatito por Body: `,TYPES.eliminarPorBody) : null;
                 contenido = eliminarGatitoPorBody(myValues, 
                                             '', 
                                             responder = async (contenido) => { 
@@ -633,7 +732,7 @@ function catResultado(req, res){
                                                             res.send(respuesta);
                                                             return;    
                                                         } catch (error) {
-                                                            (consologuearError) ? console.log('catResultado (responder) -> Error al eliminar los datos.',error) : null;
+                                                            (consologuearError) ? console.log(`${controladorEnUso} (responder) -> Error al eliminar los datos.`,error) : null;
                                                             res.send('Error al eliminar los datos.');
                                                         };
                                                         return;
@@ -643,7 +742,7 @@ function catResultado(req, res){
 
             default:
                 contenido='Accion desconocida.'
-                (consologuearProceso) ? console.log('catResultado -> switch default: ',contenido) : null;
+                (consologuearProceso) ? console.log(`${controladorEnUso} -> switch default: `,contenido) : null;
                 return res.send(contenido);    
         };
         return;

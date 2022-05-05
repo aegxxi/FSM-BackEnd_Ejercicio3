@@ -16,6 +16,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());            // Controlo dede donde pueden venir las peticiones
+app.use(session({
+    secret: 'Lo imprimido, fue escrivido.',
+    resave: false,
+    saveUninitialized: true
+    //cookie: { secure: true }
+  }))
 
 
 // Importo las rutas
