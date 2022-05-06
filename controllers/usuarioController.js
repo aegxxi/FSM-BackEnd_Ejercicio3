@@ -323,10 +323,10 @@ const eliminarUsuario = async (req, res) => {
  */
  const apiUserInfo = async (req, res) => {
     const consologuearProceso = consologuearProcesos; //Valores (true, false) PorDefecto = consologuearProcesos 
-    const consologuearError = consologuearErrores;    //Valores (true, false) PorDefecto = consologuearErrores
-    const controladorEnUso= 'apiUserInfo'
-    (consologuearProceso) ? console.log(`* Controlador: ${controladorEnUso}...`) : null;
-    
+    //const consologuearError = consologuearErrores;    //Valores (true, false) PorDefecto = consologuearErrores
+    const controladorEnUso = 'apiUserInfo';
+    (consologuearProceso) ? console.log( `* Controlador: ${controladorEnUso}...` ) : null;
+
     try {
         const contenido = usuariosInfo();
         res.send(contenido);    

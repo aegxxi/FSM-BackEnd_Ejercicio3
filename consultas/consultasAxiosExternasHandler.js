@@ -46,7 +46,7 @@ const consologuearProcesos = true;
         : null;
 
     return (contenido.data);
-}
+};
 
 
 /** 
@@ -92,7 +92,7 @@ const consologuearProcesos = true;
     //responder(contenido.data);
     //return(contenido.data);
     return (contenido.data);
-}
+};
 
 
 /** 
@@ -139,7 +139,7 @@ const consologuearProcesos = true;
     //responder(contenido.data);
     //return(contenido.data);
     return (contenido.data.DISPLAY);
-}
+};
 
 /** 
  * Funcion: consultaBinanceCotizacion
@@ -215,7 +215,7 @@ const consologuearProcesos = true;
     responder(contenido);
 
     return;
-}
+};
 
 /** 
  * Obtener el valor del dolar Blue
@@ -242,7 +242,7 @@ const consologuearProcesos = true;
     responder(contenido);
     //return(contenido.data);
     return;
-}
+};
 
 /** 
  * Obtener el valor del Euro Oficial y Blue
@@ -269,7 +269,7 @@ const consologuearProcesos = true;
     responder(contenido);
     //return(contenido.data);
     return;
-}
+};
 
 /** 
  * Obtener la lista de monedas de Cryptocompare
@@ -343,7 +343,7 @@ const consologuearProcesos = true;
     responder(contenido[criptoToken][moneda]);
     //responder(contenido);
     return;
-}
+};
 
 
 /** 
@@ -420,7 +420,7 @@ module.exports =
                     criptoListaMonedas,
                     criptoHoy,
                     binanceHoy
-                }
+                };
 
 
 

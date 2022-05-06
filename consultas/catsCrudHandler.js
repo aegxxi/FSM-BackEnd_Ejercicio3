@@ -58,7 +58,7 @@ const verGatitoPorParams = async ( idGatito, srvUri = mySrvUri, responder ) => {
     responder(contenido);
     //return(contenido);
     return;
-}
+};
 
 
 /** 
@@ -89,7 +89,7 @@ const verGatitoPorQry = async ( idGatito, srvUri=mySrvUri, responder ) => {
     responder(contenido);
     //return(contenido.data);
     return;
-}
+};
 
 
 /** 
@@ -159,7 +159,7 @@ const verGatitoPorBody = async ( body, srvUri = mySrvUri, responder ) => {
     responder(contenido);
     //return(contenido.data);
     return;
-}
+};
 
 
 // Metodos POST (Crear Gatito)
@@ -196,7 +196,7 @@ const crearGatitoPorParams = async ( nombreGatito, srvUri=mySrvUri, responder ) 
     responder(contenido);
     //return(contenido.data);
     return;
-}
+};
 
 
 /** 
@@ -229,7 +229,7 @@ const crearGatitoPorQry = async ( nombreGatito, srvUri=mySrvUri, responder ) => 
     responder(contenido);
     //return(contenido.data);
     return;
-}
+};
 
 
 /** 
@@ -289,7 +289,7 @@ const crearGatitoPorBody = async ( body, srvUri=mySrvUri, responder ) => {
     responder(contenido);
     //return(contenido.data);
     return;
-}
+};
 
 
 // ------------------------------
@@ -335,7 +335,7 @@ const editarGatitoPorParams = async ( body, srvUri=mySrvUri, responder ) => {
     responder(contenido);
     //return(contenido.data);
     return;
-}
+};
 
 
 /** 
@@ -377,7 +377,7 @@ const editarGatitoPorQry = async ( body, srvUri=mySrvUri, responder ) => {
     responder(contenido);
     //return(contenido.data);
     return;
-}
+};
 
 
 /** 
@@ -423,7 +423,7 @@ const editarGatitoPorBody = async ( body, srvUri=mySrvUri, responder ) => {
     responder(contenido);
     //return(contenido.data);
     return;
-}
+};
 
 
 
@@ -460,7 +460,7 @@ const eliminarGatitoPorParams = async ( idGatito, srvUri=mySrvUri, responder ) =
     responder(contenido);
     //return(contenido.data);
     return;
-}
+};
 
 
 /** 
@@ -492,7 +492,7 @@ const eliminarGatitoPorQry = async ( idGatito, srvUri=mySrvUri, responder ) => {
     responder(contenido);
     //return(contenido.data);
     return;
-}
+};
 
 
 /** 
@@ -536,7 +536,7 @@ const eliminarGatitoPorBody = async ( body, srvUri=mySrvUri, responder ) => {
     responder(contenido);
     //return(contenido.data);
     return;
-}
+};
 
 
 

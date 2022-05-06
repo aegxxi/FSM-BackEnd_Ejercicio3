@@ -747,8 +747,8 @@ function catResultado(req, res){
         };
         return;
     } catch (error) {
-        (consologuearError) ? console.log({msg: 'Hubo un error en el manejador (catResultado) en la rura /resultado...',error}) : null;
-        res.status(400).send({msg: 'Hubo un error en el manejador (catResultado) en la rura /resultado...',error}); 
+        (consologuearError) ? console.log({msg: `Hubo un error en el controlador (${controladorEnUso}) en la rura /resultado...`,error}) : null;
+        res.status(400).send({msg: `Hubo un error en el controlador (${controladorEnUso}) en la rura /resultado...`,error});  
     };
 };
 

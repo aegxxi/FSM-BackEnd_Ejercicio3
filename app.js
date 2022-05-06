@@ -2,6 +2,7 @@
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
+const session = require('express-session');
 const logger = require('morgan');
 const cors = require('cors');
 
@@ -21,7 +22,7 @@ app.use(session({
     resave: false,
     saveUninitialized: true
     //cookie: { secure: true }
-  }))
+  }));
 
 
 // Importo las rutas
@@ -29,12 +30,14 @@ const indexRouter = require('./routes/index');
 const catsRouter = require('./routes/cats');
 const usersRouter = require('./routes/users');
 const externasRouter = require('./routes/externas');
+const loguinRouter = require('./routes/loguin');
 
 // Declaro rutas
 app.use('/', indexRouter);
 app.use('/api/cats', catsRouter);
 app.use('/api/usuarios', usersRouter);
 app.use('/api/externas', externasRouter);
+app.use('/api/loguin', loguinRouter);
 
 // Conecto la base de datos
 const  {conectarDB } = require('./db/db');

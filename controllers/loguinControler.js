@@ -1,12 +1,13 @@
+const res = require('express/lib/response');
 const Usuario = require('../models/Usuario');
 const { validationResult } = require('express-validator');
 const bcryptjs = require('bcryptjs');
-//const {apiLoguinInfo} = require('../PaginasJs/usuarios');
+const { Info } = require('../PaginasJs/loguin');
 
 
 // Defino que envio a la consola (Global)
 let consologuearProcesos = true;
-let consologuearErrores = true;
+let consologuearErrores = false;
 // (Local), en cada controlador se puede usar el valor global, o definir el valor 
     // const consologuearProceso = consologuearProcesos;   //Valores (true, false) PorDefecto = consologuearProcesos
     // const consologuearError = consologuearErrores;      //Valores (true, false) PorDefecto = consologuearErrores
@@ -20,7 +21,7 @@ let cookieNombre = '';   // Establezco la variable que contendra el nombre de la
 /**
  *  Muestro api info 
  */
- const apiLoguinInfo = async (req, res) => {
+ const apiloguinInfo = async (req, res) => {
      // Defino que envio a la consola (Local)
      const consologuearProceso = consologuearProcesos;   //Valores (true, false) PorDefecto = consologuearProcesos 
      const consologuearError = consologuearErrores;      //Valores (true, false) PorDefecto = consologuearErrores
@@ -29,8 +30,8 @@ let cookieNombre = '';   // Establezco la variable que contendra el nombre de la
      (consologuearProceso) ? console.log(`* Controlador: ${controladorEnUso}...`) : null;
     
     try {
-        const contenido = usuariosInfo();
-        res.send(contenido);    
+        const contenido = Info();
+        res.status(200).send(contenido);    
     } catch (error) {
         res.status(400).send({msg: 'Hubo un error'},error);    
     };
@@ -52,7 +53,7 @@ let cookieNombre = '';   // Establezco la variable que contendra el nombre de la
     (consologuearProceso) ? console.log(`* Controlador: ${controladorEnUso}...`) : null;
 
     // Extraer datos del body (email es un identificador unico)
-    const { _id, nombre, email, password } = req.body;
+    const { email, password } = req.body;
 
     // Almeceno el valor del email, si se paso por algun metodo (body, query, params)
     const emailUsuario = (email) 
@@ -63,76 +64,97 @@ let cookieNombre = '';   // Establezco la variable que contendra el nombre de la
                         ;    
     (consologuearProceso) ? console.log(`${controladorEnUso} (emailUsuario) -> `,emailUsuario) : null;
 
+    const passwordUsuario = (password) 
+                        ? password 
+                        : (req.params.password)
+                            ? req.params.password
+                            : req.query.password
+                        ;    
+    (consologuearProceso) ? console.log(`${controladorEnUso} (passwordUsuario) -> `,passwordUsuario) : null;
+    
     try {
         // Verificar si no se paso el email 
         if(!emailUsuario) {
-            return res.status(400).json({ msg: 'El email es obligatorio' });
+            res.status(200).json({ msg: 'El email es obligatorio' });
+            return;
         };
         
+        /* 
         // Verificar si se paso el mail o el usuario en el body
         //  - Comprobar si hay errores con validationResult
-        if (email || nombre) {
+        if (email || password) {
+            (consologuearProceso) ? console.log(`${controladorEnUso} Comprbando los campos del body segun el modelo de la coleccion usuario con validationResult... `) : null;
             // Revisar si hay errores en el body
             const errores = validationResult(req);
             //console.log(errores);
             if( !errores.isEmpty() ) {
-                //console.log('entre en: !errores.isEmpty()')
-                return res.status(400).json({errores: errores.array() });
+                (consologuearProceso) ? console.log(`${controladorEnUso} validationResult encontro errores... `,errores.array()) : null;
+                res.status(200).json({errores: errores.array() });
+                return;
             };    
         } else {
-            return res.status(400).json({ msg: 'El usuario solo puede ser creado pasando todos sus datos en el body' });
-        };
-        
-        let UsuarioEncontrado = {}  // Establezco la variable que contendra el objeto del usuario encontrado
+            (consologuearProceso) ? console.log(`${controladorEnUso} No se pasaron los valores en el boby. No es posible loguearse... `,errores.array()) : null;
+            res.status(200).json({ msg: 'El usuario solo puede ser validado pasando todos sus datos en el body' });
+            return;
+        }; 
+        */
 
+        (consologuearProceso) ? console.log(`${controladorEnUso} Establezco la variable que contendra el objeto del usuario encontrado ... `) : null;
+        let usuarioEncontrado = {};  // Establezco la variable que contendra el objeto del usuario encontrado
+        
         // Buscando el usuario por su mail
-        (consologuearProceso) ? console.log(`${controladorEnUso} Comprobando si el usuario existe...`) : null;
-        (consologuearProceso) ? console.log(`${controladorEnUso} (Buscando si el usuario  '${emailUsuario}' existe y llenando resultado en kitty ):`) : null;
+        (consologuearProceso) ? console.log(`${controladorEnUso} Comprobando si el usuario '${emailUsuario}' existe...`) : null;
         
-        UsuarioEncontrado = await Cat.findOne({ email: emailUsuario });  //Busco el usuario por su mail
-        
+        usuarioEncontrado = await Usuario.findOne({ email: emailUsuario });  //Busco el usuario por su mail
+
         // Verifico si se encontro al usuario, y consologueo resultado si corresponde
         if (consologuearProceso) {
-            if (UsuarioEncontrado) {
-                console.log(`${controladorEnUso} (usuario buscado'${emailUsuario}', usuario encontrado '${UsuarioEncontrado.email}')`);
-                console.log(`${controladorEnUso} (objeto kitty):`,UsuarioEncontrado);
+            if (usuarioEncontrado) {
+                console.log(`${controladorEnUso} (usuario buscado'${emailUsuario}', usuario encontrado '${usuarioEncontrado.email}')`);
+                console.log(`${controladorEnUso} (objeto usuarioEncontrado):`,usuarioEncontrado);
             } else {
-                console.log(`${controladorEnUso} (UsuarioEncontrado), el ojeto no se ha creado, usuario no encontrado:`,UsuarioEncontrado);
+                console.log(`${controladorEnUso} (usuarioEncontrado), el ojeto no se ha creado, usuario no encontrado:`,usuarioEncontrado);
             };
         };
        
-        // Compruebo el el objeto UsuarioEncontrado se haya creado, 
+        // Compruebo el el objeto usuarioEncontrado se haya creado, 
         // Tambien compruebo que su valor (el valor hallado),
         // sea igual al usuario buscado (esto ultimo no es necesario, pero ...)
-        if( !UsuarioEncontrado || UsuarioEncontrado.email !== emailUsuario ) {
-            (consologuearProceso) ? console.log(`${controladorEnUso} (Devuelvo "Estado 400" El usuario ha sido encontrado, Buscado '${emailUsuario}' => Encontrado '${UsuarioEncontrado.email}')`) : null;
-            res.status(400).json({ msg: 'El usuario no ha sido encontrado, el mail es incorrecto.' }); 
+        (consologuearProceso) ? console.log(`${controladorEnUso} Compruebo el el objeto usuarioEncontrado se haya creado...`) : null;
+        if( !usuarioEncontrado || usuarioEncontrado.email !== emailUsuario ) {
+            (consologuearProceso) ? console.log(`${controladorEnUso} (Devuelvo "Estado 400" El usuario ha sido encontrado, Buscado '${emailUsuario}' => Encontrado '${usuarioEncontrado.email}')`) : null;
+            res.status(200).json({ msg: 'El usuario no ha sido encontrado, el mail es incorrecto.' }); 
             return;
         };
         
-        if ( !bcryptjs.compare( UsuarioEncontrado.password, password ) ) {
+        (consologuearProceso) ? console.log(`${controladorEnUso} Compruebo la contraseña...`) : null;
+        if ( !bcryptjs.compare( usuarioEncontrado.password, password ) ) {
             (consologuearProceso) ? console.log(`${controladorEnUso} La contraseña es incorrecta, Password Igresado '${password}'`) : null;
             res.status(200).json({ msg: 'La contraseña es incorrecta.' });
             return;
         };
 
+        (consologuearProceso) ? console.log(`${controladorEnUso} Creo el objeto con los datos de session...`) : null;
         const usuarioLogueado = {
-            UsuarioId: UsuarioEncontrado._id,
-            UsuarioEmail: UsuarioEncontrado.email,
-            UsuarioEmail: UsuarioEncontrado.nombre
+            usuarioId: usuarioEncontrado._id,
+            usuarioEmail: usuarioEncontrado.email,
+            usuarioNombre: usuarioEncontrado.nombre
         };
         (consologuearProceso) ? console.log(`${controladorEnUso} Objeto creado para la Session (usuarioLogueado)`,usuarioLogueado) : null;
         
         
-        //creo session y cookie
+        // Creo session y cookie
+        (consologuearProceso) ? console.log(`${controladorEnUso} Creo session y cookie...`) : null;
         req.session.user = usuarioLogueado;     // Creo la Session
-        cookieNombre = 'Dts_' + nombre
-        res.cookie( cookieNombre, req.session.user, { maxAge:800000 } );  // Creo la cookie
+
+        //cookieNombre = 'Dts_' + nombre;
+        res.cookie( 'sessionUsuario', req.session.user, { maxAge:800000 } );  // Creo la cookie
 
 
         res.status(201).json({ msg: 'Usuario Logueado.' });     
     } catch (error) {
-        res.status(400).send({msg: 'Hubo un error'},error);    
+        //res.status(400).send({msg: 'Hubo un error'},error);
+        res.send({msg: 'Hubo un error'});    
     };
 
 };
@@ -141,26 +163,161 @@ let cookieNombre = '';   // Establezco la variable que contendra el nombre de la
 /**
  *  Cierro la  Session del Usuario
  */
-const logautUsuarios = async (req, res) => {
+const logoutUsuarios = async (req, res) => {
     // Defino que envio a la consola (Local)
     const consologuearProceso = consologuearProcesos;   //Valores (true, false) PorDefecto = consologuearProcesos 
     const consologuearError = consologuearErrores;      //Valores (true, false) PorDefecto = consologuearErrores
     // Defino y consologueo el controlador en uso
-    const controladorEnUso= 'logautUsuarios';
+    const controladorEnUso= 'logoutUsuarios';
     (consologuearProceso) ? console.log(`* Controlador: ${controladorEnUso}...`) : null;
     
-    res.clearcookie(cookieNombre)
-    req.session.destroy
+    //res.clearCookie('sessionUsuario');
+    res.cookie( 'sessionUsuario', '', { maxAge:0 } );  // Reescribo la cookie para eliminarla
+    //res.clearcookie('Dts_usuario');
+    req.session.destroy;
     res.status(200).json({ msg: 'Sesion cerrada.' });
 };
 
 
 
+//-------------------------------------------------------
+// Inicio - Controlador para manejar la session por Axios
+//-------------------------------------------------------
+
+/**
+ * Muestro pagina con el resultado de la prueba de la api por Axios.
+ * - Este controlador:
+ *      - Recibe la ruta con los datos de prueba para axios
+ *      - En la ruta hay dos parametros:
+ *          Accion: valores fijos que indican como se ejecutara axios
+ *          ListaDeValores: son los valores que utilizara accios para la prueba
+ *      - Con el valor del parametro Accion determina a travz de un swicht el metodo a ejecutar
+ *  - Este controlador devuelve a la ruta el resultado del metodo ejecutado 
+ */
+ function loguinResultado(req, res){
+    // Defino que envio a la consola (Local)
+    const consologuearProceso = consologuearProcesos;   //Valores (true, false) PorDefecto = consologuearProcesos 
+    const consologuearError = consologuearErrores;      //Valores (true, false) PorDefecto = consologuearErrores
+    // Defino y consologueo el controlador en uso
+    const controladorEnUso= 'loguinResultado';
+    (consologuearProceso) ? console.log(`* Controlador: ${controladorEnUso}...`) : null;
+    
+    const { accion, listaDeValores } = req.body;
+
+    const myAction = (accion) 
+        ? accion 
+        : (req.params.accion)
+            ? req.params.accion
+            : req.query.accion
+        ;    
+    (consologuearProceso) ? console.log(`${controladorEnUso} -> (accion): `,myAction) : null;
+
+        const myValues = (listaDeValores) 
+        ? listaDeValores 
+        : (req.params.listaDeValores)
+            ? req.params.listaDeValores
+            : req.query.listaDeValores
+        ;  
+    (consologuearProceso) ? console.log(`${controladorEnUso} -> (listaDeValores): `,myValues) : null;  
+
+    // Valido el parametro lista de valores.
+    if (myValues && !IsJsonString(myValues)) {
+        res.send({msg: "Los valores pasados en el parametro 'listaDeValores' no son validos. "} );
+        return;    
+    };
+
+    const {TYPES} = require('../consultas/loguinAxiosAccion');
+    const { ingresarSession,
+            salirSession} = require('../consultas/consultasAxiosSessionHandler');
+    let contenido = {};
+    let respuesta = '';
+
+    // envio respuesta al servidor
+    try {
+        //console.log(TYPES)
+        switch (myAction) {
+            case TYPES.ingresarSession:
+                (consologuearProceso) ? console.log(`${controladorEnUso} -> Buscando el contenido por Params: `,TYPES.ingresarSession) : null;
+                contenido = ingresarSession( myValues, 
+                                            '', 
+                                            responder = async (contenido) => { 
+                                                                                try {
+                                                                                    let respuesta = '';                        
+                                                                                    //console.log('callback-Responder,data -> ',contenido.data);
+                                                                                    respuesta = await `Accion completada: '${contenido.msg}'`;
+                                                                                    res.send(respuesta);
+                                                                                    return;    
+                                                                                } catch (error) {
+                                                                                    (consologuearError) ? console.log(`${controladorEnUso} (responder) -> Error al recuperar los datos.`,error) : null;
+                                                                                    res.send('Error al recuperar los datos.');
+                                                                                };
+                                                                                return;
+                                                                                }
+                                            );
+
+                return;
+
+            case TYPES.salirSession:
+                (consologuearProceso) ? console.log(`${controladorEnUso} -> Buscando el contenido por Qry: `,TYPES.salirSession) : null;
+                contenido = salirSession( '', 
+                                        responder = async (contenido) => { 
+                                                    try {
+                                                        let respuesta = '';                        
+                                                        //console.log('callback-Responder,data -> ',contenido.data);
+                                                        respuesta = await `Accion completada: '${contenido.msg}'`;
+                                                        res.send(respuesta);
+                                                        return;   
+                                                    } catch (error) {
+                                                        (consologuearError) ? console.log(`${controladorEnUso} (responder) -> Error al recuperar los datos.`,error) : null;
+                                                        res.send('Error al recuperar los datos.');
+                                                    };
+                                                    return;
+                                                    }
+                                        );
+                return;                
+            
+            default:
+                contenido='Accion desconocida.'
+                (consologuearProceso) ? console.log(`${controladorEnUso} -> switch default: `,contenido) : null;
+                return res.send(contenido);    
+        };
+        return;
+    } catch (error) {
+        (consologuearError) ? console.log({msg: `Hubo un error en el controlador (${controladorEnUso}) en la rura /resultado...`,error}) : null;
+        res.status(400).send({msg: `Hubo un error en el controlador (${controladorEnUso}) en la rura /resultado...`,error}); 
+    };
+};
+
+//----------------------------------------------------
+// Fin - Controlador para manejar la session por Axios
+//----------------------------------------------------
+
+
+
+//---------------------------------------------------
+// Inicio - Funciones Auxiliares para la validaciones
+//---------------------------------------------------
+
+function IsJsonString(str) {
+    try {
+      var json = JSON.parse(str);
+      return (typeof json === 'object');
+    } catch (e) {
+      return false;
+    };
+  };
+
+//------------------------------------------------
+// Fin - Funciones Auxiliares para la validaciones
+//------------------------------------------------
+
+
 
 module.exports = {
-                    apiLoguinInfo,
+                    apiloguinInfo,
                     loguinUsuarios,
-                    logautUsuarios    
+                    logoutUsuarios,
+                    loguinResultado    
                 }
 
 
