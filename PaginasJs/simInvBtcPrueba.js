@@ -1,11 +1,11 @@
 const myhandler = require('../handlers/handler');
-const myCatsCrudHandler =require('../consultas/catsCrudHandler')
+const mysimInvBtcCrudHandler =require('../consultas/simInvBtcCrudHandler')
 const entorno = require('../appSrvEntorno');
 
 const { fnMiServidor } = entorno
 const { srvPuerto, srvNombre } = fnMiServidor()
 
-const {verGatitoPorParams} = myCatsCrudHandler
+const {verGatitoPorParams} = mysimInvBtcCrudHandler
 
 const saltoLinea =  '<Br/>';  //'\n' en Java, <Br/> en Html
 const b = '&nbsp';              //Espacio en blanco
@@ -69,7 +69,7 @@ const estilos=`<style>
                     border: 1px solid blue;
                     color:white;
                     background-color: darkslategray;
-                    margin-right: 64rem;
+                    margin-right: 48rem;
                     margin-left: 2rem;
                     line-height: 200%;
                     font-size:large;
@@ -101,43 +101,52 @@ const estilos=`<style>
                 ;
 
 
-function catPrueba() {
+function simInvBtcPrueba() {
   
   const contenido = `<head>
-                      <title>ProbarApiCats</title>
+                      <title>ProbarApisimInvBtc</title>
                       ${estilos}
                      </head>
                      <body  class="fondo">
                       <h1>
-                        Apis Cat - Prueba axios
+                        Api simInvBtc (Simulador de inversiones en Bitcoin) - Prueba axios
                       </h1>
                       <h2>
-                        Informacion para el uso de las api cats
+                        Informacion para el uso de las api simInvBtc
                       </h2>
-                      <p><b>Proposito general:</b>${b} Probar el CRUD de la coleccion cats.</p>
+                      <p><b>Proposito general:</b>${b} Probar el CRUD de la coleccion simInvBtc.</p>
                        ${saltoLinea}
                       <h3>
-                        Gatitos:
+                        SimInvBtc:
                       </h3>
                       <ul>
                         <li>
-                            <p class='crud'><b>Ejemplo de la estructura de la coleccion </b></p>
+                            <p class='crud'><b>Ejemplo de la estructura de la coleccion simInvBtc:</b></p>
                             <div class='Codigo'>
                                 <code>
                                     ${tab}${tab}{${saltoLinea}    
-                                    ${tab}${tab}"_id": "6258d21ba60416c73341165e",${saltoLinea}
-                                    ${tab}${tab}"name": "Patroclo"${saltoLinea}
+                                    ${tab}${tab}"_id": "simInvBtc_Id",${saltoLinea} 
+                                    ${tab}${tab}"compraAño": 2021,${saltoLinea}
+                                    ${tab}${tab}"compraMes": 11,${saltoLinea}
+                                    ${tab}${tab}"compraDia": 28,${saltoLinea}
+                                    ${tab}${tab}"precioEntradaUsd": 37500,${saltoLinea}
+                                    ${tab}${tab}"importeInicialUsd": 50,${saltoLinea}
+                                    ${tab}${tab}"compraCotizacionUsd": 195,${saltoLinea}
+                                    ${tab}${tab}"importeCriptoComprado": 0.078,${saltoLinea}
+                                    ${tab}${tab}"importeArsInvertido": 7000,${saltoLinea}
+                                    ${tab}${tab}"inversorEmail": "inversor@mycorreo.com",${saltoLinea}
+                                    ${tab}${tab}"InversorComentario": "Primer compra",${saltoLinea}
                                     ${tab}${tab}}
                                 </code>
                             </div>
-                            <p>${tab}${tab}ver contenido de la coleccion:${b}<i>" http://localhost:${srvPuerto}/api/cats/ver " </i>${b}
-                                <a href="http://localhost:${srvPuerto}/api/cats/ver" target="_blank">Ver</a></p>
+                            <p>${tab}${tab}Ver contenido de la coleccion:${b}<i>" http://localhost:${srvPuerto}/api/simInvBtc/ver " </i>${b}
+                                <a href="http://localhost:${srvPuerto}/api/simInvBtc/ver" target="_blank">Ver todos los registros</a></p>
                         </li>
                         <li>
-                            <p class='crud'><b>Construccion de la Uri de prueba </b></p>
+                            <p class='crud'><b>Construccion de la Uri de prueba: </b></p>
                             <div class='Codigo'>
                                 <code>
-                                    ${tab}${tab}[ <mark><b>http://localhost:${srvPuerto}/api/cats/resultado/<i class='Destacar1'>[Accion]</i>/<i class='Destacar1'>[listaDeValores]</i></b></mark> ]${saltoLinea}    
+                                    ${tab}[ <mark><b>http://localhost:${srvPuerto}/api/simInvBtc/resultado/<i class='Destacar1'>[Accion]</i>/<i class='Destacar1'>[listaDeValores]</i></b></mark> ]${tab}   
                                 </code>
                             </div>
                         </li>
@@ -145,41 +154,25 @@ function catPrueba() {
                             <p class='crud'><b>Lista de Acciones diponibles: </b></p>
                             <div class='Codigo'>
                                 <code>
-                                    ${tab}${tab}VER_POR_PARAMS${saltoLinea}
-                                    ${tab}${tab}VER_POR_QRY${saltoLinea}
                                     ${tab}${tab}VER_POR_BODY${saltoLinea}
-                                    ${tab}${tab}CREAR_POR_PARAMS${saltoLinea}
-                                    ${tab}${tab}CREAR_POR_QRY${saltoLinea}
                                     ${tab}${tab}CREAR_POR_BODY${saltoLinea}
-                                    ${tab}${tab}EDITAR_POR_PARAMS${saltoLinea}
-                                    ${tab}${tab}EDITAR_POR_QRY${saltoLinea}
                                     ${tab}${tab}EDITAR_POR_BODY${saltoLinea}
-                                    ${tab}${tab}ELIMINAR_POR_PARAMS${saltoLinea}
-                                    ${tab}${tab}ELIMINAR_POR_QRY${saltoLinea}
                                     ${tab}${tab}ELIMINAR_POR_BODY${saltoLinea}
                                 </code>
                             </div>
                         </li>
                         <li>
-                            <p class='crud'><b>Ejemplos de la construccion de la Uri de prueba </b></p>
+                            <p class='crud'><b>Ejemplos de la construccion de la Uri de prueba diponibles: </b></p>
                             <div class='Codigo2'>
                                 <code>
-                                    ${tab}${tab}${b}Ver: ${saltoLinea}
-                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/VER_POR_PARAMS/6258d21ba60416c73341165e${saltoLinea}
-                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/VER_POR_QRY/6258d21ba60416c73341165e${saltoLinea}
-                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/VER_POR_BODY/{"_id": "6258d21ba60416c73341165e"}${saltoLinea}
-                                    ${tab}${tab}${b}Crear: ${saltoLinea}
-                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/CREAR_POR_PARAMS/Sofocles${saltoLinea}
-                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/CREAR_POR_QRY/Sofocles${saltoLinea}
-                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/CREAR_POR_BODY/{"name": "Sofocles"}${saltoLinea}
-                                    ${tab}${tab}${b}Editar: ${saltoLinea}
-                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/EDITAR_POR_PARAMS/{"_id": "escribeElIdDelGatitoAqui", "name": "Diogenes"}${saltoLinea}
-                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/EDITAR_POR_QRY/{"_id": "escribeElIdDelGatitoAqui", "name": "Diogenes"}${saltoLinea}
-                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/EDITAR_POR_BODY/{"_id": "escribeElIdDelGatitoAqui", "name": "Diogenes"}${saltoLinea}
-                                    ${tab}${tab}${b}Eliminar: ${saltoLinea}
-                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/ELIMINAR_POR_PARAMS/escribeElIdDelGatitoAqui${saltoLinea}
-                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/ELIMINAR_POR_QRY/escribeElIdDelGatitoAqui${saltoLinea}
-                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/ELIMINAR_POR_BODY/{"_id": "escribeElIdDelGatitoAqui"}${saltoLinea}
+                                    ${tab}${tab}${b}<b> Ver un registro:</b> ${saltoLinea}
+                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/simInvBtc/resultado/VER_POR_BODY/{"_id": "escribeElId"}${saltoLinea}
+                                    ${tab}${tab}${b}<b> Crear un registro:</b> ${saltoLinea}
+                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/simInvBtc/resultado/CREAR_POR_BODY/{ "compraAño":0000, "compraMes":00, "compraDia":00, "precioEntradaUsd":00,"importeInicialUsd":00, "compraCotizacionUsd":00,"importeCriptoComprado":00, "importeArsInvertido":00, "inversorEmail":"inversor@mycorreo.com", "InversorComentario":"Prueba" }${saltoLinea}
+                                    ${tab}${tab}${b}<b> Editar un registro:</b> ${saltoLinea}
+                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/simInvBtc/resultado/EDITAR_POR_BODY/{ "_id":"simInvBtc_Id", "compraAño":0000, "compraMes":00, "compraDia":00, "precioEntradaUsd":00,"importeInicialUsd":00, "compraCotizacionUsd":00,"importeCriptoComprado":00, "importeArsInvertido":00, "inversorEmail":"inversor@mycorreo.com", "InversorComentario":"Prueba" }${saltoLinea}
+                                    ${tab}${tab}${b}<b> Eliminar un registro:</b> ${saltoLinea}
+                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/simInvBtc/resultado/ELIMINAR_POR_BODY/{"_id": "escribeElId"}${saltoLinea}
 
                                 </code>
                             </div>
@@ -200,7 +193,6 @@ function catPrueba() {
 
 
 module.exports = {
-                    catPrueba
+                    simInvBtcPrueba
                 };  
-                
                 

@@ -161,6 +161,25 @@ function Info() {
                             </li>
                         </ul> 
                         ${saltoLinea}
+                        <h3>
+                        Consultar:
+                        </h3>
+                        <p><b>${tab}Proposito:</b>${b} Consultar el estado de Session y la Cookie 'sessionUsuario'.</p>
+                        <ul>
+                            <li>  
+                                <p>${tab}<b>Consultar el estado de session.usuario</b></p>
+                                <p>${tab}${tab} Estado de la sesion:${b}
+                                    <a href="${encodeURI(`http://localhost:${srvPuerto}/api/loguin/consultarSession`)}" target="_blank"><i class='destacar3'>Consultar</i></a>
+                                </p>    
+                            </li>
+                            <li>
+                                <p>${tab}<b>Consultar el estado de la Cookie 'sessionUsuario'</b></p>
+                                <p>${tab}${tab}Estado de la cookie de sesion:${b}
+                                        <a href="${encodeURI(`http://localhost:${srvPuerto}/api/loguin/consultarCookie`)}" target="_blank"><i class='destacar3'>Consultar</i></a>
+                                </p>
+                            </li>
+                        </ul>
+                        ${saltoLinea}
                         
                         ${saltoLinea}
                         ${saltoLinea} 

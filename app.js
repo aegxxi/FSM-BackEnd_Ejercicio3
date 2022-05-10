@@ -18,8 +18,8 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());            // Controlo dede donde pueden venir las peticiones
 app.use(session({
-    secret: 'Lo imprimido, fue escrivido.',
-    resave: false,
+    secret: 'Lo imprimido, fue escrivido.',     //lo escibo mal aproposito
+    resave: true,               //defecto false
     saveUninitialized: true
     //cookie: { secure: true }
   }));
@@ -29,6 +29,7 @@ app.use(session({
 const indexRouter = require('./routes/index');
 const catsRouter = require('./routes/cats');
 const usersRouter = require('./routes/users');
+const simInvBtcRouter = require('./routes/simInvBtc');
 const externasRouter = require('./routes/externas');
 const loguinRouter = require('./routes/loguin');
 
@@ -36,6 +37,7 @@ const loguinRouter = require('./routes/loguin');
 app.use('/', indexRouter);
 app.use('/api/cats', catsRouter);
 app.use('/api/usuarios', usersRouter);
+app.use('/api/simInvBtc', simInvBtcRouter);
 app.use('/api/externas', externasRouter);
 app.use('/api/loguin', loguinRouter);
 

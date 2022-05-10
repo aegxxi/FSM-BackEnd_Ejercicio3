@@ -1,7 +1,7 @@
 /**
  *  Importo las dependencias.
  */  
-const Usuario = require('../models/Usuario');
+const {Usuario} = require('../models/Usuario');
 const { validationResult } = require('express-validator');
 const bcryptjs = require('bcryptjs');
 const {usuariosInfo} = require('../PaginasJs/usuarios');
@@ -32,7 +32,8 @@ let consologuearErrores = true;
 
     } catch (error) {
         (consologuearProceso) ? console.log({msg: 'Hubo un error al leer los usuarios'},error) : null;
-        res.status(400).send({msg: 'Hubo un error al leer los usuarios'},error);
+        res.status(400).send({msg: 'Hubo un error al leer los usuarios'});
+        return;
     };
   };
 

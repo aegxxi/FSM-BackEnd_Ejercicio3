@@ -518,8 +518,13 @@ const eliminarGatitoPorBody = async ( body, srvUri=mySrvUri, responder ) => {
     myBody = JSON.parse(myBody);            // parseo el string como objeto Json
     console.log(`eliminarGatitoPorBody (body)-> ${myBody}`);
     console.log(`eliminarGatitoPorBody (body-Objeto): `, myBody);
+    /*     
     const {_id} = myBody;                   // Destructuro el id
     myBody = { _id: `"${_id}"` };           // Construyo el parametro del body
+     */
+    const {_id} = myBody;                   // Destructuro el id
+    myBody = {data:{ _id: `${_id}` }};           // Construyo el parametro del body
+    (consologuearProceso) ? console.log(`${metodoHandler} (body-Objeto final):`, myBody) : null; 
 
     let contenido;
     contenido = await axios.delete(url, {myBody}, { timeout: 10000 }).catch( (error) => {

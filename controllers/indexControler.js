@@ -5,6 +5,8 @@ const entorno = require('../appSrvEntorno');
 const { fnMiServidor } =entorno
 const { srvPuerto, srvNombre } = fnMiServidor()
 
+
+
 function vistaInicio(req, res){
     /* 
     res.render('index', { 

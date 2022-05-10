@@ -1,8 +1,12 @@
-const res = require('express/lib/response');
+//const res = require('express/lib/response');
+//const { response } = require('../app');
+
 const Usuario = require('../models/Usuario');
 const { validationResult } = require('express-validator');
 const bcryptjs = require('bcryptjs');
 const { Info } = require('../PaginasJs/loguin');
+const { json } = require('express/lib/response');
+
 
 
 // Defino que envio a la consola (Global)
@@ -73,14 +77,14 @@ let cookieNombre = '';   // Establezco la variable que contendra el nombre de la
     (consologuearProceso) ? console.log(`${controladorEnUso} (passwordUsuario) -> `,passwordUsuario) : null;
     
     try {
-        // Verificar si no se paso el email 
-        if(!emailUsuario) {
-            res.status(200).json({ msg: 'El email es obligatorio' });
+        // Verificar si no se paso el email o el password
+        if(!emailUsuario || !password) {
+            res.status(200).json({ msg: 'El email y la contraseña son obligatorios' });
             return;
         };
         
-        /* 
-        // Verificar si se paso el mail o el usuario en el body
+         
+        // Verificar si se paso el mail y el password en el body
         //  - Comprobar si hay errores con validationResult
         if (email || password) {
             (consologuearProceso) ? console.log(`${controladorEnUso} Comprbando los campos del body segun el modelo de la coleccion usuario con validationResult... `) : null;
@@ -97,7 +101,7 @@ let cookieNombre = '';   // Establezco la variable que contendra el nombre de la
             res.status(200).json({ msg: 'El usuario solo puede ser validado pasando todos sus datos en el body' });
             return;
         }; 
-        */
+        
 
         (consologuearProceso) ? console.log(`${controladorEnUso} Establezco la variable que contendra el objeto del usuario encontrado ... `) : null;
         let usuarioEncontrado = {};  // Establezco la variable que contendra el objeto del usuario encontrado
@@ -145,10 +149,15 @@ let cookieNombre = '';   // Establezco la variable que contendra el nombre de la
         
         // Creo session y cookie
         (consologuearProceso) ? console.log(`${controladorEnUso} Creo session y cookie...`) : null;
-        req.session.user = usuarioLogueado;     // Creo la Session
-
+        
+        req.session.usuario = usuarioLogueado;     // Creo la Session
+        
+        //(consologuearProceso) ? console.log(`${controladorEnUso} Sesion (req.session.usuario): `,req.session.usuario) : null;
+        (consologuearProceso) ? console.log(`${controladorEnUso} Sesion (req.session): `,req.session) : null;
+        
         //cookieNombre = 'Dts_' + nombre;
-        res.cookie( 'sessionUsuario', req.session.user, { maxAge:800000 } );  // Creo la cookie
+        res.cookie( 'sessionUsuario', req.session.usuario, { maxAge:800000000 } );  // Creo la cookie
+        (consologuearProceso) ? console.log(`${controladorEnUso} Cookie sessionUsuario (req.cookies.sessionUsuario): `,req.cookies.sessionUsuario) : null;
 
 
         res.status(201).json({ msg: 'Usuario Logueado.' });     
@@ -177,6 +186,40 @@ const logoutUsuarios = async (req, res) => {
     req.session.destroy;
     res.status(200).json({ msg: 'Sesion cerrada.' });
 };
+
+
+
+/**
+ *  Consulto la session objeto 'usuario'
+ */
+ const consultarSession = (req, res) => {
+    // Defino que envio a la consola (Local)
+    const consologuearProceso = consologuearProcesos;   //Valores (true, false) PorDefecto = consologuearProcesos 
+    const consologuearError = consologuearErrores;      //Valores (true, false) PorDefecto = consologuearErrores
+    // Defino y consologueo el controlador en uso
+    const controladorEnUso= 'consultarSession';
+    (consologuearProceso) ? console.log(`* Controlador: ${controladorEnUso}...`) : null;   
+    
+    (consologuearProceso) ? console.log(` ${controladorEnUso} req.session: `,req.session) : null; 
+    (req.session.usuario) ? res.json(req.session.usuario) : res.json({ msg: 'No existe el objeto [usuario] dentro del objeto [session].' });
+    return;
+}
+
+/**
+ *  Consulto la cookie 'sessionUsuario'
+ */
+const consultarCookie = (req, res) => {
+    // Defino que envio a la consola (Local)
+    const consologuearProceso = consologuearProcesos;   //Valores (true, false) PorDefecto = consologuearProcesos 
+    const consologuearError = consologuearErrores;      //Valores (true, false) PorDefecto = consologuearErrores
+    // Defino y consologueo el controlador en uso
+    const controladorEnUso= 'consultarCookie';
+    (consologuearProceso) ? console.log(`* Controlador: ${controladorEnUso}...`) : null;   
+    
+    (consologuearProceso) ? console.log(` ${controladorEnUso} req.cookies.sessionUsuario: `,req.cookies.sessionUsuario) : null;
+    (req.cookies.sessionUsuario) ? res.json(req.cookies.sessionUsuario) : res.json({ msg: 'No existe la cookie [sessionUsuario].' });
+    return;
+}
 
 
 
@@ -317,6 +360,8 @@ module.exports = {
                     apiloguinInfo,
                     loguinUsuarios,
                     logoutUsuarios,
+                    consultarSession,
+                    consultarCookie,
                     loguinResultado    
                 }
 

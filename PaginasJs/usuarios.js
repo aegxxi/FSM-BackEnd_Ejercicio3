@@ -183,4 +183,5 @@ function usuariosInfo() {
 
 module.exports = {
                     usuariosInfo
-                };                    
+                }; 
+                                   

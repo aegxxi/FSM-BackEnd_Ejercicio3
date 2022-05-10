@@ -48,7 +48,7 @@ const vistaGatitos = async (req, res) => {
         res.status(200).json({gatitos});    // Devuelvo todos los gatitos encontrados
     } catch (error) {
         (consologuearError) ? console.log(`${controladorEnUso}, Error: ) -> `, error) : null;
-        res.status(400).send({msg: 'Hubo un error al mostrar los gatitos',error});          
+        res.status(400).send({msg: 'Hubo un error al mostrar los gatitos'});          
     };   
 };
 
@@ -114,7 +114,7 @@ const verUnGatito = async (req, res) => {
         
     } catch (error) {
         (consologuearError) ? console.log(`${controladorEnUso} (gato ${valorClave}, Error: ) -> `, error) : null;
-        res.status(400).send({msg: `Hubo un error al buscar el gatito, o el gattito no se encuentra en la base`,error});      
+        res.status(400).send({msg: `Hubo un error al buscar el gatito, o el gattito no se encuentra en la base`});      
     };
 };
 
@@ -209,7 +209,7 @@ const crearGatito = async (req, res) => {
 
     } catch (error) {
         (consologuearError) ? console.log(`${controladorEnUso} (gato ${nameGato}, Error: ) -> `, error) : null;
-        res.status(400).send({msg: 'Hubo un error al crear el gatito',error});   
+        res.status(400).send({msg: 'Hubo un error al crear el gatito'});   
     };
 };
 
@@ -289,7 +289,7 @@ const editarGatito = async (req, res) => {
         
     } catch (error) {
         (consologuearError) ? console.log(`${controladorEnUso} (gato ${valorClave}, Error: ) -> `, error) : null;
-        res.status(400).send({msg: 'Hubo un error al buscar el gatito, o el gattito no se encuentra en la base',error});      
+        res.status(400).send({msg: 'Hubo un error al buscar el gatito, o el gattito no se encuentra en la base'});      
     };
 };
 
@@ -347,7 +347,7 @@ const elininarGatito = async (req, res) => {
 
     } catch (error) {
         (consologuearError) ? console.log(`${controladorEnUso} (gato ${valorclave}, Error: ) -> `, error) : null;
-        res.status(400).send({msg: 'Hubo un error al eliminar el gatito',error});
+        res.status(400).send({msg: 'Hubo un error al eliminar el gatito'});
     };
 };
 
@@ -375,10 +375,17 @@ const elininarGatito = async (req, res) => {
          const contenido = catInfo();
          res.send(contenido);    
      } catch (error) {
-         res.status(400).send({msg: 'Hubo un error',error});    
+        (consologuearError) ? console.log(`Error al mostrar la iformacion de la api, Error: ) -> `, error) : null
+        res.status(400).send({msg: 'Hubo un error'});    
      };
  };
 
+
+
+
+// -------------------------------------------------
+// Inicio - Funciones para prueba del crud por Axios
+// -------------------------------------------------
 
 /**
  * Muestro pagina para la prueba de la api con Axios:
@@ -399,8 +406,8 @@ const elininarGatito = async (req, res) => {
          const contenido = catPrueba();
          res.send(contenido);    
      } catch (error) {
-        (consologuearError) ? console.log(`apiCatPrueba, Error: ) -> `, error) : null;
-        res.status(400).send({msg: 'Hubo un error',error});    
+        (consologuearError) ? console.log(`Error al mostrar la pagina de prueba (por Axios) de la api, Error: ) -> `, error) : null
+        res.status(400).send({msg: 'Hubo un error al mostrar la pagina'});    
      };
  };
  
@@ -752,6 +759,9 @@ function catResultado(req, res){
     };
 };
 
+// ----------------------------------------------
+// Fin - Funciones para prueba del crud por Axios
+// ----------------------------------------------
 
 
 
