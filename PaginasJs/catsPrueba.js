@@ -33,6 +33,7 @@ const estilos=`<style>
                     }
 
                   a {color:aliceblue}
+                  details{margin-left: 2rem;}
                   summary {color:aliceblue}
                   article {color:aliceblue}
                   
@@ -112,16 +113,17 @@ function catPrueba() {
                         Apis Cat - Prueba axios
                       </h1>
                       <h2>
-                        Informacion para el uso de las api cats
+                        Informacion para las pruebas de las api cats, usando axios
                       </h2>
-                      <p><b>Proposito general:</b>${b} Probar el CRUD de la coleccion cats.</p>
+                      <p><b>Proposito general:</b>${b} Probar el CRUD de la coleccion cats, usando axios.</p>
                        ${saltoLinea}
                       <h3>
-                        Gatitos:
+                        Coleccion Cast (Gatitos):
                       </h3>
+                      <p><b>Descripcion:</b>${b} Este es un ejemplo simple de una coleccion para probar el CRUD.</p>
                       <ul>
                         <li>
-                            <p class='crud'><b>Ejemplo de la estructura de la coleccion </b></p>
+                            <p class='crud'><b>Ejemplo de la estructura de la coleccion: </b></p>
                             <div class='Codigo'>
                                 <code>
                                     ${tab}${tab}{${saltoLinea}    
@@ -130,16 +132,27 @@ function catPrueba() {
                                     ${tab}${tab}}
                                 </code>
                             </div>
-                            <p>${tab}${tab}ver contenido de la coleccion:${b}<i>" http://localhost:${srvPuerto}/api/cats/ver " </i>${b}
-                                <a href="http://localhost:${srvPuerto}/api/cats/ver" target="_blank">Ver</a></p>
+                            <p>${tab}${tab}Ver contenido de la coleccion:${b}<i>" http://localhost:${srvPuerto}/api/cats/ver " </i>${saltoLinea}
+                              ${tab}${tab}<a href="http://localhost:${srvPuerto}/api/cats/ver" target="_blank">Ver todos los gatitos</a>
+                            </p>
                         </li>
                         <li>
-                            <p class='crud'><b>Construccion de la Uri de prueba </b></p>
+                            <p class='crud'><b>Construccion de la Uri de prueba: </b></p>
                             <div class='Codigo'>
                                 <code>
                                     ${tab}${tab}[ <mark><b>http://localhost:${srvPuerto}/api/cats/resultado/<i class='Destacar1'>[Accion]</i>/<i class='Destacar1'>[listaDeValores]</i></b></mark> ]${saltoLinea}    
                                 </code>
                             </div>
+                            ${saltoLinea}
+                            <details>
+                                <summary>Comentarios</summary>
+                                <article>
+                                    <p class="textoComentario"> - El parametro <i class='Destacar1'>${b}Accion${b}</i> es obigatorio.</p>
+                                    <p class="textoComentario"> - El parametro <i class='Destacar1'>${b}ListaDeValores${b}</i> es obligatorio.</p>
+                                    <p class="textoComentario">${tab} Este parametro siempre debe pasarse en formato Json.</p>
+                                    <p class="textoComentario">${tab} Su contenido dependera de los valores adicionales que la api requiera para realizar la consulta.</p>
+                                    <p class="textoComentario">___</p>
+                                </article>                            
                         </li>
                         <li>
                             <p class='crud'><b>Lista de Acciones diponibles: </b></p>
@@ -161,25 +174,25 @@ function catPrueba() {
                             </div>
                         </li>
                         <li>
-                            <p class='crud'><b>Ejemplos de la construccion de la Uri de prueba </b></p>
+                            <p class='crud'><b>Ejemplos de la construccion de la Uri de prueba: </b></p>
                             <div class='Codigo2'>
                                 <code>
                                     ${tab}${tab}${b}Ver: ${saltoLinea}
-                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/VER_POR_PARAMS/6258d21ba60416c73341165e${saltoLinea}
-                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/VER_POR_QRY/6258d21ba60416c73341165e${saltoLinea}
-                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/VER_POR_BODY/{"_id": "6258d21ba60416c73341165e"}${saltoLinea}
+                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/VER_POR_PARAMS/{"_id": "IdDelGatitoAqui"}${saltoLinea}
+                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/VER_POR_QRY/{"_id": "IdDelGatitoAqui"}${saltoLinea}
+                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/VER_POR_BODY/{"_id": "IdDelGatitoAqui"}${saltoLinea}
                                     ${tab}${tab}${b}Crear: ${saltoLinea}
-                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/CREAR_POR_PARAMS/Sofocles${saltoLinea}
-                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/CREAR_POR_QRY/Sofocles${saltoLinea}
-                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/CREAR_POR_BODY/{"name": "Sofocles"}${saltoLinea}
+                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/CREAR_POR_PARAMS/{"name": "NombreDelGatitoAqui"}${saltoLinea}
+                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/CREAR_POR_QRY/{"name": "NombreDelGatitoAqui"}${saltoLinea}
+                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/CREAR_POR_BODY/{"name": "NombreDelGatitoAqui"}${saltoLinea}
                                     ${tab}${tab}${b}Editar: ${saltoLinea}
-                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/EDITAR_POR_PARAMS/{"_id": "escribeElIdDelGatitoAqui", "name": "Diogenes"}${saltoLinea}
-                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/EDITAR_POR_QRY/{"_id": "escribeElIdDelGatitoAqui", "name": "Diogenes"}${saltoLinea}
-                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/EDITAR_POR_BODY/{"_id": "escribeElIdDelGatitoAqui", "name": "Diogenes"}${saltoLinea}
+                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/EDITAR_POR_PARAMS/{"_id": "IdDelGatitoAqui", "name": "Diogenes"}${saltoLinea}
+                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/EDITAR_POR_QRY/{"_id": "IdDelGatitoAqui", "name": "Diogenes"}${saltoLinea}
+                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/EDITAR_POR_BODY/{"_id": "IdDelGatitoAqui", "name": "Diogenes"}${saltoLinea}
                                     ${tab}${tab}${b}Eliminar: ${saltoLinea}
-                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/ELIMINAR_POR_PARAMS/escribeElIdDelGatitoAqui${saltoLinea}
-                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/ELIMINAR_POR_QRY/escribeElIdDelGatitoAqui${saltoLinea}
-                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/ELIMINAR_POR_BODY/{"_id": "escribeElIdDelGatitoAqui"}${saltoLinea}
+                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/ELIMINAR_POR_PARAMS/{"_id": "IdDelGatitoAqui"}${saltoLinea}
+                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/ELIMINAR_POR_QRY/{"_id": "IdDelGatitoAqui"}${saltoLinea}
+                                    ${tab}${tab}${tab}http://localhost:${srvPuerto}/api/cats/resultado/ELIMINAR_POR_BODY/{"_id": "IdDelGatitoAqui"}${saltoLinea}
 
                                 </code>
                             </div>

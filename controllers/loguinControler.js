@@ -1,7 +1,7 @@
 //const res = require('express/lib/response');
 //const { response } = require('../app');
 
-const Usuario = require('../models/Usuario');
+const {Usuario} = require('../models/Usuario');
 const { validationResult } = require('express-validator');
 const bcryptjs = require('bcryptjs');
 const { Info } = require('../PaginasJs/loguin');
@@ -114,6 +114,7 @@ let cookieNombre = '';   // Establezco la variable que contendra el nombre de la
         // Verifico si se encontro al usuario, y consologueo resultado si corresponde
         if (consologuearProceso) {
             if (usuarioEncontrado) {
+                console.log(`${controladorEnUso} Se ha encontrado un Usuario...`);
                 console.log(`${controladorEnUso} (usuario buscado'${emailUsuario}', usuario encontrado '${usuarioEncontrado.email}')`);
                 console.log(`${controladorEnUso} (objeto usuarioEncontrado):`,usuarioEncontrado);
             } else {

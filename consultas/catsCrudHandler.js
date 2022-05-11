@@ -6,7 +6,18 @@ const {fnMiServidor}= entorno
 let {srvPuerto} = fnMiServidor()
 const mySrvUri = `http://localhost:${srvPuerto}`
 
-const consologuearErrores = false
+
+// Defino que envio a la consola (Global)
+let consologuearProcesos = true;
+let consologuearErrores = true;
+let consologuearErroresAxios = true;
+let consologuearValoresRetornados = true;
+// (Local), en cada controlador se puede usar el valor global, o definir el valor 
+    // const consologuearProceso = consologuearProcesos;                    //Valores (true, false) PorDefecto = consologuearProcesos
+    // const consologuearError = consologuearErrores;                       //Valores (true, false) PorDefecto = consologuearErrores
+    // const consologuearErrorAxios = consologuearErroresAxios;             //Valores (true, false) PorDefecto = consologuearErroresAxios 
+    // const consologuearValorRetornado = consologuearValoresRetornados;    //Valores (true, false) PorDefecto = consologuearValoresRetornados
+
 
 
 /* 
@@ -32,31 +43,54 @@ const x = axios.get('/user?ID=12345').catch( (error) => {
  * Ver un gatito (por params)
  * api/ver/gato 
 */
-const verGatitoPorParams = async ( idGatito, srvUri = mySrvUri, responder ) => {
+const verGatitoPorParams = async ( valores, srvUri = mySrvUri, responder ) => {
+    // Defino que envio a la consola (Local)
+    const consologuearProceso = consologuearProcesos;                   //Valores (true, false) PorDefecto = consologuearProcesos 
+    const consologuearError = consologuearErrores;                      //Valores (true, false) PorDefecto = consologuearErrores
+    const consologuearErrorAxios = consologuearErroresAxios;            //Valores (true, false) PorDefecto = consologuearErroresAxios 
+    const consologuearValorRetornado = consologuearValoresRetornados;   //Valores (true, false) PorDefecto = consologuearValoresRetornados
+    // Defino y consologueo el controlador en uso
+    const metodoHandler= 'verGatitoPorParams';
+    (consologuearProceso) ? console.log(`* metodoHandler: ${metodoHandler}...`) : null;
+
     (srvUri) 
     ? (srvUri.length<9)
         ? srvUri=mySrvUri
         :  srvUri= srvUri
     : srvUri=mySrvUri
     ;
-    //console.log('verGatitoPorParams -> param(srvUri):',srvUri)
     
-    let url = `${srvUri}/api/cats/ver/gato/${idGatito}`;
-
     let contenido;
-    contenido = await axios.get(url , { timeout: 10000 }).catch( (error) => {
-        if (error.response && consologuearErrores) {
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-        };
-        error.origin = 'verGatitoPorParams -> Error al obtener la ruta';
-        throw error;
-    });
+    let url;
+    const {_id} = JSON.parse(decodeURIComponent(valores));    
+    const idGatito = _id;
+    
+    if ( _id ) {
+        url = `${srvUri}/api/cats/ver/gato/${idGatito}`;
+        (consologuearProceso) ? console.log(`${metodoHandler}, (url)-> ${url}`) : null;  
+    } else {
+        (consologuearProceso) ? console.log(`{ msg: "${metodoHandler}, El id es obligatorio en el parametro lista de valores"}`) : null;
+        contenido = `{"msg": "El id es obligatorio en el parametro lista de valores"}`;
+        responder(contenido);
+        return;    
+    };
 
-    //console.log('verGatitoPorParams',contenido);
+    try {
+        (consologuearProceso) ? console.log(`${metodoHandler}, Consultando por  axios.get a la ruta: ${url}`) : null;
+        //contenido = await axios.get(encodeURI(url) , { timeout: 10000 });
+        contenido = await axios.get( url, { timeout: 10000 } );    
+    } catch (error) { 
+        (consologuearErrorAxios) ? console.log(`${metodoHandler}, -> Error, Axios no pudo recuperar los datos en la ruta ${url}`,error) : null; 
+        (!contenido)
+            ? contenido = {msg: `Axios no pudo recuperar los datos en la ruta: ${url}`}
+            : null;
+    };
+
+    (consologuearValorRetornado && contenido) 
+        ? console.log(`${metodoHandler}, -> (contenido): `, contenido)
+        : null;
+
     responder(contenido);
-    //return(contenido);
     return;
 };
 
@@ -65,7 +99,16 @@ const verGatitoPorParams = async ( idGatito, srvUri = mySrvUri, responder ) => {
  * Ver un gatito (por query) 
  * api/ver/gato
  */
-const verGatitoPorQry = async ( idGatito, srvUri=mySrvUri, responder ) => {
+const verGatitoPorQry = async ( valores, srvUri=mySrvUri, responder ) => {
+    // Defino que envio a la consola (Local)
+    const consologuearProceso = consologuearProcesos;                   //Valores (true, false) PorDefecto = consologuearProcesos 
+    const consologuearError = consologuearErrores;                      //Valores (true, false) PorDefecto = consologuearErrores
+    const consologuearErrorAxios = consologuearErroresAxios;            //Valores (true, false) PorDefecto = consologuearErroresAxios 
+    const consologuearValorRetornado = consologuearValoresRetornados;   //Valores (true, false) PorDefecto = consologuearValoresRetornados
+    // Defino y consologueo el controlador en uso
+    const metodoHandler= 'verGatitoPorQry';
+    (consologuearProceso) ? console.log(`* metodoHandler: ${metodoHandler}...`) : null;
+
     (srvUri) 
     ? (srvUri.length<9)
         ? srvUri=mySrvUri
@@ -73,21 +116,39 @@ const verGatitoPorQry = async ( idGatito, srvUri=mySrvUri, responder ) => {
     : srvUri=mySrvUri
     ;
 
-    let url = `${srvUri}/api/cats/ver/gato?id=${idGatito}`;
+    //let url = `${srvUri}/api/cats/ver/gato?id=${idGatito}`;
 
     let contenido;
-    contenido = await axios.get(url, { timeout: 10000 }).catch( (error) => {
-        if (error.response && consologuearErrores) {
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-        };
-        error.origin = 'verGatitoPorQry -> Error al obtener la ruta';
-        throw error;
-    });
+    let url;
+    const {_id} = JSON.parse(decodeURIComponent(valores));    
+    const idGatito = _id;
+    
+    if ( _id ) {
+        url = `${srvUri}/api/cats/ver/gato?id=${idGatito}`;
+        (consologuearProceso) ? console.log(`${metodoHandler}, (url)-> ${url}`) : null;  
+    } else {
+        (consologuearProceso) ? console.log(`{ msg: "${metodoHandler}, El id es obligatorio en el parametro lista de valores"}`) : null;
+        contenido = `{"msg": "El id es obligatorio en el parametro lista de valores"}`;
+        responder(contenido);
+        return;    
+    };
+
+    try {
+        (consologuearProceso) ? console.log(`${metodoHandler}, Consultando por  axios.get a la ruta: ${url}`) : null;
+        //contenido = await axios.get(encodeURI(url) , { timeout: 10000 });
+        contenido = await axios.get( url, { timeout: 10000 } );    
+    } catch (error) { 
+        (consologuearErrorAxios) ? console.log(`${metodoHandler}, -> Error, Axios no pudo recuperar los datos en la ruta ${url}`,error) : null; 
+        (!contenido)
+            ? contenido = {msg: `Axios no pudo recuperar los datos en la ruta: ${url}`}
+            : null;
+    };
+
+    (consologuearValorRetornado && contenido) 
+        ? console.log(`${metodoHandler}, -> (contenido): `, contenido)
+        : null;
 
     responder(contenido);
-    //return(contenido.data);
     return;
 };
 
@@ -97,6 +158,14 @@ const verGatitoPorQry = async ( idGatito, srvUri=mySrvUri, responder ) => {
  * api/ver/gato
  */
 const verGatitoPorBody = async ( body, srvUri = mySrvUri, responder ) => {
+    // Defino que envio a la consola (Local)
+    const consologuearProceso = consologuearProcesos;                   //Valores (true, false) PorDefecto = consologuearProcesos 
+    const consologuearError = consologuearErrores;                      //Valores (true, false) PorDefecto = consologuearErrores
+    const consologuearErrorAxios = consologuearErroresAxios;            //Valores (true, false) PorDefecto = consologuearErroresAxios 
+    const consologuearValorRetornado = consologuearValoresRetornados;   //Valores (true, false) PorDefecto = consologuearValoresRetornados
+    // Defino y consologueo el controlador en uso
+    const metodoHandler= 'verGatitoPorBody';
+    (consologuearProceso) ? console.log(`* metodoHandler: ${metodoHandler}...`) : null;
 
     (srvUri) 
     ? (srvUri.length<9)
@@ -105,29 +174,8 @@ const verGatitoPorBody = async ( body, srvUri = mySrvUri, responder ) => {
     : srvUri=mySrvUri
     ;
     
-    //console.log(`verGatitoPorBody (body-qs.stringify): `, qs.stringify(myBody));
-
-    //const qs = require('qs');
-    //axios.post('/foo', qs.stringify({ 'bar': 123 }));
-    
-    /* 
-    // este codigo genera error:
-    // (Nodo: 13240) ADVERTENCIA DE REEMPLAZO DE PROMISIÓN UNHANDLED: ADVERTENCIA DE PROMISIÓN UNHANGLED. 
-    //   Este error se originó, lanzando dentro de una función de ASYNC sin un bloque de captura, o rechazando una promesa que no se manejó con .catch (). Para rescindir el proceso de nodo en el rechazo de la promesa sin controlar, use la bandera de CLI `- Redondeled-rechace = estrict` (ver https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (ID de rechazo: 2)
-    // (Nodo: 13240) [DEP0018] ADVERTENCIA DE DESPECACIÓN: Las rejecciones de promesa no controladas están en desuso. En el futuro, las rejillas prometedoras que no se manejan terminarán el proceso de nodo.js con un código de salida que no se encuentra.   
-
-    const contenido = await axios.get(`${srvUri}/api/cats/ver/gato`, {body}, { timeout: 10000 }).catch( (error) => {
-        if (error.response && consologuearErrores) {
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-        };
-        error.origin = 'Error al obtener la ruta';
-        throw error;
-    });
-     */
-    
     let url = `${srvUri}/api/cats/ver/gato`;
+    (consologuearProceso) ? console.log(`${metodoHandler} (url)-> ${url}`) : null;
 
     let myBody; 
     myBody = decodeURIComponent(body);      // Reemplazo caracteres %x de la url por caracteres equivalentes
@@ -135,42 +183,52 @@ const verGatitoPorBody = async ( body, srvUri = mySrvUri, responder ) => {
     console.log(`crearGatitoPorBody (body)-> ${myBody}`);
     console.log(`crearGatitoPorBody (body-Objeto): `, myBody);
     const {_id} = myBody;                   // deconstruyo el objeto myBody y tomo el id
-    myBody = { params: { id: `${_id}` } };  // armo el objeto para el parametro body de axios
+    //myBody = { params: { id: `${_id}` } };  // armo el objeto para el parametro body de axios ("params" lo toma en el query).
+    myBody = { data: { _id: `${_id}` } };  // armo el objeto para el parametro body de axios ("data" lo toma en el body).
     console.log(`crearGatitoPorBody (body Destructurado_&_Restructurado)-> ${myBody}`,myBody);
-    // axios.get(
-    //     '/bezkoder.com/tutorials',
-    //     { params: { title: 'ios' }  }
-    //   );
-
 
     const headers = {
-        "Content-Type": "application/json"
-        //{ timeout: 10000 }
-    }
+        "Content-Type": "application/json",
+        "data": { "_id": `${_id}` },
+        "timeout": 10000 
+    };
     
     let contenido;
     try {
-        contenido = await axios.get(url ,myBody , { timeout: 10000 });    
+        //contenido = await axios.get(url ,myBody , { timeout: 10000 });
+        //contenido = await axios.get(url ,myBody );
+        contenido = await axios.get(url ,headers);   
     } catch (error) {
         console.log('verGatitoPorBody -> Error al recuperar los datos.',error); 
     };
     
-    console.log(contenido);
+    (consologuearValorRetornado && contenido) 
+        ? console.log(`${metodoHandler} -> (contenido): `, contenido)
+        : null;
+
     responder(contenido);
-    //return(contenido.data);
     return;
 };
+
 
 
 // Metodos POST (Crear Gatito)
 // ---------------------------
 
-
 /** 
  * Crear un gatito (por params)
  * /api/cats/crear 
 */
-const crearGatitoPorParams = async ( nombreGatito, srvUri=mySrvUri, responder ) => {   
+const crearGatitoPorParams = async ( valores, srvUri=mySrvUri, responder ) => {   
+    // Defino que envio a la consola (Local)
+    const consologuearProceso = consologuearProcesos;                   //Valores (true, false) PorDefecto = consologuearProcesos 
+    const consologuearError = consologuearErrores;                      //Valores (true, false) PorDefecto = consologuearErrores
+    const consologuearErrorAxios = consologuearErroresAxios;            //Valores (true, false) PorDefecto = consologuearErroresAxios 
+    const consologuearValorRetornado = consologuearValoresRetornados;   //Valores (true, false) PorDefecto = consologuearValoresRetornados
+    // Defino y consologueo el controlador en uso
+    const metodoHandler= 'crearGatitoPorParams';
+    (consologuearProceso) ? console.log(`* metodoHandler: ${metodoHandler}...`) : null;
+
     (srvUri) 
     ? (srvUri.length<9)
         ? srvUri=mySrvUri
@@ -178,23 +236,42 @@ const crearGatitoPorParams = async ( nombreGatito, srvUri=mySrvUri, responder ) 
     : srvUri=mySrvUri
     ;
 
-    let url = `${srvUri}/api/cats/crear/${nombreGatito}`;
+    //let url = `${srvUri}/api/cats/crear/${nombreGatito}`;
+    //await axios.post(url ,body ,{ timeout: 10000 } )
+    
+    let contenido;
+    let url;
+    const { name } = JSON.parse(decodeURIComponent(valores));    
+    const nombreGatito = name;
+    
+    if ( name ) {
+        url = `${srvUri}/api/cats/crear/${nombreGatito}`;
+        (consologuearProceso) ? console.log(`${metodoHandler}, (url)-> ${url}`) : null;  
+    } else {
+        (consologuearProceso) ? console.log(`{ msg: "${metodoHandler}, El nombre es obligatorio en el parametro lista de valores"}`) : null;
+        contenido = `{"msg": "El nombre es obligatorio en el parametro lista de valores"}`;
+        responder(contenido);
+        return;    
+    };
+
     let body = { name: nombreGatito };
 
-    let contenido;
-    contenido = await axios.post(url ,body ,{ timeout: 10000 } ).catch( (error) => {
-        if (error.response && consologuearErrores) {
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-        };
-        error.origin = 'crearGatitoPorParams -> Error al obtener la ruta';
-        throw error;
-    });
+    try {
+        (consologuearProceso) ? console.log(`${metodoHandler}, Consultando por  axios.post a la ruta: ${url}`) : null;
+        //contenido = await axios.get(encodeURI(url) , { timeout: 10000 });
+        contenido = await axios.post(url ,body ,{ timeout: 10000 } );    
+    } catch (error) { 
+        (consologuearErrorAxios) ? console.log(`${metodoHandler}, -> Error, Axios no pudo crear los datos en la ruta ${url}`,error) : null; 
+        (!contenido)
+            ? contenido = {msg: `Axios no pudo crear los datos en la ruta: ${url}`}
+            : null;
+    };
 
-    console.log(contenido);
+    (consologuearValorRetornado && contenido) 
+        ? console.log(`${metodoHandler}, -> (contenido): `, contenido)
+        : null;
+
     responder(contenido);
-    //return(contenido.data);
     return;
 };
 
@@ -203,7 +280,16 @@ const crearGatitoPorParams = async ( nombreGatito, srvUri=mySrvUri, responder ) 
  * Crear un gatito (por query) 
  * /api/cats/crear
  */
-const crearGatitoPorQry = async ( nombreGatito, srvUri=mySrvUri, responder ) => {
+const crearGatitoPorQry = async ( valores, srvUri=mySrvUri, responder ) => {
+    // Defino que envio a la consola (Local)
+    const consologuearProceso = consologuearProcesos;                   //Valores (true, false) PorDefecto = consologuearProcesos 
+    const consologuearError = consologuearErrores;                      //Valores (true, false) PorDefecto = consologuearErrores
+    const consologuearErrorAxios = consologuearErroresAxios;            //Valores (true, false) PorDefecto = consologuearErroresAxios 
+    const consologuearValorRetornado = consologuearValoresRetornados;   //Valores (true, false) PorDefecto = consologuearValoresRetornados
+    // Defino y consologueo el controlador en uso
+    const metodoHandler= 'crearGatitoPorQry';
+    (consologuearProceso) ? console.log(`* metodoHandler: ${metodoHandler}...`) : null;
+
     (srvUri) 
     ? (srvUri.length<9)
         ? srvUri=mySrvUri
@@ -211,23 +297,42 @@ const crearGatitoPorQry = async ( nombreGatito, srvUri=mySrvUri, responder ) => 
     : srvUri=mySrvUri
     ;
 
-    let url = `${srvUri}/api/cats/crear?id=${nombreGatito}`;
-    let body = { name: nombreGatito };
+    // url = `${srvUri}/api/cats/crear?id=${nombreGatito}`;
+    // axios.post(url ,body ,{ timeout: 10000 } )
 
     let contenido;
-    contenido = await axios.post(url ,body ,{ timeout: 10000 } ).catch( (error) => {
-        if (error.response && consologuearErrores) {
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-        };
-        error.origin = 'crearGatitoPorQry -> Error al obtener la ruta';
-        throw error;
-    });
+    let url;
+    const { name } = JSON.parse(decodeURIComponent(valores));    
+    const nombreGatito = name;
+    
+    if ( name ) {
+        url = `${srvUri}/api/cats/crear?id=${nombreGatito}`;
+        (consologuearProceso) ? console.log(`${metodoHandler}, (url)-> ${url}`) : null;  
+    } else {
+        (consologuearProceso) ? console.log(`{ msg: "${metodoHandler}, El nombre es obligatorio en el parametro lista de valores"}`) : null;
+        contenido = `{"msg": "El nombre es obligatorio en el parametro lista de valores"}`;
+        responder(contenido);
+        return;    
+    };
 
-    console.log(contenido);
+    let body = { name: nombreGatito };
+
+    try {
+        (consologuearProceso) ? console.log(`${metodoHandler}, Consultando por  axios.post a la ruta: ${url}`) : null;
+        //contenido = await axios.get(encodeURI(url) , { timeout: 10000 });
+        contenido = await axios.post(url ,body ,{ timeout: 10000 } );    
+    } catch (error) { 
+        (consologuearErrorAxios) ? console.log(`${metodoHandler}, -> Error, Axios no pudo crear los datos en la ruta ${url}`,error) : null; 
+        (!contenido)
+            ? contenido = {msg: `Axios no pudo crear los datos en la ruta: ${url}`}
+            : null;
+    };
+
+    (consologuearValorRetornado && contenido) 
+        ? console.log(`${metodoHandler}, -> (contenido): `, contenido)
+        : null;
+
     responder(contenido);
-    //return(contenido.data);
     return;
 };
 
@@ -241,31 +346,24 @@ const crearGatitoPorQry = async ( nombreGatito, srvUri=mySrvUri, responder ) => 
  *  }
  */
 const crearGatitoPorBody = async ( body, srvUri=mySrvUri, responder ) => {
+    // Defino que envio a la consola (Local)
+    const consologuearProceso = consologuearProcesos;                   //Valores (true, false) PorDefecto = consologuearProcesos 
+    const consologuearError = consologuearErrores;                      //Valores (true, false) PorDefecto = consologuearErrores
+    const consologuearErrorAxios = consologuearErroresAxios;            //Valores (true, false) PorDefecto = consologuearErroresAxios 
+    const consologuearValorRetornado = consologuearValoresRetornados;   //Valores (true, false) PorDefecto = consologuearValoresRetornados
+    // Defino y consologueo el controlador en uso
+    const metodoHandler= 'crearGatitoPorBody';
+    (consologuearProceso) ? console.log(`* metodoHandler: ${metodoHandler}...`) : null;
+
     (srvUri) 
     ? (srvUri.length<9)
         ? srvUri=mySrvUri
         :  srvUri= srvUri
     : srvUri=mySrvUri
     ;
-
-   /* 
-   // este codigo genera error:
-   // (Nodo: 13240) ADVERTENCIA DE REEMPLAZO DE PROMISIÓN UNHANDLED: ADVERTENCIA DE PROMISIÓN UNHANGLED. 
-   //   Este error se originó, lanzando dentro de una función de ASYNC sin un bloque de captura, o rechazando una promesa que no se manejó con .catch (). Para rescindir el proceso de nodo en el rechazo de la promesa sin controlar, use la bandera de CLI `- Redondeled-rechace = estrict` (ver https://nodejs.org/api/cli.html#cli_unhandled_rejections_mode). (ID de rechazo: 2)
-   // (Nodo: 13240) [DEP0018] ADVERTENCIA DE DESPECACIÓN: Las rejecciones de promesa no controladas están en desuso. En el futuro, las rejillas prometedoras que no se manejan terminarán el proceso de nodo.js con un código de salida que no se encuentra.   
-   
-   const contenido = await axios.post(`${srvUri}/api/cats/crear`, {myBody}, { timeout: 10000 }).catch( (error) => {
-        if (error.response && consologuearErrores) {
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-        };
-        error.origin = 'Error al obtener la ruta';
-        throw error;
-    }); 
-    */
     
     let url = `${srvUri}/api/cats/crear`;
+    (consologuearProceso) ? console.log(`${metodoHandler} (url)-> ${url}`) : null;
     
     let myBody; 
     myBody = decodeURIComponent(body);      // Reemplazo caracteres %x de la url por caracteres equivalentes
@@ -285,7 +383,10 @@ const crearGatitoPorBody = async ( body, srvUri=mySrvUri, responder ) => {
             :contenido = 'crearGatitoPorBody -> Error al crear el gatito en la base de datos.'
     }
 
-    console.log(contenido);
+    (consologuearValorRetornado && contenido) 
+        ? console.log(`${metodoHandler} -> (contenido.data): `, contenido.data)
+        : null;
+
     responder(contenido);
     //return(contenido.data);
     return;
@@ -300,7 +401,16 @@ const crearGatitoPorBody = async ( body, srvUri=mySrvUri, responder ) => {
  * Editar un gatito (por params)
  * /api/editar 
 */
-const editarGatitoPorParams = async ( body, srvUri=mySrvUri, responder ) => {
+const editarGatitoPorParams = async ( valores, srvUri=mySrvUri, responder ) => {
+    // Defino que envio a la consola (Local)
+    const consologuearProceso = consologuearProcesos;                   //Valores (true, false) PorDefecto = consologuearProcesos 
+    const consologuearError = consologuearErrores;                      //Valores (true, false) PorDefecto = consologuearErrores
+    const consologuearErrorAxios = consologuearErroresAxios;            //Valores (true, false) PorDefecto = consologuearErroresAxios 
+    const consologuearValorRetornado = consologuearValoresRetornados;   //Valores (true, false) PorDefecto = consologuearValoresRetornados
+    // Defino y consologueo el controlador en uso
+    const metodoHandler= 'editarGatitoPorParams';
+    (consologuearProceso) ? console.log(`* metodoHandler: ${metodoHandler}...`) : null;
+
     (srvUri) 
     ? (srvUri.length<9)
         ? srvUri=mySrvUri
@@ -308,32 +418,42 @@ const editarGatitoPorParams = async ( body, srvUri=mySrvUri, responder ) => {
     : srvUri=mySrvUri
     ;
 
-    let myBody = {}
-    myBody = JSON.parse(body);
-    console.log(`editarGatitoPorBody (body)-> ${myBody}`);
-    console.log(`editaratitoPorBody (body-Objeto): `, myBody);
-    const {_id, name} = myBody;
-    myBody = { _id: _id,
+    // url = `${srvUri}/api/cats/editar/${_id}/${name}`;
+
+    let contenido;
+    let url;
+    const { _id } = JSON.parse(decodeURIComponent(valores));
+    const { name } = JSON.parse(decodeURIComponent(valores));
+    const idGatito = _id;
+    
+    if ( _id && name) {
+        url = `${srvUri}/api/cats/editar/${_id}/${name}`;
+        (consologuearProceso) ? console.log(`${metodoHandler}, (url)-> ${url}`) : null;  
+    } else {
+        (consologuearProceso) ? console.log(`{ msg: "${metodoHandler}, El id y el nombre son obligatorios en el parametro lista de valores"}`) : null;
+        contenido = `{"msg": "El id y el nombre son obligatorios en el parametro lista de valores"}`;
+        responder(contenido);
+        return;    
+    };
+
+    myBody = {  _id: _id,
                 name: name
-            };
-    console.log(`editaratitoPorBody (body Destructurado_&_Restructurado)-> ${myBody}`,myBody);
+            }; 
+    try {
+        (consologuearProceso) ? console.log(`${metodoHandler}, Consultando por axios.put a la ruta: ${url}`) : null;
+        contenido = await axios.put(url, myBody, { timeout: 10000 });    
+    } catch (error) { 
+        (consologuearErrorAxios) ? console.log(`${metodoHandler}, -> Error, Axios no pudo modificar los datos en la ruta ${url}`,error) : null; 
+        (!contenido)
+            ? contenido = {msg: `Axios no pudo modificar los datos en la ruta: ${url}`}
+            : null;
+    };
 
-    url = `${srvUri}/api/cats/editar/${_id}/${name}`;
+    (consologuearValorRetornado && contenido) 
+        ? console.log(`${metodoHandler}, -> (contenido): `, contenido)
+        : null;
 
-    let contenido
-    contenido = await axios.put(url, myBody, { timeout: 10000 }).catch( (error) => {
-        if (error.response && consologuearErrores) {
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-        };
-        error.origin = 'editarGatitoPorParams -> Error al obtener la ruta';
-        throw error;
-    });
-
-    console.log(contenido);
     responder(contenido);
-    //return(contenido.data);
     return;
 };
 
@@ -342,7 +462,16 @@ const editarGatitoPorParams = async ( body, srvUri=mySrvUri, responder ) => {
  * Editar un gatito (por query) 
  * /api/editar
  */
-const editarGatitoPorQry = async ( body, srvUri=mySrvUri, responder ) => {
+const editarGatitoPorQry = async ( valores, srvUri=mySrvUri, responder ) => {
+    // Defino que envio a la consola (Local)
+    const consologuearProceso = consologuearProcesos;                   //Valores (true, false) PorDefecto = consologuearProcesos 
+    const consologuearError = consologuearErrores;                      //Valores (true, false) PorDefecto = consologuearErrores
+    const consologuearErrorAxios = consologuearErroresAxios;            //Valores (true, false) PorDefecto = consologuearErroresAxios 
+    const consologuearValorRetornado = consologuearValoresRetornados;   //Valores (true, false) PorDefecto = consologuearValoresRetornados
+    // Defino y consologueo el controlador en uso
+    const metodoHandler= 'editarGatitoPorQry';
+    (consologuearProceso) ? console.log(`* metodoHandler: ${metodoHandler}...`) : null;
+
     (srvUri) 
     ? (srvUri.length<9)
         ? srvUri=mySrvUri
@@ -350,32 +479,42 @@ const editarGatitoPorQry = async ( body, srvUri=mySrvUri, responder ) => {
     : srvUri=mySrvUri
     ;
 
-    let myBody ={}
-    myBody = JSON.parse(body);
-    console.log(`editarGatitoPorBody (body)-> ${myBody}`);
-    console.log(`editaratitoPorBody (body-Objeto): `, myBody);
-    const {_id, name} = myBody;
-    myBody = { _id: _id,
-                name: name
-            };
-    console.log(`editaratitoPorBody (body Destructurado_&_Restructurado)-> ${myBody}`,myBody);
-    
-    let url = `${srvUri}/api/cats/editar?id=${_id}&name=${name}`;
+    // url = `${srvUri}/api/cats/editar?id=${_id}&name=${name}`;
 
     let contenido;
-    contenido = await axios.put(url, myBody, { timeout: 10000 }).catch( (error) => {
-        if (error.response && consologuearErrores) {
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-        };
-        error.origin = 'editarGatitoPorQry -> Error al obtener la ruta';
-        throw error;
-    });
+    let url;
+    const { _id } = JSON.parse(decodeURIComponent(valores));
+    const { name } = JSON.parse(decodeURIComponent(valores));
+    const idGatito = _id;
+    
+    if ( _id && name) {
+        url = `${srvUri}/api/cats/editar?id=${_id}&name=${name}`;
+        (consologuearProceso) ? console.log(`${metodoHandler}, (url)-> ${url}`) : null;  
+    } else {
+        (consologuearProceso) ? console.log(`{ msg: "${metodoHandler}, El id y el nombre son obligatorios en el parametro lista de valores"}`) : null;
+        contenido = `{"msg": "El id y el nombre son obligatorios en el parametro lista de valores"}`;
+        responder(contenido);
+        return;    
+    };
 
-    console.log(contenido);
+    myBody = {  _id: _id,
+                name: name
+            }; 
+    try {
+        (consologuearProceso) ? console.log(`${metodoHandler}, Consultando por axios.put a la ruta: ${url}`) : null;
+        contenido = await axios.put(url, myBody, { timeout: 10000 });    
+    } catch (error) { 
+        (consologuearErrorAxios) ? console.log(`${metodoHandler}, -> Error, Axios no pudo modificar los datos en la ruta ${url}`,error) : null; 
+        (!contenido)
+            ? contenido = {msg: `Axios no pudo modificar los datos en la ruta: ${url}`}
+            : null;
+    };
+
+    (consologuearValorRetornado && contenido) 
+        ? console.log(`${metodoHandler}, -> (contenido): `, contenido)
+        : null;
+
     responder(contenido);
-    //return(contenido.data);
     return;
 };
 
@@ -390,13 +529,24 @@ const editarGatitoPorQry = async ( body, srvUri=mySrvUri, responder ) => {
  *  }
  */
 const editarGatitoPorBody = async ( body, srvUri=mySrvUri, responder ) => {
+    // Defino que envio a la consola (Local)
+    const consologuearProceso = consologuearProcesos;                   //Valores (true, false) PorDefecto = consologuearProcesos 
+    const consologuearError = consologuearErrores;                      //Valores (true, false) PorDefecto = consologuearErrores
+    const consologuearErrorAxios = consologuearErroresAxios;            //Valores (true, false) PorDefecto = consologuearErroresAxios 
+    const consologuearValorRetornado = consologuearValoresRetornados;   //Valores (true, false) PorDefecto = consologuearValoresRetornados
+    // Defino y consologueo el controlador en uso
+    const metodoHandler= 'editarGatitoPorBody';
+    (consologuearProceso) ? console.log(`* metodoHandler: ${metodoHandler}...`) : null;
+
     (srvUri) 
     ? (srvUri.length<9)
         ? srvUri=mySrvUri
         :  srvUri= srvUri
     : srvUri=mySrvUri
     ;
+
     let url = `${srvUri}/api/cats/editar`;
+    (consologuearProceso) ? console.log(`${metodoHandler} (url)-> ${url}`) : null;
     
     let myBody ={}
     myBody = JSON.parse(body);
@@ -409,17 +559,20 @@ const editarGatitoPorBody = async ( body, srvUri=mySrvUri, responder ) => {
     console.log(`editaratitoPorBody (body Destructurado_&_Restructurado)-> ${myBody}`,myBody);
 
     let contenido;
-    contenido = await axios.put(url, myBody, { timeout: 10000 }).catch( (error) => {
-        if (error.response && consologuearErrores) {
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-        };
-        error.origin = 'editarGatitoPorBody -> Error al obtener la ruta';
-        throw error;
-    });
+    try {
+        (consologuearProceso) ? console.log(`${metodoHandler}, Consultando por axios.put a la ruta: ${url}`) : null;
+        contenido = await axios.put(url, myBody, { timeout: 10000 });    
+    } catch (error) { 
+        (consologuearErrorAxios) ? console.log(`${metodoHandler}, -> Error, Axios no pudo modificar los datos en la ruta ${url}`,error) : null; 
+        (!contenido)
+            ? contenido = {msg: `Axios no pudo modificar los datos en la ruta: ${url}`}
+            : null;
+    };
 
-    console.log(contenido);
+    (consologuearValorRetornado && contenido) 
+        ? console.log(`${metodoHandler} -> (contenido.data): `, contenido.data)
+        : null;
+
     responder(contenido);
     //return(contenido.data);
     return;
@@ -435,7 +588,16 @@ const editarGatitoPorBody = async ( body, srvUri=mySrvUri, responder ) => {
  * Eliminar un gatito (por params)
  * /api/eliminar 
 */
-const eliminarGatitoPorParams = async ( idGatito, srvUri=mySrvUri, responder ) => {
+const eliminarGatitoPorParams = async ( valores, srvUri=mySrvUri, responder ) => {
+    // Defino que envio a la consola (Local)
+    const consologuearProceso = consologuearProcesos;                   //Valores (true, false) PorDefecto = consologuearProcesos 
+    const consologuearError = consologuearErrores;                      //Valores (true, false) PorDefecto = consologuearErrores
+    const consologuearErrorAxios = consologuearErroresAxios;            //Valores (true, false) PorDefecto = consologuearErroresAxios 
+    const consologuearValorRetornado = consologuearValoresRetornados;   //Valores (true, false) PorDefecto = consologuearValoresRetornados
+    // Defino y consologueo el controlador en uso
+    const metodoHandler= 'eliminarGatitoPorParams';
+    (consologuearProceso) ? console.log(`* metodoHandler: ${metodoHandler}...`) : null;
+
     (srvUri) 
     ? (srvUri.length<9)
         ? srvUri=mySrvUri
@@ -443,22 +605,40 @@ const eliminarGatitoPorParams = async ( idGatito, srvUri=mySrvUri, responder ) =
     : srvUri=mySrvUri
     ;
 
-    let url = `${srvUri}/api/cats/eliminar/${idGatito}`;
+    // url = `${srvUri}/api/cats/eliminar/${idGatito}`;
+    // axios.delete(url, { timeout: 10000 })
 
     let contenido;
-    contenido = await axios.delete(url, { timeout: 10000 }).catch( (error) => {
-        if (error.response && consologuearErrores) {
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-        };
-        error.origin = 'eliminarGatitoPorParams -> Error al obtener la ruta';
-        throw error;
-    });
+    let url;
+    const {_id} = JSON.parse(decodeURIComponent(valores));    
+    const idGatito = _id;
+    
+    if ( _id ) {
+        url = `${srvUri}/api/cats/eliminar/${idGatito}`;
+        (consologuearProceso) ? console.log(`${metodoHandler}, (url)-> ${url}`) : null;  
+    } else {
+        (consologuearProceso) ? console.log(`{ msg: "${metodoHandler}, El id es obligatorio en el parametro lista de valores"}`) : null;
+        contenido = `{"msg": "El id es obligatorio en el parametro lista de valores"}`;
+        responder(contenido);
+        return;    
+    };
 
-    console.log(contenido);
+    try {
+        (consologuearProceso) ? console.log(`${metodoHandler}, Consultando por axios.delete a la ruta: ${url}`) : null;
+        //contenido = await axios.get(encodeURI(url) , { timeout: 10000 });
+        contenido = await axios.delete(url, { timeout: 10000 });    
+    } catch (error) { 
+        (consologuearErrorAxios) ? console.log(`${metodoHandler}, -> Error, Axios no pudo eliminar los datos en la ruta ${url}`,error) : null; 
+        (!contenido)
+            ? contenido = {msg: `Axios no pudo eliminar los datos en la ruta: ${url}`}
+            : null;
+    };
+
+    (consologuearValorRetornado && contenido) 
+        ? console.log(`${metodoHandler}, -> (contenido): `, contenido)
+        : null;
+
     responder(contenido);
-    //return(contenido.data);
     return;
 };
 
@@ -467,7 +647,16 @@ const eliminarGatitoPorParams = async ( idGatito, srvUri=mySrvUri, responder ) =
  * Eliminar un gatito (por query) 
  * /api/eliminar
  */
-const eliminarGatitoPorQry = async ( idGatito, srvUri=mySrvUri, responder ) => {
+const eliminarGatitoPorQry = async ( valores, srvUri=mySrvUri, responder ) => {
+    // Defino que envio a la consola (Local)
+    const consologuearProceso = consologuearProcesos;                   //Valores (true, false) PorDefecto = consologuearProcesos 
+    const consologuearError = consologuearErrores;                      //Valores (true, false) PorDefecto = consologuearErrores
+    const consologuearErrorAxios = consologuearErroresAxios;            //Valores (true, false) PorDefecto = consologuearErroresAxios 
+    const consologuearValorRetornado = consologuearValoresRetornados;   //Valores (true, false) PorDefecto = consologuearValoresRetornados
+    // Defino y consologueo el controlador en uso
+    const metodoHandler= 'eliminarGatitoPorQry';
+    (consologuearProceso) ? console.log(`* metodoHandler: ${metodoHandler}...`) : null;
+
     (srvUri) 
     ? (srvUri.length<9)
         ? srvUri=mySrvUri
@@ -475,22 +664,40 @@ const eliminarGatitoPorQry = async ( idGatito, srvUri=mySrvUri, responder ) => {
     : srvUri=mySrvUri
     ;
 
-    let url = `${srvUri}/api/cats/eliminar/?id=${idGatito}`;
+    // url = `${srvUri}/api/cats/eliminar?id=${idGatito}`;
+    // axios.delete(url, { timeout: 10000 })
 
     let contenido;
-    contenido = await axios.delete(url, { timeout: 10000 }).catch( (error) => {
-        if (error.response && consologuearErrores) {
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-        };
-        error.origin = 'eliminarGatitoPorQry -> Error al obtener la ruta';
-        throw error;
-    });
+    let url;
+    const {_id} = JSON.parse(decodeURIComponent(valores));    
+    const idGatito = _id;
+    
+    if ( _id ) {
+        url = `${srvUri}/api/cats/eliminar?id=${idGatito}`;
+        (consologuearProceso) ? console.log(`${metodoHandler}, (url)-> ${url}`) : null;  
+    } else {
+        (consologuearProceso) ? console.log(`{ msg: "${metodoHandler}, El id es obligatorio en el parametro lista de valores"}`) : null;
+        contenido = `{"msg": "El id es obligatorio en el parametro lista de valores"}`;
+        responder(contenido);
+        return;    
+    };
 
-    console.log(contenido);
+    try {
+        (consologuearProceso) ? console.log(`${metodoHandler}, Consultando por axios.delete a la ruta: ${url}`) : null;
+        //contenido = await axios.get(encodeURI(url) , { timeout: 10000 });
+        contenido = await axios.delete(url, { timeout: 10000 });    
+    } catch (error) { 
+        (consologuearErrorAxios) ? console.log(`${metodoHandler}, -> Error, Axios no pudo eliminar los datos en la ruta ${url}`,error) : null; 
+        (!contenido)
+            ? contenido = {msg: `Axios no pudo eliminar los datos en la ruta: ${url}`}
+            : null;
+    };
+
+    (consologuearValorRetornado && contenido) 
+        ? console.log(`${metodoHandler}, -> (contenido): `, contenido)
+        : null;
+
     responder(contenido);
-    //return(contenido.data);
     return;
 };
 
@@ -504,6 +711,15 @@ const eliminarGatitoPorQry = async ( idGatito, srvUri=mySrvUri, responder ) => {
  *  }
  */
 const eliminarGatitoPorBody = async ( body, srvUri=mySrvUri, responder ) => {
+    // Defino que envio a la consola (Local)
+    const consologuearProceso = consologuearProcesos;                   //Valores (true, false) PorDefecto = consologuearProcesos 
+    const consologuearError = consologuearErrores;                      //Valores (true, false) PorDefecto = consologuearErrores
+    const consologuearErrorAxios = consologuearErroresAxios;            //Valores (true, false) PorDefecto = consologuearErroresAxios 
+    const consologuearValorRetornado = consologuearValoresRetornados;   //Valores (true, false) PorDefecto = consologuearValoresRetornados
+    // Defino y consologueo el controlador en uso
+    const metodoHandler= 'eliminarGatitoPorBody';
+    (consologuearProceso) ? console.log(`* metodoHandler: ${metodoHandler}...`) : null;
+    
     (srvUri) 
     ? (srvUri.length<9)
         ? srvUri=mySrvUri
@@ -512,12 +728,13 @@ const eliminarGatitoPorBody = async ( body, srvUri=mySrvUri, responder ) => {
     ;
 
     let url = `${srvUri}/api/cats/eliminar/`;
+    (consologuearProceso) ? console.log(`${metodoHandler} (url)-> ${url}`) : null;
 
     let myBody; 
     myBody = decodeURIComponent(body);      // Reemplazo caracteres %x de la url por caracteres equivalentes
     myBody = JSON.parse(myBody);            // parseo el string como objeto Json
-    console.log(`eliminarGatitoPorBody (body)-> ${myBody}`);
-    console.log(`eliminarGatitoPorBody (body-Objeto): `, myBody);
+    (consologuearProceso) ? console.log(`${metodoHandler} (body)-> ${myBody}`) : null;
+    (consologuearProceso) ? console.log(`${metodoHandler} (body-Objeto): `, myBody) : null;
     /*     
     const {_id} = myBody;                   // Destructuro el id
     myBody = { _id: `"${_id}"` };           // Construyo el parametro del body
@@ -527,19 +744,21 @@ const eliminarGatitoPorBody = async ( body, srvUri=mySrvUri, responder ) => {
     (consologuearProceso) ? console.log(`${metodoHandler} (body-Objeto final):`, myBody) : null; 
 
     let contenido;
-    contenido = await axios.delete(url, {myBody}, { timeout: 10000 }).catch( (error) => {
-        if (error.response && consologuearErrores) {
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-        };
-        error.origin = 'eliminarGatitoPorBody ->Error al obtener la ruta';
-        throw error;
-    });
+    try {
+        //contenido = await axios.delete(url, myBody, { timeout: 10000 });
+        contenido = await axios.delete(url, myBody);    
+    } catch (error) {
+        (consologuearErrorAxios) ? console.log(`${metodoHandler}, -> Error, Axios no pudo eliminar los datos en la ruta ${url}`,error) : null; 
+        (!contenido)
+            ? contenido = {msg: "Axios, error al eliminar un registro de la coleccion"}
+            : null  
+    };
 
-    console.log(contenido);
+    (consologuearValorRetornado && contenido) 
+        ? console.log(`${metodoHandler} -> (contenido): `, contenido)
+        : null;
+    
     responder(contenido);
-    //return(contenido.data);
     return;
 };
 

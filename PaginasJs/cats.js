@@ -29,7 +29,8 @@ const estilos=`<style>
                   a {color:aliceblue}
                   summary {color:aliceblue}
                   article {color:aliceblue}
-                  
+                  details{margin-left: 1rem;}
+
                   .interlineado { line-height: 150%;}
 
                   .fondo {
@@ -99,9 +100,19 @@ function catInfo() {
                        ${saltoLinea}
                        <p>${tab}Probar las api del Crud de gatitos con axios${b}
                        <a href="http://localhost:${srvPuerto}/api/cats/prueba" target="_blank">Probar</a>
+                       <details>
+                        <summary>Detalles</summary>
+                        <article>
+                          <p class="textoComentario"> - Permite probar todo el CRUD de esta coleccion "Cats" (coleccion de ejemplo).</p>
+                          <p class="textoComentario"> - Si bien, el crud fue testeado primero con Postman, Insomnia y PostWoman,</p>
+                          <p class="textoComentario"> -   me resulto una opcion interesante para una prueba rapida.</p>
+                          <p class="textoComentario"> - El principal objetivo fue aprender axios, sus metodos y como se aplican al CRUD.</p>
+                          <p class="textoComentario">___</p>
+                        </article>
+                      </details> 
                        </p> 
-                       ${saltoLinea}
-                       <h3>
+                      ${saltoLinea}
+                      <h3>
                         Documentacion del Crud de Gatitos:
                       </h3>
                       <ul>

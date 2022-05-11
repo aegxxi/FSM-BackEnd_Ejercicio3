@@ -1,3 +1,4 @@
+const MgObjectId = require('mongoose').Types.ObjectId;;
 const {Cat} = require('../models/model');
 const { validationResult } = require('express-validator');
 //const {responder} =require('../consultas/catsCrudResponse')
@@ -74,7 +75,7 @@ const verUnGatito = async (req, res) => {
     //console.log(`verUnGatito (req.body) -> ${_id}`);
 
     // Almeceno el valor del id, si se paso por algun metodo (body, query, params)
-    const valorClave = (_id) 
+    let valorClave = (_id) 
         ? _id 
         : (req.params.id)
             ? req.params.id
@@ -85,24 +86,35 @@ const verUnGatito = async (req, res) => {
     // si no se recuperaron datos de la ruta termino el proceso
     if (!valorClave) {
         (consologuearProceso) ? console.log(`${controladorEnUso} (valorClave) -> ${valorClave} . No se recuperaron datos de Params. Query, o Body`) : null;
-        return res.status(400).json({ msg: 'No se recuperaron datos de Params. Query, o Body' });
-    }
+        res.status(400).json({ msg: 'No se recuperaron datos de Params. Query, o Body' });
+        return;
+    };    
 
+    // Por si el dato del _id viene por params o qry,
+    // - Verifico que la cadena sea un objeto id valido para mongoose.
+    if (!MgObjectId.isValid(valorClave)) {
+        (consologuearProceso) ? console.log(`${controladorEnUso}, La cadena (valorClave) no es un ObjetoId valido para Mongoose -> ${valorClave} `) : null;
+        res.status(400).json({ msg: 'La cadena (valorClave) no es un ObjetoId valido para Mongoose.' });
+        return;
+    };
+    
     let gato;
     
     try {
         // Verificar si no se paso el id del gatito a bucar.
         if(!valorClave) {
-            return res.status(400).json({ msg: 'El id es obligatorio' });
+            res.status(400).json({ msg: 'El id es obligatorio' });
+            return;
         };
         
         // Verificar si se paso el id en el body
-        if (_id) {
+        if (_id ) {
             // Revisar si hay errores en el body
             const errores = validationResult(req);
             (consologuearProceso) ? console.log(errores) : null;
             if( !errores.isEmpty() ) {
-                return res.status(400).json({errores: errores.array() });
+                res.status(400).json({errores: errores.array() });
+                return;
             };    
         }; 
         
@@ -114,8 +126,10 @@ const verUnGatito = async (req, res) => {
         
     } catch (error) {
         (consologuearError) ? console.log(`${controladorEnUso} (gato ${valorClave}, Error: ) -> `, error) : null;
-        res.status(400).send({msg: `Hubo un error al buscar el gatito, o el gattito no se encuentra en la base`});      
+        res.status(400).send({msg: `Hubo un error al buscar el gatito, o el gattito no se encuentra en la base`});
+        return;      
     };
+    return;
 };
 
 
@@ -260,6 +274,14 @@ const editarGatito = async (req, res) => {
             return res.status(400).json({ msg: 'El id es obligatorio' });
         };
         
+        // Por si el dato del _id viene por params o qry,
+        // - Verifico que la cadena sea un objeto id valido para mongoose.
+        if (!MgObjectId.isValid(valorClave)) {
+            (consologuearProceso) ? console.log(`${controladorEnUso}, La cadena (valorClave) no es un ObjetoId valido para Mongoose -> ${valorClave} `) : null;
+            res.status(400).json({ msg: 'La cadena (valorClave) no es un ObjetoId valido para Mongoose.' });
+            return;
+        };
+        
         // Verificar si no se paso el nuevo nombre del gatito a bucar.
         if(!valorNombre) {
             return res.status(400).json({ msg: 'El nuevo nombre es obligatorio' });
@@ -314,19 +336,27 @@ const elininarGatito = async (req, res) => {
     const { _id, } = req.body;
 
     // Almeceno el valor del id, si se paso por algun metodo (body, query, params)
-    const valorclave = (_id) 
+    const valorClave = (_id) 
         ? _id 
         : (req.params.id)
             ? req.params.id
             : req.query.id
         ;    
-    (consologuearProceso) ? console.log(`elininarGatito (valorclave) -> ${valorclave}`) : null;
+    (consologuearProceso) ? console.log(`elininarGatito (valorClave) -> ${valorClave}`) : null;
 
     try {
     
         // Verificar si no se paso el id del gatito a eliminar.
-        if(!valorclave) {
+        if(!valorClave) {
             return res.status(400).json({ msg: 'No existen parametros validos para esta operacion' });
+        };
+        
+        // Por si el dato del _id viene por params o qry,
+        // - Verifico que la cadena sea un objeto id valido para mongoose.
+        if (!MgObjectId.isValid(valorClave)) {
+            (consologuearProceso) ? console.log(`${controladorEnUso}, La cadena (valorClave) no es un ObjetoId valido para Mongoose -> ${valorClave} `) : null;
+            res.status(400).json({ msg: 'La cadena (valorClave) no es un ObjetoId valido para Mongoose.' });
+            return;
         };
         
         // Verificar si se paso el id en el body
@@ -340,13 +370,13 @@ const elininarGatito = async (req, res) => {
         }; 
         
         // Eliminar un gatito por su id, si gato resulta vacio rompe por el catch
-        const gato = await Cat.findByIdAndDelete( valorclave );
+        const gato = await Cat.findByIdAndDelete( valorClave );
         (consologuearProceso) ? console.log(`${controladorEnUso} (Gatito Eliminado) -> `, gato) : null;
         
         res.status(200).json({msg: 'Gatito Eliminado', gato});   
 
     } catch (error) {
-        (consologuearError) ? console.log(`${controladorEnUso} (gato ${valorclave}, Error: ) -> `, error) : null;
+        (consologuearError) ? console.log(`${controladorEnUso} (gato ${valorClave}, Error: ) -> `, error) : null;
         res.status(400).send({msg: 'Hubo un error al eliminar el gatito'});
     };
 };
@@ -499,10 +529,6 @@ function catResultado(req, res){
                                                                                     return;
                                                                                     }
                                                 );
-                //console.log(contenido)
-                //respuesta =`Id: ${contenido.data._id}, Nombre: ${contenido.data.name}`
-                //respuesta =`Nombre: ${contenido.data.name}`
-                //console.log(respuesta)
                 return;
 
             case TYPES.verPorQry:
@@ -696,7 +722,7 @@ function catResultado(req, res){
                                                             return;    
                                                         } catch (error) {
                                                             (consologuearError) ? console.log(`${controladorEnUso} (responder) -> Error al eliminar los datos.`,error) : null;
-                                                            res.send('Error al crear los datos.');
+                                                            res.send('Error al eliminar los datos.');
                                                         };
                                                         return;
                                                         }
