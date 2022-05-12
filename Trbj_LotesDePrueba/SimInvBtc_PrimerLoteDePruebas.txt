@@ -1,3 +1,23 @@
+/** 
+ * -----------------------------------------
+ * Modulo: SimInvBtc_PrimerLoteDePruebas.txt
+ * -----------------------------------------
+ * Parte de: Proyecto Simulador de inversiones en Bitcon (BTC).
+ * 
+ * Descripcion: Primer lote de pruebas.
+ *              Para este primer lote se simulo un usuario que realiza un inversion constante,
+ *              ejenplo 50 dolares en forma regular, todos los ultimos viernes de cada mes.
+ *              Los datos de la cotizacion de BTC y Usd a fecha de compra son reales, el monto
+ *              de la inversion y los datos de usuario son inventados para la prueba.
+ *
+ * Nota: En esta misma carpeta dejo un archivo de Excel que permite armar datos, como los 
+ *       aqui mostrados, para el armado de mas lotes de pruebas.
+*/
+
+
+
+// Primer Lote de pruebas:
+
 http://localhost:4001/api/simInvBtc/resultado/CREAR_POR_BODY/{ "compraAño": 2021, "compraMes": 4, "compraDia": 30, "precioEntradaUsd": 150, "importeInicialUsd": 50, "compraCotizacionUsd": 57750.18, "importeCriptoComprado": 0.000865798167209176, "importeArsInvertido": 7500, "inversorEmail": "inversor1@correo.com", "InversorComentario": "Prueba inversor 1"} 
 http://localhost:4001/api/simInvBtc/resultado/CREAR_POR_BODY/{ "compraAño": 2021, "compraMes": 5, "compraDia": 28, "precioEntradaUsd": 157, "importeInicialUsd": 50, "compraCotizacionUsd": 35697.61, "importeCriptoComprado": 0.00140065399336258, "importeArsInvertido": 7850, "inversorEmail": "inversor1@correo.com", "InversorComentario": "Prueba inversor 1"} 
 http://localhost:4001/api/simInvBtc/resultado/CREAR_POR_BODY/{ "compraAño": 2021, "compraMes": 6, "compraDia": 25, "precioEntradaUsd": 174, "importeInicialUsd": 50, "compraCotizacionUsd": 31637.78, "importeCriptoComprado": 0.00158038901591705, "importeArsInvertido": 8700, "inversorEmail": "inversor1@correo.com", "InversorComentario": "Prueba inversor 1"} 

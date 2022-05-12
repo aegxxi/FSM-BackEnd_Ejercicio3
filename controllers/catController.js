@@ -13,10 +13,10 @@
 
 
 // Importo las dependencias.
-const MgObjectId = require('mongoose').Types.ObjectId;;
+const MgObjectId = require('mongoose').Types.ObjectId;
 const {Cat} = require('../models/model');
 const { validationResult } = require('express-validator');
-//const {responder} =require('../consultas/catsCrudResponse')
+//const {responder} =require('../consultas/catsCrudResponse');
 
 
 // Defino que envio a la consola (Global)

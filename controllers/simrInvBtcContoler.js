@@ -14,6 +14,7 @@
 
 
 // Importo las dependencias.
+const MgObjectId = require('mongoose').Types.ObjectId;
 const {SmldrInvrsBtc} = require('../models/simuladorInversionBtc');
 const { validationResult } = require('express-validator');
 const bcryptjs = require('bcryptjs');
@@ -98,6 +99,14 @@ const mostrarUnSimInvBtc = async (req, res) => {
         if(!valorClave) {
             return res.status(400).json({ msg: 'El email es obligatorio' });
         };
+
+        // Por si el dato del _id viene por params o qry,
+        // - Verifico que la cadena sea un objeto id valido para mongoose.
+        if (!MgObjectId.isValid(valorClave)) {
+            (consologuearProceso) ? console.log(`${controladorEnUso}, La cadena (valorClave) no es un ObjetoId valido para Mongoose -> ${valorClave} `) : null;
+            res.status(400).json({ msg: 'La cadena (valorClave) no es un ObjetoId valido para Mongoose.' });
+            return;
+        };        
         
         // Verificar si se paso el id en el body
         if (_id) {
@@ -241,6 +250,14 @@ const editarSimInvBtc = async (req, res) => {
         if(!valorClave) {
             return res.status(400).json({ msg: 'El id es obligatorio' });
         };
+
+        // Por si el dato del _id viene por params o qry,
+        // - Verifico que la cadena sea un objeto id valido para mongoose.
+        if (!MgObjectId.isValid(valorClave)) {
+            (consologuearProceso) ? console.log(`${controladorEnUso}, La cadena (valorClave) no es un ObjetoId valido para Mongoose -> ${valorClave} `) : null;
+            res.status(400).json({ msg: 'La cadena (valorClave) no es un ObjetoId valido para Mongoose.' });
+            return;
+        }; 
         
         // Verificar si se paso el id en el body
         if (compraAño || 
@@ -330,6 +347,14 @@ const eliminarSimInvBtc = async (req, res) => {
             res.status(400).json({ msg: 'No existen parametros validos para esta operacion' });
             return;
         }
+
+        // Por si el dato del _id viene por params o qry,
+        // - Verifico que la cadena sea un objeto id valido para mongoose.
+        if (!MgObjectId.isValid(valorclave)) {
+            (consologuearProceso) ? console.log(`${controladorEnUso}, La cadena (valorClave) no es un ObjetoId valido para Mongoose -> ${valorClave} `) : null;
+            res.status(400).json({ msg: 'La cadena (valorClave) no es un ObjetoId valido para Mongoose.' });
+            return;
+        };        
         
         // Verificar si se paso el id en el body    
         if (_id) {
