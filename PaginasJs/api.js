@@ -10,7 +10,10 @@ const tab = `${b}${b}${b}`;     //Tabulacion de tres espacios
 const dA = '&#174;'             // Derechos de Autor
 
 const estilos=`<style>
-                  h1 {color:aquamarine;}
+                  h1 {
+                    color:aquamarine;
+                    text-shadow: 1px 2px;
+                  }
                   h2 {color:lawngreen;}
                   
                   p {
@@ -92,6 +95,7 @@ function Info() {
                                 <a href="http://localhost:${srvPuerto}/api/cats" target="_blank">Ver</a></p>
                         </li>
                       </ul> 
+
                       ${saltoLinea}
                       <h3>
                         Usuarios:
@@ -105,6 +109,20 @@ function Info() {
                         </li>
                       </ul> 
                       ${saltoLinea}
+                      
+                      <h3>
+                        Simulador de Inversion en Bitcoin (BTC):
+                      </h3>
+                      <p><b>${tab}Proposito general:</b>${b} CRUD del modelo de datos, y consultas por Axios.</p>
+                      <ul>
+                        <li>
+                            <p><b>Documentacion de las Api del Simulador de inversion en BTC  </b></p>
+                            <p>${tab}Uri:${b}<i>"http://localhost:${srvPuerto}/api/simInvBtc" </i>${b}
+                                <a href="http://localhost:${srvPuerto}/api/simInvBtc" target="_blank">Ver</a></p>
+                        </li>
+                      </ul> 
+                      ${saltoLinea}
+
                       <h3>
                         Consultas a api externas (axios):
                       </h3>
@@ -116,6 +134,20 @@ function Info() {
                                 <a href="http://localhost:${srvPuerto}/api/externas" target="_blank">Ver</a></p>
                         </li>
                       </ul> 
+                      
+                      ${saltoLinea}
+                      <h3>
+                        Loguin Inicio y cierre de sesion:
+                      </h3>
+                      <p><b>${tab}Proposito general:</b>${b} Prueba de inicio y cierre de sesion.</p>
+                      <ul>
+                        <li>
+                            <p><b>Documentacion de las Api de las pruebas de inicio y cierre de sesion  </b></p>
+                            <p>${tab}Uri:${b}<i>"http://localhost:${srvPuerto}/api/loguin" </i>${b}
+                                <a href="http://localhost:${srvPuerto}/api/loguin" target="_blank">Ver</a></p>
+                        </li>
+                      </ul> 
+
                       ${saltoLinea}
                       ${saltoLinea} 
                       <p class="firma">
