@@ -1,6 +1,19 @@
-/**
- *  Importo las dependencias.
- */  
+/** 
+ * -------------------------------
+ * Modulo: simrInvBtcContoler.js
+ * -------------------------------
+ * Parte de: Proyecto Simulador de inversiones en Bitcon (BTC).
+ * 
+ * Descripcion: Este modulo contiene los metodos (Funciones), que ejecutan las acciones 
+ *              del CRUD de la coleccion, del "Simulador de Inversiones en Bitcoin" (BTC).
+ *              Ademas contiene los metodos que controlan las rutas para la prueba 
+ *              de estos metodos del CRUD de la coleccion por medio de Axios.
+ * 
+*/
+
+
+
+// Importo las dependencias.
 const {SmldrInvrsBtc} = require('../models/simuladorInversionBtc');
 const { validationResult } = require('express-validator');
 const bcryptjs = require('bcryptjs');
@@ -23,7 +36,7 @@ let consologuearErrores = true;
 
 /**  
  * Mostrar todos los registros de la coleccion SimInvBtc 
- * */
+ */
 const mostrarSimInvBtc = async (req, res) => {
     const consologuearProceso = consologuearProcesos; //Valores (true, false) PorDefecto = consologuearProcesos 
     const consologuearError = consologuearErrores;    //Valores (true, false) PorDefecto = consologuearErrores 
@@ -352,7 +365,8 @@ const eliminarSimInvBtc = async (req, res) => {
  
 /**
  * Muestro informacion de la api:
- * Este controlador muestra una pagina con informacion de apoyo para el uso de las api de la coleccion SimInvBtc.
+ * Este controlador muestra una pagina con informacion de apoyo 
+ * para el uso de las api de la coleccion SimInvBtc.
  */
 const apiSimInvBtcInfo = async (req, res) => {
     const consologuearProceso = consologuearProcesos;  //Valores (true, false) PorDefecto = consologuearProcesos 
@@ -376,7 +390,8 @@ const apiSimInvBtcInfo = async (req, res) => {
 
 /**
  * Muestro pagina para la prueba de la api con Axios:
- * - Este controlador muestra una pagina con instrucciones para probar las api de la coleccion Cats.
+ * - Este controlador muestra una pagina con instrucciones para probar las api 
+ *   de la coleccion Cats.
  *   - Se pueden probar los metodos GET, POST, PUT y DELETE 
  *   - Se le puede pasar los valores por Params, Query, o Body
  */
@@ -403,12 +418,14 @@ const apiSimInvBtcInfo = async (req, res) => {
 /**
  * Muestro pagina con el resultado de la prueba de la api por Axios.
  * - Este controlador:
- *      - Recibe la ruta con los datos de prueba para axios
+ *      - Recibe la ruta con los datos de prueba para axios.
  *      - En la ruta hay dos parametros:
- *          Accion: valores fijos que indican como se ejecutara axios
+ *          Accion: valores fijos que indican como se ejecutara axios.
  *          ListaDeValores: son los valores que utilizara accios para la prueba
- *      - Con el valor del parametro Accion se determina a travez de un swicht el metodo a ejecutar
- *  - Este controlador devuelve a la ruta el resultado del metodo ejecutado 
+ *      - Con el valor del parametro Accion se determina a travez de un swicht 
+ *        el metodo a ejecutar.
+ *  - Este controlador devuelve a la ruta el resultado del metodo ejecutado
+ *    obteniendo los valores a trvez de un callback. 
  */
 function simInvBtcResultado(req, res){
     // Defino que envio a la consola (Local)
@@ -445,7 +462,10 @@ function simInvBtcResultado(req, res){
         return;    
     };
 
+    // Constante que contiene las acciones permitidas en el parametro Accion de la ruta
     const {TYPES} = require('../consultas/simInvBtcCrudAccion');
+    
+    // Constante que contiene los metodos (funciones) a llamar
     const { 
             verSimInvBtcPorBody,
             crearSimInvBtcPorBody,

@@ -1,6 +1,12 @@
-// En Desarrollo
-// Proposito: Normalizar (estandarizar) las respuestas en los response de catsCrudHandler
-
+/** 
+ * ---------------------------
+ * Modulo: catsCrudResponse.js
+ * ---------------------------
+ * Parte de: Cats, ejemplo de Coleccion, CRUD, y Axios.
+ * 
+ * Descripcion: En DESARROLLO, su prposito es Normalizar (estandarizar) 
+ *              las respuestas en los response de catsCrudHandler. 
+*/
 
 
 //async await

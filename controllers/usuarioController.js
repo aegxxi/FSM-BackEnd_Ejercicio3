@@ -1,6 +1,17 @@
-/**
- *  Importo las dependencias.
- */  
+/** 
+ * ----------------------------
+ * Modulo: usuarioController.js
+ * ----------------------------
+ * Parte de: Usuario, Coleccion Usuarios
+ * 
+ * Descripcion: Este modulo contiene los metodos (Funciones), que ejecutan las acciones 
+ *              del CRUD de la coleccion, del "Usuarios".
+ * 
+*/
+
+
+
+// Importo las dependencias.
 const {Usuario} = require('../models/Usuario');
 const { validationResult } = require('express-validator');
 const bcryptjs = require('bcryptjs');

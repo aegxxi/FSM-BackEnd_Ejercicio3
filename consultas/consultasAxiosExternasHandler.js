@@ -1,11 +1,36 @@
+/** 
+ * ----------------------------------------
+ * Modulo: consultasAxiosExternasHandler.js
+ * ----------------------------------------
+ * Parte de: Consultas Axios a Apis externas.
+ * 
+ * Descripcion: Este modulo contiene los metodos (Funciones), que llaman a consultas Axios,
+ *              que ejecutan una alguna llamada a una api externa.
+ * 
+ * Nota: Estas funciones son llamadas por el metodo (Funcion): "extResultado",
+ *       desde el modulo, "controllers/externasControler.js".
+ *       Este metodo es el controlador de la ruta:
+ *       http://localhost:4001/api/externas/resultado/[Accion]/[listaDeValores]
+ *       el cual determina por el contenido del parametro "Accion", cual de los metodos
+ *       de este modulo sera llamado, y le entregara a dicho metodo los valores contenidos,
+ *       en formato Json en el segundo parametro de esta ruta "listaDeValores".
+ *       El metodo llamado procesara los datos recibidos del segundo parametro, y llamara,
+ *       usando Axios, a alguno de los metodos del CRUD de la coleccion.
+ *       En este contexto se contemplo que algunas llamadas no necesiten pasar valores en
+ *       el segundo parametro para la llamada a la api.
+ *       Los valores resultantes de la consulta o su estado, seran pasados por medio de un
+ *       callback al controlador de la ruta quien los procesara. 
+*/
+
+// Importo las dependencias.
 const axios = require('axios');
 const entorno = require('../appSrvEntorno');
-//const qs = require('qs');
 
+
+// Defino valores Globales para el modulo.
 const {fnMiServidor}= entorno;
 let {srvPuerto} = fnMiServidor();
 const mySrvUri = `http://localhost:${srvPuerto}`;
-
 const consologuearErroresAxios = true;
 const consologuearValoresRetornados = false;
 const consologuearProcesos = true;

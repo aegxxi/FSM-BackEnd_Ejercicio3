@@ -14,25 +14,25 @@ const cAppName = app.name.toLocaleUpperCase(); // obtener el nombre de la app pr
 
 
 
-// intento obtener valores de entorno
-console.log();
-console.log(`Inicio - (www) Informacion para depuracion...`);
-console.log(`* www.js => DotEnv, PORT => ${process.env.PORT}`);
-console.log(`* app. => name:${app.name}, puerto:${app.puerto}, Port:${app.Port}, PORT:${app.PORT}`);
+// intento obtener valores de entorno - DEPURACION
+//console.log();
+//console.log(`Inicio - (www) Informacion para depuracion...`);
+//console.log(`* www.js => DotEnv, PORT => ${process.env.PORT}`);
+//console.log(`* app. => name:${app.name}, puerto:${app.puerto}, Port:${app.Port}, PORT:${app.PORT}`);
 //console.log();
 
 const entorno = require('../appSrvEntorno');
 
-console.log(`* entorno. => funcion_fnAppObtenerNombre:${entorno.fnAppObtenerNombre()}, funcion_fnMiServidor:${entorno.fnMiServidor()}`);
-console.log(entorno.fnMiServidor());
+//console.log(`* entorno. => funcion_fnAppObtenerNombre:${entorno.fnAppObtenerNombre()}, funcion_fnMiServidor:${entorno.fnMiServidor()}`);
+//console.log(entorno.fnMiServidor());
 //console.log();
 
 const {fnMiServidor}= entorno
 const {srvPuerto,srvNombre} = fnMiServidor()
 
-console.log(`* entorno.fnMiServidor() => srvNombre:${srvNombre}, srvPuerto:${srvPuerto}`);
-console.log(`Fin - (www) Informacion para depuracion.`);
-console.log();
+//console.log(`* entorno.fnMiServidor() => srvNombre:${srvNombre}, srvPuerto:${srvPuerto}`);
+//console.log(`Fin - (www) Informacion para depuracion.`);
+//console.log();
 //
 
 
@@ -121,6 +121,7 @@ function onListening() {
 
   // Muestro informacion en la consola
   const info =`` // Opcional: obtengo informacion adicional
+  console.log();
   console.log(``);
   console.log(`-----------------------------------------------------------------------`);
   console.log(`El Servidor '${cAppName}' Escucha en el puerto: ${addr.port}`); 
@@ -134,4 +135,5 @@ function onListening() {
   console.log(` * Ir a la pagina inicial del servidor: http://localhost:${addr.port}`);
   console.log(`-----------------------------------------------------------------------`);
   console.log(``);
+  console.log();
 }

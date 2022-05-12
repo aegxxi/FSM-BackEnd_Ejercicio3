@@ -1,3 +1,15 @@
+/** 
+ * -------------------------
+ * Modulo: catsCrudAccion.js
+ * -------------------------
+ * Parte de: Cats, ejemplo de Coleccion, CRUD, y Axios.
+ * 
+ * Descripcion: Este modulo contiene los valores las acciones permitidas 
+ *              en el parametro Accion de la ruta para determinar el metodo 
+ *              Axios que sera llamado para la ejecucion del del CRUD de la coleccion Cats. 
+*/
+
+// Constante que contiene las acciones permitidas en el parametro Accion de la ruta
 const TYPES = {
     verPorParams: "VER_POR_PARAMS",
     verPorQry: "VER_POR_QRY",

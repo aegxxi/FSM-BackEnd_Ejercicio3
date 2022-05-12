@@ -1,3 +1,17 @@
+/** 
+ * ----------------------------
+ * Modulo: catsCrudAxiosTest.js
+ * ----------------------------
+ * Parte de: Cats, ejemplo de Coleccion, CRUD, y Axios .
+ * 
+ * Descripcion: Este modulo contiene los metodos (Funciones) que utilice para hacer comprobaciones
+ *              (Test) del funcionamiento de las llamadas a Axios en sus diferentes metodos 
+ *              (Get, Post, Put, Delete), e ir consologueando proceso y resultados para cada
+ *              accion programada en las rutas del CRUD de la coleccion de ejemplo Cats.
+*/
+
+
+// Importo las dependencias.
 const axios = require('axios');
 
 /** Ejecutar Test

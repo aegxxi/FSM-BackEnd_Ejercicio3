@@ -9,8 +9,8 @@ const { authSession, authCookie } = require('../middleware/auth');
 router.get('/', vistaInicio);
 
 /* Obtener página de Informacion sobre el entorno del servidor. */
-//router.get('/info', informacion);
-router.get('/info', authSession, informacion);
+router.get('/info', informacion);
+//router.get('/info', authSession, informacion);
 
 /* Obtener página de Informacion sobre las api. */
 router.get('/api',apiInfo);

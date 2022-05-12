@@ -1,7 +1,32 @@
+/** 
+ * --------------------------
+ * Modulo: catsCrudHandler.js
+ * --------------------------
+ * Parte de: Cat, ejemplo de Coleccion, CRUD, y Axios ..
+ * 
+ * Descripcion: Este modulo contiene los metodos (Funciones), que llaman a consultas Axios,
+ *              que ejecutan una alguna de las acciones del CRUD de la coleccion,
+ *              del "Cat".
+ * 
+ * Nota: Estas funciones son llamadas por el metodo (Funcion): "catResultado",
+ *       desde el modulo, "controllers/catController.js".
+ *       Este metodo es el controlador de la ruta:
+ *       http://localhost:4001/api/cats/resultado/[Accion]/[listaDeValores]
+ *       el cual determina por el contenido del parametro "Accion", cual de los metodos
+ *       de este modulo sera llamado, y le entregara a dicho metodo los valores contenidos,
+ *       en formato Json en el segundo parametro de esta ruta "listaDeValores".
+ *       El metodo llamado procesara los datos recibidos del segundo parametro, y llamara,
+ *       usando Axios, a alguno de los metodos del CRUD de la coleccion, segun la accion.
+ *       Los valores resultantes de la consulta o su estado, seran pasados por medio de un
+ *       callback al controlador de la ruta quien los procesara. 
+*/
+
+
+// Importo las dependencias.
 const axios = require('axios');
 const entorno = require('../appSrvEntorno');
-//const qs = require('qs');
 
+// Defino valores Globales
 const {fnMiServidor}= entorno
 let {srvPuerto} = fnMiServidor()
 const mySrvUri = `http://localhost:${srvPuerto}`

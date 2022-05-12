@@ -1,3 +1,18 @@
+/** 
+ * ------------------------
+ * Modulo: catController.js
+ * ------------------------
+ * Parte de: Cat, ejemplo de Coleccion, CRUD, y Axios.
+ * 
+ * Descripcion: Este modulo contiene los metodos (Funciones), que ejecutan las acciones 
+ *              del CRUD de la coleccion, del "Cat".
+ *              Ademas contiene los metodos que controlan las rutas para la prueba 
+ *              de estos metodos del CRUD de la coleccion por medio de Axios.
+ * 
+*/
+
+
+// Importo las dependencias.
 const MgObjectId = require('mongoose').Types.ObjectId;;
 const {Cat} = require('../models/model');
 const { validationResult } = require('express-validator');

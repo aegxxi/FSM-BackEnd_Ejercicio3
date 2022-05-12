@@ -1,8 +1,8 @@
 // Importo Dependencias (Librerias)
 const express = require('express');
-const path = require('path');
-const cookieParser = require('cookie-parser');
 const session = require('express-session');
+const cookieParser = require('cookie-parser');
+const path = require('path');
 const logger = require('morgan');
 const cors = require('cors');
 
@@ -18,9 +18,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());            // Controlo dede donde pueden venir las peticiones
 app.use(session({
-    secret: 'Lo imprimido, fue escrivido.',     //lo escibo mal aproposito
-    resave: true,               //defecto false
-    saveUninitialized: true
+    secret: 'Lo imprimido, fue escrivido.',     // Contiene la clave secreta para la sesión (lo escibo mal aproposito)
+    resave: true,                               // Obliga a la sesión a guardarse (por defecto false)
+    saveUninitialized: true                     // Fuerza una sesión que está "no inicializada"
     //cookie: { secure: true }
   }));
 

@@ -1,9 +1,35 @@
+/** 
+ * -------------------------------
+ * Modulo: simInvBtcCrudHandler.js
+ * -------------------------------
+ * Parte de: Proyecto Simulador de inversiones en Bitcon (BTC).
+ * 
+ * Descripcion: Este modulo contiene los metodos (Funciones), que llaman a consultas Axios,
+ *              que ejecutan una alguna de las acciones del CRUD de la coleccion,
+ *              del "Simulador de Inversiones en Bitcoin" (BTC).
+ * 
+ * Nota: Estas funciones son llamadas por el metodo (Funcion): "simInvBtcResultado",
+ *       desde el modulo, "controllers/simrInvBtcContoler.js".
+ *       Este metodo es el controlador de la ruta:
+ *       http://localhost:4001/api/simInvBtc/resultado/[Accion]/[listaDeValores]
+ *       el cual determina por el contenido del parametro "Accion", cual de los metodos
+ *       de este modulo sera llamado, y le entregara a dicho metodo los valores contenidos,
+ *       en formato Json en el segundo parametro de esta ruta "listaDeValores".
+ *       El metodo llamado procesara los datos recibidos del segundo parametro, y llamara,
+ *       usando Axios, a alguno de los metodos del CRUD de la coleccion.
+ *       Los valores resultantes de la consulta o su estado, seran pasados por medio de un
+ *       callback al controlador de la ruta quien los procesara. 
+*/
+
+
+
+ // Importo las dependencias. 
 const axios = require('axios');
 const entorno = require('../appSrvEntorno');
-//const qs = require('qs');
+const {fnMiServidor}= entorno;
 
-const {fnMiServidor}= entorno
-let {srvPuerto} = fnMiServidor()
+// Defino valores globales de este modulo
+let {srvPuerto} = fnMiServidor();
 const mySrvUri = `http://localhost:${srvPuerto}`
 
 
@@ -48,36 +74,37 @@ const verSimInvBtcPorParams = async ( valores, srvUri = mySrvUri, responder ) =>
     : srvUri=mySrvUri
     ;
     
+    // url = `${srvUri}/api/simInvBtc/ver/registro/${_id}`;
+    // contenido = await axios.get(encodeURI(url), { timeout: 10000 });
+
     let contenido;
     let url;
+    const {_id} = JSON.parse(decodeURIComponent(valores));    
+    const idSimInvBtc = _id;
     
-    const {_id} = JSON.parse(decodeURIComponent(valores));
-    console.log(valores);
-    console.log(_id);
-
     if ( _id ) {
-        let url = `${srvUri}/api/simInvBtc/ver/registro/${_id}`;
-        (consologuearProceso) ? console.log(`${metodoHandler} (url)-> ${url}`) : null;  
+        url = ``${srvUri}/api/simInvBtc/ver/registro/${idSimInvBtc}`;
+        (consologuearProceso) ? console.log(`${metodoHandler}, (url)-> ${url}`) : null;  
     } else {
-        //(consologuearProceso) ? console.log(JSON.parse(`{ msg: "${metodoHandler}, El id es obligatorio en el parametro lista de valores"}`)) : null;
         (consologuearProceso) ? console.log(`{ msg: "${metodoHandler}, El id es obligatorio en el parametro lista de valores"}`) : null;
-        //contenido = JSON.parse(`{"msg": "El id es obligatorio en el parametro lista de valores"}`);
         contenido = `{"msg": "El id es obligatorio en el parametro lista de valores"}`;
         responder(contenido);
         return;    
     };
 
     try {
-        contenido = await axios.get(encodeURI(url), { timeout: 10000 });    
+        (consologuearProceso) ? console.log(`${metodoHandler}, Consultando por  axios.get a la ruta: ${url}`) : null;
+        //contenido = await axios.get(encodeURI(url) , { timeout: 10000 });
+        contenido = await axios.get( url, { timeout: 10000 } );    
     } catch (error) { 
-        (consologuearErrorAxios) ? console.log(`${metodoHandler}  -> Error al recuperar los datos.`,error) : null; 
+        (consologuearErrorAxios) ? console.log(`${metodoHandler}, -> Error, Axios no pudo recuperar los datos en la ruta ${url}`,error) : null; 
         (!contenido)
-            ? contenido = {msg: "Axios no pudo recuperar los datos"}
-            : null
+            ? contenido = {msg: `Axios no pudo recuperar los datos en la ruta: ${url}`}
+            : null;
     };
 
-    (consologuearValorRetornado) 
-        ? console.log(`${metodoHandler} -> (contenido): `, contenido)
+    (consologuearValorRetornado && contenido) 
+        ? console.log(`${metodoHandler}, -> (contenido): `, contenido)
         : null;
 
     responder(contenido);
@@ -109,33 +136,37 @@ const verSimInvBtcPorQry = async ( valores, srvUri=mySrvUri, responder ) => {
     : srvUri=mySrvUri
     ;
 
+    // url = `${srvUri}/api/simInvBtc/ver/registro/${_id}`;
+    // contenido = await axios.get(encodeURI(url), { timeout: 10000 });
+
     let contenido;
     let url;
-    const {_id} = JSON.parse(valores);
+    const {_id} = JSON.parse(decodeURIComponent(valores));    
+    const idSimInvBtc = _id;
     
-    if (_id) {
-        let url = `${srvUri}/api/simInvBtc/ver/registro/${_id}`;
-        (consologuearProceso) ? console.log(`${metodoHandler} (url)-> ${url}`) : null;    
+    if ( _id ) {
+        url = `${srvUri}}/api/simInvBtc/ver/registro?id=${idSimInvBtc}`;
+        (consologuearProceso) ? console.log(`${metodoHandler}, (url)-> ${url}`) : null;  
     } else {
-        //(consologuearProceso) ? console.log(JSON.parse(`{ msg: "${metodoHandler}, El id es obligatorio en el parametro lista de valores"}`)) : null;
         (consologuearProceso) ? console.log(`{ msg: "${metodoHandler}, El id es obligatorio en el parametro lista de valores"}`) : null;
-        //contenido = JSON.parse(`{ "msg": "El id es obligatorio en el parametro lista de valores"}`);
-        contenido = JSON.parse(`{ "msg": "El id es obligatorio en el parametro lista de valores"}`);
+        contenido = `{"msg": "El id es obligatorio en el parametro lista de valores"}`;
         responder(contenido);
         return;    
     };
 
     try {
-        contenido = await axios.get(encodeURI(url), { timeout: 10000 });    
+        (consologuearProceso) ? console.log(`${metodoHandler}, Consultando por  axios.get a la ruta: ${url}`) : null;
+        //contenido = await axios.get(encodeURI(url) , { timeout: 10000 });
+        contenido = await axios.get( url, { timeout: 10000 } );    
     } catch (error) { 
-        (consologuearErrorAxios) ? console.log(`${metodoHandler}  -> Error al recuperar los datos.`,error) : null; 
+        (consologuearErrorAxios) ? console.log(`${metodoHandler}, -> Error, Axios no pudo recuperar los datos en la ruta ${url}`,error) : null; 
         (!contenido)
-            ? contenido = {msg: "Axios no pudo recuperar los datos"}
-            : null
+            ? contenido = {msg: `Axios no pudo recuperar los datos en la ruta: ${url}`}
+            : null;
     };
 
-    (consologuearValorRetornado) 
-        ? console.log(`${metodoHandler} -> (contenido.data.msg): `, contenido.data.msg)
+    (consologuearValorRetornado && contenido) 
+        ? console.log(`${metodoHandler}, -> (contenido): `, contenido)
         : null;
 
     responder(contenido);
@@ -369,34 +400,37 @@ const eliminarSimInvBtcPorParams = async ( valores, srvUri=mySrvUri, responder )
     : srvUri=mySrvUri
     ;
 
-    const {_id} = JSON.parse(decodeURIComponent(valores));
-    console.log(valores);
-    console.log(_id);
+    // url = `${srvUri}/api/simInvBtc/eliminar/registro/${_id}`;
+    // contenido = await  axios.delete(url, { timeout: 10000 })
 
+    let contenido;
+    let url;
+    const {_id} = JSON.parse(decodeURIComponent(valores));    
+    const idSimInvBtc = _id;
+    
     if ( _id ) {
-        let url = `${srvUri}/api/simInvBtc/eliminar/registro/${_id}`;
-        (consologuearProceso) ? console.log(`${metodoHandler} (url)-> ${url}`) : null;  
+        url = `${srvUri}/api/simInvBtc/eliminar/registro/${idSimInvBtc}`;
+        (consologuearProceso) ? console.log(`${metodoHandler}, (url)-> ${url}`) : null;  
     } else {
-        //(consologuearProceso) ? console.log(JSON.parse(`{ msg: "${metodoHandler}, El id es obligatorio en el parametro lista de valores"}`)) : null;
         (consologuearProceso) ? console.log(`{ msg: "${metodoHandler}, El id es obligatorio en el parametro lista de valores"}`) : null;
-        //contenido = JSON.parse(`{"msg": "El id es obligatorio en el parametro lista de valores"}`);
         contenido = `{"msg": "El id es obligatorio en el parametro lista de valores"}`;
         responder(contenido);
         return;    
     };
 
     try {
-        contenido = await  axios.delete(url, { timeout: 10000 });    
+        (consologuearProceso) ? console.log(`${metodoHandler}, Consultando por axios.delete a la ruta: ${url}`) : null;
+        //contenido = await axios.get(encodeURI(url) , { timeout: 10000 });
+        contenido = await axios.delete(url, { timeout: 10000 });    
     } catch (error) { 
-        (consologuearErrorAxios) ? console.log(`${metodoHandler}  -> Error al eliminar los datos.`,error) : null; 
+        (consologuearErrorAxios) ? console.log(`${metodoHandler}, -> Error, Axios no pudo eliminar los datos en la ruta ${url}`,error) : null; 
         (!contenido)
-            ? contenido = {msg: "Axios no pudo eliminar los datos"}
-            : null
+            ? contenido = {msg: `Axios no pudo eliminar los datos en la ruta: ${url}`}
+            : null;
     };
 
-
     (consologuearValorRetornado && contenido) 
-        ? console.log(`${metodoHandler} -> (contenido.data): `, contenido.data) 
+        ? console.log(`${metodoHandler}, -> (contenido): `, contenido)
         : null;
 
     responder(contenido);
@@ -411,7 +445,7 @@ const eliminarSimInvBtcPorParams = async ( valores, srvUri=mySrvUri, responder )
  * En desarrollo para futura funcionalidad.
  */
 /* 
-const eliminarSimInvBtcPorQry = async ( idsimInvBtc, srvUri=mySrvUri, responder ) => {
+const eliminarSimInvBtcPorQry = async ( valores, srvUri=mySrvUri, responder ) => {
     // Defino que envio a la consola (Local)
     const consologuearProceso = consologuearProcesos;                   //Valores (true, false) PorDefecto = consologuearProcesos 
     const consologuearError = consologuearErrores;                      //Valores (true, false) PorDefecto = consologuearErrores
@@ -428,22 +462,37 @@ const eliminarSimInvBtcPorQry = async ( idsimInvBtc, srvUri=mySrvUri, responder 
     : srvUri=mySrvUri
     ;
 
-    let url = `${srvUri}/api/simInvBtc/eliminar/registro?id=${idsimInvBtc}`;
-    (consologuearProceso) ? console.log(`${metodoHandler} (url)-> ${url}`) : null;
+    // ${srvUri}/api/simInvBtc/eliminar/registro?id=${idSimInvBtc}
+    // axios.delete(url, { timeout: 10000 })
 
     let contenido;
-    contenido = await axios.delete(url, { timeout: 10000 }).catch( (error) => {
-        if (error.response && consologuearError) {
-            console.log(error.response.data);
-            console.log(error.response.status);
-            console.log(error.response.headers);
-        };
-        error.origin = `${metodoHandler} -> Error en la ruta`;
-        throw error;
-    });
+    let url;
+    const {_id} = JSON.parse(decodeURIComponent(valores));    
+    const idSimInvBtc = _id;
+    
+    if ( _id ) {
+        url = `${srvUri}/api/cats/eliminar?id=${idSimInvBtc}`;
+        (consologuearProceso) ? console.log(`${metodoHandler}, (url)-> ${url}`) : null;  
+    } else {
+        (consologuearProceso) ? console.log(`{ msg: "${metodoHandler}, El id es obligatorio en el parametro lista de valores"}`) : null;
+        contenido = `{"msg": "El id es obligatorio en el parametro lista de valores"}`;
+        responder(contenido);
+        return;    
+    };
+
+    try {
+        (consologuearProceso) ? console.log(`${metodoHandler}, Consultando por axios.delete a la ruta: ${url}`) : null;
+        //contenido = await axios.get(encodeURI(url) , { timeout: 10000 });
+        contenido = await axios.delete(url, { timeout: 10000 });    
+    } catch (error) { 
+        (consologuearErrorAxios) ? console.log(`${metodoHandler}, -> Error, Axios no pudo eliminar los datos en la ruta ${url}`,error) : null; 
+        (!contenido)
+            ? contenido = {msg: `Axios no pudo eliminar los datos en la ruta: ${url}`}
+            : null;
+    };
 
     (consologuearValorRetornado && contenido) 
-        ? console.log(`${metodoHandler} -> (contenido.data): `, contenido.data) 
+        ? console.log(`${metodoHandler}, -> (contenido): `, contenido)
         : null;
 
     responder(contenido);

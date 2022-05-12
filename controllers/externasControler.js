@@ -1,7 +1,17 @@
+/** 
+ * ----------------------------
+ * Modulo: externasControler.js
+ * ----------------------------
+ * Parte de: Consultas Axios a Apis externas.
+ * 
+ * Descripcion: Contiene los metodos que controlan las rutas para la llamada a las api 
+ *              externas por medio de Axios.
+*/
 
-const consologuearProceso = true
-const consologuearError = true
 
+//Defino valores globales para el modulo.
+const consologuearProceso = true;
+const consologuearError = true;
 const saltoLinea =  '<Br/>';  //'\n' en Java, <Br/> en Html
 const b = '&nbsp';              //Espacio en blanco
 const tab = `${b}${b}${b}`;     //Tabulacion de tres espacios
@@ -18,7 +28,7 @@ const dA = '&#174;'             // Derechos de Autor
          const contenido = Info();
          res.send(contenido);    
      } catch (error) {
-         console.log('apiExternasInfo -> Hubo un error',error)
+         console.log('apiExternasInfo -> Hubo un error',error);
          res.status(400).send({msg: 'Hubo un error',error});    
      };
  };

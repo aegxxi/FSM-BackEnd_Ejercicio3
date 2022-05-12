@@ -10,67 +10,71 @@ const tab = `${b}${b}${b}`;     //Tabulacion de tres espacios
 const dA = '&#174;'             // Derechos de Autor
 
 const estilos=`<style>
-                  h1 {color:aquamarine;}
-                  h2 {color:lawngreen;}
-                  
-                  p {
-                      color:aquamarine;
-                      font-size:large;
+                    h1 {color:aquamarine;
+                        text-shadow: 1px 2px;
+                        }
+                    h2 {color:lawngreen;}
+                    
+                    p {
+                        color:aquamarine;
+                        font-size:large;
+                        }
+
+                    a {color:aliceblue}
+                    summary {color:aliceblue}
+                    article {color:aliceblue}
+                    
+                    .interlineado { line-height: 150%;}
+
+                    .pSbTt1 {
+                        font-size:large;
+                        line-height: 200%;
+                    }
+                    
+                    pSbTt1:before {
+                        content: "\a ";
+                        white-space: pre;
                     }
 
-                  a {color:aliceblue}
-                  summary {color:aliceblue}
-                  article {color:aliceblue}
-                  
-                  .interlineado { line-height: 150%;}
-
-                  .pSbTt1 {
-                    font-size:large;
-                    line-height: 200%;
-                  }
-                  
-                  pSbTt1:before {
-                    content: "\a ";
-                    white-space: pre;
-                  }
-
-                  .fondo {
-                    color:aquamarine;
-                    background-color: black;
-                    margin: 2rem;
-                  }
-
-                  .textoComentario{
-                    color:aliceblue
-                  }
-
-                  .destacar1{
-                    color:brown;
-                    font-size:large;
-                  }
-
-                  .destacar2{
-                    color:blueviolet;
-                    font-size:large;
-                  }
-
-                  .codigo {
-                    border-image: initial;
-                    border: 1px solid blue;
-                    color:white;
-                    background-color: darkslategray;
-                    margin-right: 64rem;
-                    margin-left: 1rem;
-                    line-height: 200%;
-                    font-size:large;
-                  }
-
-                  .firma {
-                    color:aquamarine;
-                    height: 64rem;
-                    text-align: right;
-                    margin-right: 32rem;
+                    .fondo {
+                        color:aquamarine;
+                        background-color: black;
+                        margin: 2rem;
                     }
+
+                    .textoComentario{
+                        color:aliceblue
+                    }
+
+                    .destacar1{
+                        color:brown;
+                        font-size:large;
+                    }
+
+                    .destacar2{
+                        color:blueviolet;
+                        font-size:large;
+                    }
+
+                    .codigo {
+                        border-image: initial;
+                        border: 1px solid blue;
+                        color:white;
+                        background-color: darkslategray;
+                        margin-right: 64rem;
+                        margin-left: 1rem;
+                        line-height: 200%;
+                        font-size:large;
+                        border-radius: 30px;
+                        box-shadow: 5px 5px #888888;
+                    }
+
+                    .firma {
+                        color:aquamarine;
+                        height: 64rem;
+                        text-align: right;
+                        margin-right: 32rem;
+                        }
                 </style>
                 `
                 ;
@@ -87,9 +91,9 @@ function Info() {
                         Api - Loguin (Inicio y Cierre de sesion)
                         </h1>
                         <h2>
-                        informacion para las pruebas de inicio y cierre de sesion.
+                        Informacion para las pruebas de inicio y cierre de sesion usando axios.
                         </h2>
-                        <p><b>Descripcion general:</b>${b} Documentacion para uso de la api de loguin.</p>
+                        <p><b>Descripcion general:</b>${b} Documentacion para uso de la api de loguin usando axios.</p>
                         ${saltoLinea}
                         <h3>
                         Probar usando Axios:
@@ -99,7 +103,7 @@ function Info() {
                                 <p class='crud'><b>Construccion de la Uri para probar con Axios el inicio/cierre se session: </b></p>
                                 <div class='Codigo'>
                                     <code>
-                                        ${tab}${tab}[ <mark><b>http://localhost:${srvPuerto}/api/externas/resultado/<i class='Destacar1'>[Accion]</i>/<i class='Destacar1'>[listaDeValores]</i></b></mark> ]${saltoLinea}    
+                                        ${tab}${tab}[ <mark><b>http://localhost:${srvPuerto}/api/loguin/resultado/<i class='Destacar1'>[Accion]</i>/<i class='Destacar1'>[listaDeValores]</i></b></mark> ]${saltoLinea}    
                                     </code>
                                 </div>
                                 ${saltoLinea}
@@ -114,6 +118,15 @@ function Info() {
                                     </article>
                                 </details> 
                             </li>
+                            <li>
+                            <p class='crud'><b>Lista de Acciones diponibles: </b></p>
+                            <div class='Codigo'>
+                                <code>
+                                    ${tab}${tab}INGRESAR${saltoLinea}
+                                    ${tab}${tab}SALIR${saltoLinea}
+                                </code>
+                            </div>
+                        </li>
                         </ul>
                         ${saltoLinea} 
                         <h3>

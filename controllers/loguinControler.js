@@ -1,11 +1,27 @@
-//const res = require('express/lib/response');
-//const { response } = require('../app');
 
+/** 
+ * --------------------------
+ * Modulo: loguinControler.js
+ * --------------------------
+ * Parte de: Loguin de usuario, inicio y cierre de sesion.
+ * 
+ * Descripcion: Este modulo contiene los metodos que controlan las rutas para la prueba 
+ *              de estos metodos de incio y cierre de sesion por medio de Axios.
+ * 
+*/
+
+
+
+
+// Importo las dependencias.
 const {Usuario} = require('../models/Usuario');
 const { validationResult } = require('express-validator');
 const bcryptjs = require('bcryptjs');
 const { Info } = require('../PaginasJs/loguin');
-const { json } = require('express/lib/response');
+
+//const res = require('express/lib/response');
+//const { response } = require('../app');
+//const { json } = require('express/lib/response');
 
 
 
@@ -17,13 +33,15 @@ let consologuearErrores = false;
     // const consologuearError = consologuearErrores;      //Valores (true, false) PorDefecto = consologuearErrores
 
 
-
+// Defino valores globales para este modulo
 let cookieNombre = '';   // Establezco la variable que contendra el nombre de la cookie de session
 
 
 
 /**
  *  Muestro api info 
+ *  Muestro la pagina que contiene la informacon para realizar el 
+ *  inicio y cierre de sesion por medio de Axios
  */
  const apiloguinInfo = async (req, res) => {
      // Defino que envio a la consola (Local)
@@ -46,7 +64,8 @@ let cookieNombre = '';   // Establezco la variable que contendra el nombre de la
 
 
 /**
- *  Compruebo el Usuario e Inicio Session
+ *  Inicio la sesion del Usuario
+ *  - Compruebo el Usuario e Inicio Session
  */
  const loguinUsuarios = async (req, res) => {
     // Defino que envio a la consola (Local)
@@ -191,7 +210,8 @@ const logoutUsuarios = async (req, res) => {
 
 
 /**
- *  Consulto la session objeto 'usuario'
+ *  Consulto la session del usuario 
+ *  - leo el objeto 'usuario' dentro de session
  */
  const consultarSession = (req, res) => {
     // Defino que envio a la consola (Local)
@@ -234,8 +254,8 @@ const consultarCookie = (req, res) => {
  *      - Recibe la ruta con los datos de prueba para axios
  *      - En la ruta hay dos parametros:
  *          Accion: valores fijos que indican como se ejecutara axios
- *          ListaDeValores: son los valores que utilizara accios para la prueba
- *      - Con el valor del parametro Accion determina a travz de un swicht el metodo a ejecutar
+ *          ListaDeValores: son los valores que utilizara axios para la prueba
+ *      - Con el valor del parametro Accion determina a travez de un swicht el metodo a ejecutar
  *  - Este controlador devuelve a la ruta el resultado del metodo ejecutado 
  */
  function loguinResultado(req, res){

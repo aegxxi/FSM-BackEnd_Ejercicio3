@@ -1,27 +1,30 @@
 // Importo dependencias
 require('dotenv').config();         //require('dotenv').config({ path: 'variables.env' });
-const aplicacion = require('./app');
+//const aplicacion = require('./app');
 /* 
 // Consologeo el valor de DotEnv para la cadena de conexion ala Db
 console.log(`appSrvEntorno.js => dotenv, DB_MONGO => ${process.env.DB_MONGO}`); 
 */
 
 // Establezco string de conexion a la DB
+// Fuerzo la cadena de conexion si dotenv no funciona
 const myConection= (process.env.DB_MONGO) 
     ? process.env.DB_MONGO
-    : 'mongodb+srv://<Usuario>:<Password>@cluster0.7g1lp.mongodb.net/test';
+    : 'mongodb+srv://<Usuario>:<Password>@cluster0.7g1lp.mongodb.net/test'; // Reemplazar <Usuario>, <Password> por los valores que correspondan.
+    
 
 // Establezco el Puerto
 const cAppPuerto = (process.env.PORT)
     ? process.env.PORT
-    :'4000';
+    :'4001';
 
 // Establezco el Nombre del Servidor
 //const aplicacion = require('./app');
-const {name} = aplicacion
+//const {name} = aplicacion                 // No pude obtener el nombre del servidor.
+const name = 'App.js'                       // Lo declaro a mano hasta tener tiempo de investigar.
 const cAppName =  (name)
     ?`${name}`
-    :'Desconocido';  // app.name.toLocaleUpperCase();
+    :'Desconocido';                         // app.name.toLocaleUpperCase(); Prueba fallida, para revisar luego
 
 
 // Creo el objeto con los datos de funcionamiento del servidor    
