@@ -69,6 +69,7 @@ const dA = '&#174;'             // Derechos de Autor
 
     // Valido el parametro lista de valores.
     if (myValues && !IsJsonString(myValues)) {
+        (consologuearProceso) ? console.log('extResultado -> Los valores pasados en el parametro listaDeValores no son validos: ',myValues) : null;
         res.send({msg: "Los valores pasados en el parametro 'listaDeValores' no son validos. "} );
         return;    
     };
@@ -260,8 +261,8 @@ const dA = '&#174;'             // Derechos de Autor
                 return;            
             
             default:
-                contenido='Accion desconocida.'
-                (consologuearProceso) ? console.log('extResultado -> switch default: ',contenido) : null;
+                contenido = 'Accion desconocida.';
+                (consologuearProceso) ? console.log(`extResultado -> switch default: ${contenido}`) : null;
                 return res.send(contenido);    
         };
         return;

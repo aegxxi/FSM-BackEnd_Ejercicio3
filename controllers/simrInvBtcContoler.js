@@ -458,6 +458,7 @@ function simInvBtcResultado(req, res){
 
     // Valido el parametro lista de valores.
     if (myValues && !IsJsonString(myValues)) {
+        (consologuearProceso) ? console.log(`${controladorEnUso} -> Los valores pasados en el parametro 'listaDeValores' no son validos.: `,myValues) : null;
         res.send({msg: "Los valores pasados en el parametro 'listaDeValores' no son validos. "} );
         return;    
     };
@@ -747,8 +748,8 @@ function simInvBtcResultado(req, res){
                 return;
 
             default:
-                contenido='Accion desconocida.'
-                (consologuearProceso) ? console.log(`${controladorEnUso} -> switch default: `,contenido) : null;
+                contenido = 'Accion desconocida.';
+                (consologuearProceso) ? console.log(`${controladorEnUso} -> switch default:  ${contenido}`) : null;
                 return res.send(contenido);    
         };
         return;

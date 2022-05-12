@@ -499,6 +499,7 @@ function catResultado(req, res){
 
     // Valido el parametro lista de valores.
     if (myValues && !IsJsonString(myValues)) {
+        (consologuearProceso) ? console.log(`${controladorEnUso} -> Los valores pasados en el parametro 'listaDeValores' no son validos: `,myValues) : null;
         res.send({msg: "Los valores pasados en el parametro 'listaDeValores' no son validos. "} );
         return;    
     };
@@ -789,15 +790,16 @@ function catResultado(req, res){
                 return;
 
             default:
-                contenido='Accion desconocida.'
-                (consologuearProceso) ? console.log(`${controladorEnUso} -> switch default: `,contenido) : null;
+                contenido='Accion desconocida.';
+                (consologuearProceso) ? console.log(`${controladorEnUso} -> switch default: ${contenido}`) : null;
                 return res.send(contenido);    
         };
-        return;
+        
     } catch (error) {
         (consologuearError) ? console.log({msg: `Hubo un error en el controlador (${controladorEnUso}) en la rura /resultado...`,error}) : null;
         res.status(400).send({msg: `Hubo un error en el controlador (${controladorEnUso}) en la rura /resultado...`,error});  
     };
+    return;
 };
 
 // ----------------------------------------------

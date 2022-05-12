@@ -1,6 +1,6 @@
 // Rutas para crear usuarios
 const express = require('express');
-const res = require('express/lib/response');
+//const res = require('express/lib/response');
 const router = express.Router();
 const { check } = require('express-validator');
 const {  apiloguinInfo, loguinUsuarios, logoutUsuarios, consultarCookie, consultarSession, loguinResultado } = require('../controllers/loguinControler');

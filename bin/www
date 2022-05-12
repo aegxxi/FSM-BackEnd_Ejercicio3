@@ -135,5 +135,4 @@ function onListening() {
   console.log(` * Ir a la pagina inicial del servidor: http://localhost:${addr.port}`);
   console.log(`-----------------------------------------------------------------------`);
   console.log(``);
-  console.log();
 }

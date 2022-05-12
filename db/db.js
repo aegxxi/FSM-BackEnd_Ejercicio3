@@ -27,6 +27,7 @@ const conectarDB = async () => {
             //useFindAndModify: false
         });
         console.log('DB Conectada');
+        console.log();
     } catch (error) {
         console.log('hubo un error al conectar la DB')
         //console.log(error);   //No recomendado, ensusia la consola

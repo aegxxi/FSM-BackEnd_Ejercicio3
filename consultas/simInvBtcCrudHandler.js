@@ -83,7 +83,7 @@ const verSimInvBtcPorParams = async ( valores, srvUri = mySrvUri, responder ) =>
     const idSimInvBtc = _id;
     
     if ( _id ) {
-        url = ``${srvUri}/api/simInvBtc/ver/registro/${idSimInvBtc}`;
+        url = `${srvUri}/api/simInvBtc/ver/registro/${idSimInvBtc}`;
         (consologuearProceso) ? console.log(`${metodoHandler}, (url)-> ${url}`) : null;  
     } else {
         (consologuearProceso) ? console.log(`{ msg: "${metodoHandler}, El id es obligatorio en el parametro lista de valores"}`) : null;
@@ -109,8 +109,9 @@ const verSimInvBtcPorParams = async ( valores, srvUri = mySrvUri, responder ) =>
 
     responder(contenido);
     return;
-}; 
+};  
 */
+
 
 
 /** 
