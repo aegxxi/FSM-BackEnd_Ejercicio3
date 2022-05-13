@@ -9,4 +9,12 @@
 * Comision : fullstack_matanza
 
 ## Condiciones de entrega del proyecto final son:
-Un CRUD completo con mongoDB : -métodos GET para mostrar información -métodos POST para crear información -métodos PUT para editar la información -métodos DELETE para eliminar la información todo esto esta sujeto a como crearon sus modelos en mongoDB las bases de datos no pueden ser compartidas entre alumnos y los proyectos son individuales también debe contar con validaciones correspondientes según corresponda.
+### Un CRUD completo con mongoDB : 
+- métodos GET para mostrar información 
+- métodos POST para crear información 
+- métodos PUT para editar la información 
+--métodos DELETE para eliminar la información 
+
+todo esto esta sujeto a como crearon sus modelos en mongoDB
+
+Las bases de datos no pueden ser compartidas entre alumnos y los proyectos son individuales también debe contar con validaciones correspondientes según corresponda.
