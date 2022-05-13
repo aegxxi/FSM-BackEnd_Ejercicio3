@@ -6,7 +6,9 @@
  * Parte de: Loguin de usuario, inicio y cierre de sesion.
  * 
  * Descripcion: Este modulo contiene los metodos que controlan las rutas para la prueba 
- *              de estos metodos de incio y cierre de sesion por medio de Axios.
+ *              de estos metodos de incio y cierre de sesion 
+ *              Tambien contiene los metodos que permiten realizar las acciones y las 
+ *              consultas por medio de Axios.
  * 
 */
 
@@ -55,11 +57,13 @@ let cookieNombre = '';   // Establezco la variable que contendra el nombre de la
     
     try {
         const contenido = Info();
-        res.status(200).send(contenido);    
+        res.status(200).send(contenido);
+        return;    
     } catch (error) {
-        res.status(400).send({msg: 'Hubo un error'},error);    
+        (consologuearProceso) ? console.log(`${controladorEnUso}, Hubo un error: `,error) : null;
+        res.status(400).send({msg: 'Hubo un error'});
+        return;    
     };
-
 };
 
 
@@ -75,6 +79,7 @@ let cookieNombre = '';   // Establezco la variable que contendra el nombre de la
     const consologuearError = consologuearErrores;      //Valores (true, false) PorDefecto = consologuearErrores
     // Defino y consologueo el controlador en uso
     const controladorEnUso= 'loguinUsuarios';
+    (consologuearProceso) ? console.log(`* ...`) : null;    // Separo de los log anteriores
     (consologuearProceso) ? console.log(`* Controlador: ${controladorEnUso}...`) : null;
 
     // Extraer datos del body (email es un identificador unico)
@@ -87,7 +92,7 @@ let cookieNombre = '';   // Establezco la variable que contendra el nombre de la
                             ? req.params.email
                             : req.query.email
                         ;    
-    (consologuearProceso) ? console.log(`${controladorEnUso} (emailUsuario) -> `,emailUsuario) : null;
+    (consologuearProceso) ? console.log(`${controladorEnUso}, (emailUsuario) -> `,emailUsuario) : null;
 
     const passwordUsuario = (password) 
                         ? password 
@@ -95,11 +100,11 @@ let cookieNombre = '';   // Establezco la variable que contendra el nombre de la
                             ? req.params.password
                             : req.query.password
                         ;    
-    (consologuearProceso) ? console.log(`${controladorEnUso} (passwordUsuario) -> `,passwordUsuario) : null;
+    (consologuearProceso) ? console.log(`${controladorEnUso}, (passwordUsuario) -> `,passwordUsuario) : null;
     
     try {
         // Verificar si no se paso el email o el password
-        if(!emailUsuario || !password) {
+        if(!emailUsuario || !passwordUsuario) {
             res.status(200).json({ msg: 'El email y la contraseña son obligatorios' });
             return;
         };
@@ -108,86 +113,97 @@ let cookieNombre = '';   // Establezco la variable que contendra el nombre de la
         // Verificar si se paso el mail y el password en el body
         //  - Comprobar si hay errores con validationResult
         if (email || password) {
-            (consologuearProceso) ? console.log(`${controladorEnUso} Comprbando los campos del body segun el modelo de la coleccion usuario con validationResult... `) : null;
+            (consologuearProceso) ? console.log(`${controladorEnUso}, Comprbando los campos del body segun el modelo de la coleccion usuario con validationResult... `) : null;
             // Revisar si hay errores en el body
             const errores = validationResult(req);
             //console.log(errores);
             if( !errores.isEmpty() ) {
-                (consologuearProceso) ? console.log(`${controladorEnUso} validationResult encontro errores... `,errores.array()) : null;
+                (consologuearProceso) ? console.log(`${controladorEnUso}, validationResult encontro errores... `,errores.array()) : null;
                 res.status(200).json({errores: errores.array() });
                 return;
             };    
         } else {
-            (consologuearProceso) ? console.log(`${controladorEnUso} No se pasaron los valores en el boby. No es posible loguearse... `,errores.array()) : null;
+            (consologuearProceso) ? console.log(`${controladorEnUso}, No se pasaron los valores en el boby. No es posible loguearse... `,errores.array()) : null;
             res.status(200).json({ msg: 'El usuario solo puede ser validado pasando todos sus datos en el body' });
             return;
         }; 
         
 
-        (consologuearProceso) ? console.log(`${controladorEnUso} Establezco la variable que contendra el objeto del usuario encontrado ... `) : null;
+        (consologuearProceso) ? console.log(`${controladorEnUso}, Establezco la variable que contendra el objeto del usuario encontrado ... `) : null;
         let usuarioEncontrado = {};  // Establezco la variable que contendra el objeto del usuario encontrado
         
         // Buscando el usuario por su mail
-        (consologuearProceso) ? console.log(`${controladorEnUso} Comprobando si el usuario '${emailUsuario}' existe...`) : null;
+        (consologuearProceso) ? console.log(`${controladorEnUso}, Comprobando si el usuario '${emailUsuario}' existe...`) : null;
         
         usuarioEncontrado = await Usuario.findOne({ email: emailUsuario });  //Busco el usuario por su mail
 
         // Verifico si se encontro al usuario, y consologueo resultado si corresponde
         if (consologuearProceso) {
             if (usuarioEncontrado) {
-                console.log(`${controladorEnUso} Se ha encontrado un Usuario...`);
-                console.log(`${controladorEnUso} (usuario buscado'${emailUsuario}', usuario encontrado '${usuarioEncontrado.email}')`);
-                console.log(`${controladorEnUso} (objeto usuarioEncontrado):`,usuarioEncontrado);
+                console.log(`${controladorEnUso}, Se ha encontrado un Usuario...`);
+                console.log(`${controladorEnUso}, (usuario buscado'${emailUsuario}', usuario encontrado '${usuarioEncontrado.email}')`);
+                console.log(`${controladorEnUso}, (objeto usuarioEncontrado):`,usuarioEncontrado);
             } else {
-                console.log(`${controladorEnUso} (usuarioEncontrado), el ojeto no se ha creado, usuario no encontrado:`,usuarioEncontrado);
+                console.log(`${controladorEnUso}, (usuarioEncontrado), el ojeto no se ha creado, usuario no encontrado:`,usuarioEncontrado);
             };
         };
        
         // Compruebo el el objeto usuarioEncontrado se haya creado, 
         // Tambien compruebo que su valor (el valor hallado),
         // sea igual al usuario buscado (esto ultimo no es necesario, pero ...)
-        (consologuearProceso) ? console.log(`${controladorEnUso} Compruebo el el objeto usuarioEncontrado se haya creado...`) : null;
+        (consologuearProceso) ? console.log(`${controladorEnUso}, Compruebo el el objeto usuarioEncontrado se haya creado...`) : null;
         if( !usuarioEncontrado || usuarioEncontrado.email !== emailUsuario ) {
-            (consologuearProceso) ? console.log(`${controladorEnUso} (Devuelvo "Estado 400" El usuario ha sido encontrado, Buscado '${emailUsuario}' => Encontrado '${usuarioEncontrado.email}')`) : null;
+            (consologuearProceso) ? console.log(`${controladorEnUso}, (Devuelvo "Estado 400" El usuario ha sido encontrado, Buscado '${emailUsuario}' => Encontrado '${usuarioEncontrado.email}')`) : null;
             res.status(200).json({ msg: 'El usuario no ha sido encontrado, el mail es incorrecto.' }); 
             return;
         };
         
         (consologuearProceso) ? console.log(`${controladorEnUso} Compruebo la contraseña...`) : null;
         if ( !bcryptjs.compare( usuarioEncontrado.password, password ) ) {
-            (consologuearProceso) ? console.log(`${controladorEnUso} La contraseña es incorrecta, Password Igresado '${password}'`) : null;
+            (consologuearProceso) ? console.log(`${controladorEnUso}, La contraseña es incorrecta, Password Igresado '${password}'`) : null;
             res.status(200).json({ msg: 'La contraseña es incorrecta.' });
             return;
         };
 
-        (consologuearProceso) ? console.log(`${controladorEnUso} Creo el objeto con los datos de session...`) : null;
+        (consologuearProceso) ? console.log(`${controladorEnUso}, Creo el objeto con los datos de session...`) : null;
         const usuarioLogueado = {
             usuarioId: usuarioEncontrado._id,
             usuarioEmail: usuarioEncontrado.email,
             usuarioNombre: usuarioEncontrado.nombre
         };
-        (consologuearProceso) ? console.log(`${controladorEnUso} Objeto creado para la Session (usuarioLogueado)`,usuarioLogueado) : null;
+        (consologuearProceso) ? console.log(`${controladorEnUso}, Objeto creado para la Session (usuarioLogueado)`,usuarioLogueado) : null;
         
         
         // Creo session y cookie
-        (consologuearProceso) ? console.log(`${controladorEnUso} Creo session y cookie...`) : null;
+        (consologuearProceso) ? console.log(`${controladorEnUso}, Creo session y cookie...`) : null;
         
-        req.session.usuario = usuarioLogueado;     // Creo la Session
+        req.session.usuario = usuarioLogueado;     // * Creo la Session *
         
-        //(consologuearProceso) ? console.log(`${controladorEnUso} Sesion (req.session.usuario): `,req.session.usuario) : null;
-        (consologuearProceso) ? console.log(`${controladorEnUso} Sesion (req.session): `,req.session) : null;
+        (consologuearProceso) ? console.log(`${controladorEnUso}, Sesion (req.session): `,req.session) : null;
         
-        //cookieNombre = 'Dts_' + nombre;
-        res.cookie( 'sessionUsuario', req.session.usuario, { maxAge:800000000 } );  // Creo la cookie
-        (consologuearProceso) ? console.log(`${controladorEnUso} Cookie sessionUsuario (req.cookies.sessionUsuario): `,req.cookies.sessionUsuario) : null;
+        // Defino si voy a crear la cookie 'sessionUsuario'y la creo
+        const crearCookieSessionUsuario = true
+        if (crearCookieSessionUsuario) {
+            //cookieNombre = 'Dts_' + nombre;   // Por si quiero crear una cookie con el nombre del Usuario y y un prefijo.
+            res.cookie( 'sessionUsuario', 
+                        req.session.usuario, 
+                        { maxAge:800000000 } 
+                        );                         // * Creo la Cookie *
+            
+            (consologuearProceso) ? console.log(`${controladorEnUso}, Cookie sessionUsuario (req.cookies.sessionUsuario): `,req.cookies.sessionUsuario) : null;    
+        };
 
+        // Devuelvo el estado del proceso
+        (consologuearProceso) ? console.log(`${controladorEnUso}, Usuario logueado:  OK.`) : null;
+        res.status(201).json({ msg: 'Usuario Logueado.' });
+        return;
 
-        res.status(201).json({ msg: 'Usuario Logueado.' });     
     } catch (error) {
+        (consologuearProceso) ? console.log(`${controladorEnUso}, Error en el Loguin de usuario: `,error) : null;
         //res.status(400).send({msg: 'Hubo un error'},error);
-        res.send({msg: 'Hubo un error'});    
+        res.send({msg: 'Hubo un error en el loguin de usuario.'}); 
+        return;   
     };
-
 };
 
 
@@ -199,14 +215,27 @@ const logoutUsuarios = async (req, res) => {
     const consologuearProceso = consologuearProcesos;   //Valores (true, false) PorDefecto = consologuearProcesos 
     const consologuearError = consologuearErrores;      //Valores (true, false) PorDefecto = consologuearErrores
     // Defino y consologueo el controlador en uso
+    (consologuearProceso) ? console.log(`* ...`) : null;    // Separo de los log anteriores
     const controladorEnUso= 'logoutUsuarios';
-    (consologuearProceso) ? console.log(`* Controlador: ${controladorEnUso}...`) : null;
+    (consologuearProceso) ? console.log(`${controladorEnUso}, ...`) : null;
     
-    //res.clearCookie('sessionUsuario');
-    res.cookie( 'sessionUsuario', '', { maxAge:0 } );  // Reescribo la cookie para eliminarla
-    //res.clearcookie('Dts_usuario');
-    req.session.destroy;
+    try {
+        // Elimino  la cookie de session
+        //res.clearCookie('sessionUsuario');               // me dio un error
+        res.cookie( 'sessionUsuario', '', { maxAge:0 } );  // Reescribo la cookie para eliminarla
+        
+        // Elimino la sesion
+        req.session.destroy;
+
+    } catch (error) {
+        (consologuearProceso) ? console.log(`${controladorEnUso}, Error al cerrar la sesion: `,error) : null;
+        res.status(400).json({ msg: 'Error al cerrar la sesion.' });
+        return;    
+    };
+    
+    (consologuearProceso) ? console.log(`${controladorEnUso}, Sesion cerrada, OK: `) : null;
     res.status(200).json({ msg: 'Sesion cerrada.' });
+    return;
 };
 
 
@@ -220,13 +249,21 @@ const logoutUsuarios = async (req, res) => {
     const consologuearProceso = consologuearProcesos;   //Valores (true, false) PorDefecto = consologuearProcesos 
     const consologuearError = consologuearErrores;      //Valores (true, false) PorDefecto = consologuearErrores
     // Defino y consologueo el controlador en uso
+    (consologuearProceso) ? console.log(`* ...`) : null;    // Separo de los log anteriores
     const controladorEnUso= 'consultarSession';
     (consologuearProceso) ? console.log(`* Controlador: ${controladorEnUso}...`) : null;   
     
-    (consologuearProceso) ? console.log(` ${controladorEnUso} req.session: `,req.session) : null; 
-    (req.session.usuario) ? res.json(req.session.usuario) : res.json({ msg: 'No existe el objeto [usuario] dentro del objeto [session].' });
-    return;
-}
+    try {
+        (consologuearProceso) ? console.log(` ${controladorEnUso}, req.session: `,req.session) : null; 
+        (req.session.usuario) ? res.json(req.session.usuario) : res.json({ msg: 'No existe el objeto [usuario] dentro del objeto [session].' });
+        return;    
+    } catch (error) {
+        (consologuearProceso) ? console.log(`${controladorEnUso}, Error al consultar los datos de la sesion: `,error) : null;
+        res.json({ msg: 'Error al consultar los datos de la sesion.' });
+        return;
+    };
+    
+};
 
 /**
  *  Consulto la cookie 'sessionUsuario'
@@ -236,13 +273,21 @@ const consultarCookie = (req, res) => {
     const consologuearProceso = consologuearProcesos;   //Valores (true, false) PorDefecto = consologuearProcesos 
     const consologuearError = consologuearErrores;      //Valores (true, false) PorDefecto = consologuearErrores
     // Defino y consologueo el controlador en uso
+    (consologuearProceso) ? console.log(`* ...`) : null;    // Separo de los log anteriores
     const controladorEnUso= 'consultarCookie';
     (consologuearProceso) ? console.log(`* Controlador: ${controladorEnUso}...`) : null;   
     
-    (consologuearProceso) ? console.log(` ${controladorEnUso} req.cookies.sessionUsuario: `,req.cookies.sessionUsuario) : null;
-    (req.cookies.sessionUsuario) ? res.json(req.cookies.sessionUsuario) : res.json({ msg: 'No existe la cookie [sessionUsuario].' });
-    return;
-}
+    try {
+        (consologuearProceso) ? console.log(` ${controladorEnUso}, req.cookies.sessionUsuario: `,req.cookies.sessionUsuario) : null;
+        (req.cookies.sessionUsuario) ? res.json(req.cookies.sessionUsuario) : res.json({ msg: 'No existe la cookie [sessionUsuario].' });
+        return;    
+    } catch (error) {
+        (consologuearProceso) ? console.log(`${controladorEnUso}, Error al consultar la Cookie: `, error) : null; 
+        res.json({ msg: 'Error al consultar la Cookie.' });
+        return;    
+    };
+    
+};
 
 
 
@@ -265,6 +310,7 @@ const consultarCookie = (req, res) => {
     const consologuearProceso = consologuearProcesos;   //Valores (true, false) PorDefecto = consologuearProcesos 
     const consologuearError = consologuearErrores;      //Valores (true, false) PorDefecto = consologuearErrores
     // Defino y consologueo el controlador en uso
+    (consologuearProceso) ? console.log(`* ...`) : null;    // Separo de los log anteriores
     const controladorEnUso= 'loguinResultado';
     (consologuearProceso) ? console.log(`* Controlador: ${controladorEnUso}...`) : null;
     
@@ -276,7 +322,7 @@ const consultarCookie = (req, res) => {
             ? req.params.accion
             : req.query.accion
         ;    
-    (consologuearProceso) ? console.log(`${controladorEnUso} -> (accion): `,myAction) : null;
+    (consologuearProceso) ? console.log(`${controladorEnUso}, -> (accion): `,myAction) : null;
 
         const myValues = (listaDeValores) 
         ? listaDeValores 
@@ -284,11 +330,11 @@ const consultarCookie = (req, res) => {
             ? req.params.listaDeValores
             : req.query.listaDeValores
         ;  
-    (consologuearProceso) ? console.log(`${controladorEnUso} -> (listaDeValores): `,myValues) : null;  
+    (consologuearProceso) ? console.log(`${controladorEnUso}, -> (listaDeValores): `,myValues) : null;  
 
     // Valido el parametro lista de valores.
     if (myValues && !IsJsonString(myValues)) {
-        (consologuearProceso) ? console.log(`${controladorEnUso} -> Los valores pasados en el parametro 'listaDeValores' no son validos: `,myValues) : null;
+        (consologuearProceso) ? console.log(`${controladorEnUso}, -> Los valores pasados en el parametro 'listaDeValores' no son validos: `,myValues) : null;
         res.send({msg: "Los valores pasados en el parametro 'listaDeValores' no son validos. "} );
         return;    
     };
@@ -304,7 +350,7 @@ const consultarCookie = (req, res) => {
         //console.log(TYPES)
         switch (myAction) {
             case TYPES.ingresarSession:
-                (consologuearProceso) ? console.log(`${controladorEnUso} -> Buscando el contenido por Params: `,TYPES.ingresarSession) : null;
+                (consologuearProceso) ? console.log(`${controladorEnUso}, -> Buscando el contenido por Params: `,TYPES.ingresarSession) : null;
                 contenido = ingresarSession( myValues, 
                                             '', 
                                             responder = async (contenido) => { 
@@ -315,7 +361,7 @@ const consultarCookie = (req, res) => {
                                                                                     res.send(respuesta);
                                                                                     return;    
                                                                                 } catch (error) {
-                                                                                    (consologuearError) ? console.log(`${controladorEnUso} (responder) -> Error al recuperar los datos.`,error) : null;
+                                                                                    (consologuearError) ? console.log(`${controladorEnUso}, (responder) -> Error al recuperar los datos.`,error) : null;
                                                                                     res.send('Error al recuperar los datos.');
                                                                                 };
                                                                                 return;
@@ -325,7 +371,7 @@ const consultarCookie = (req, res) => {
                 return;
 
             case TYPES.salirSession:
-                (consologuearProceso) ? console.log(`${controladorEnUso} -> Buscando el contenido por Qry: `,TYPES.salirSession) : null;
+                (consologuearProceso) ? console.log(`${controladorEnUso}, -> Buscando el contenido por Qry: `,TYPES.salirSession) : null;
                 contenido = salirSession( '', 
                                         responder = async (contenido) => { 
                                                     try {
@@ -335,7 +381,7 @@ const consultarCookie = (req, res) => {
                                                         res.send(respuesta);
                                                         return;   
                                                     } catch (error) {
-                                                        (consologuearError) ? console.log(`${controladorEnUso} (responder) -> Error al recuperar los datos.`,error) : null;
+                                                        (consologuearError) ? console.log(`${controladorEnUso}, (responder) -> Error al recuperar los datos.`,error) : null;
                                                         res.send('Error al recuperar los datos.');
                                                     };
                                                     return;
@@ -345,7 +391,7 @@ const consultarCookie = (req, res) => {
             
             default:
                 contenido = 'Accion desconocida.';
-                (consologuearProceso) ? console.log(`${controladorEnUso} -> switch default: ${contenido}`) : null;
+                (consologuearProceso) ? console.log(`${controladorEnUso}, -> switch default: ${contenido}`) : null;
                 return res.send(contenido);    
         };
         
