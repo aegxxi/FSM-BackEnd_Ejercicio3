@@ -13,7 +13,7 @@
 - métodos GET para mostrar información 
 - métodos POST para crear información 
 - métodos PUT para editar la información 
---métodos DELETE para eliminar la información 
+- métodos DELETE para eliminar la información 
 
 todo esto esta sujeto a como crearon sus modelos en mongoDB
 
