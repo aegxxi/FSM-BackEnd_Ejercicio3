@@ -21,10 +21,10 @@ app.use(cors());            // Controlo dede donde pueden venir las peticiones
 
 const oneDay = 1000 * 60 * 60 * 24;              // Creating 24 hours from milliseconds
 app.use(session({
-    secret: 'Lo imprimido, fue escrivido.',      // Contiene la clave secreta para la sesión (lo escibo mal aproposito)
+    secret: 'Lo imprimido, fue escrivido.',      // Contiene la clave secreta para la sesión (lo escibo mal aproposito, mas adelante la coloco en .env y la tomo desde alli.)
     saveUninitialized: true,                     // Esto permite enviar cualquier sesión a la tienda. Cuando se crea una sesión pero no se modifica, se denomina uninitialized.
     cookie: { maxAge: oneDay },                  // Establece el tiempo de caducidad de la cookie. El navegador eliminará la cookie después de que transcurra la duración establecida. La cookie no se adjuntará a ninguna de las solicitudes en el futuro. En este caso, hemos establecido el maxAgea un solo día 
-    resave: false,                               // Permite que la sesión se vuelva a almacenar en el almacén de sesiones, incluso si la sesión nunca se modificó durante la solicitud. Esto puede resultar en una situación de carrera en caso de que un cliente realice dos solicitudes paralelas al servidor. Por lo tanto, la modificación realizada en la sesión de la primera solicitud puede sobrescribirse cuando finaliza la segunda solicitud. El valor predeterminado es true. Sin embargo, esto puede cambiar en algún momento. false es una mejor alternativa.
+    resave: false                               // Permite que la sesión se vuelva a almacenar en el almacén de sesiones, incluso si la sesión nunca se modificó durante la solicitud. Esto puede resultar en una situación de carrera en caso de que un cliente realice dos solicitudes paralelas al servidor. Por lo tanto, la modificación realizada en la sesión de la primera solicitud puede sobrescribirse cuando finaliza la segunda solicitud. El valor predeterminado es true. Sin embargo, esto puede cambiar en algún momento. false es una mejor alternativa.
     //cookie: { secure: true }
   }));
 

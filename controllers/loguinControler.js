@@ -178,19 +178,23 @@ let cookieNombre = '';   // Establezco la variable que contendra el nombre de la
         (consologuearProceso) ? console.log(`${controladorEnUso}, Creo session y cookie...`) : null;
         
         req.session.usuario = usuarioLogueado;     // * Creo la Session *
-        
+        //res.json(req.session.usuario);
+        //return;
+
         (consologuearProceso) ? console.log(`${controladorEnUso}, Sesion (req.session): `,req.session) : null;
         
         // Defino si voy a crear la cookie 'sessionUsuario'y la creo
         const crearCookieSessionUsuario = true
         if (crearCookieSessionUsuario) {
+            (consologuearProceso) ? console.log(`${controladorEnUso}, Verifico si accedo al dato (req.cookies.sessionUsuario.usuarioEmail): `,req.session.usuario.usuarioEmail) : null; 
+            (consologuearProceso) ? console.log(`${controladorEnUso}, Creo la Cookie 'sessionUsuario'... `) : null; 
             //cookieNombre = 'Dts_' + nombre;   // Por si quiero crear una cookie con el nombre del Usuario y y un prefijo.
             res.cookie( 'sessionUsuario', 
-                        req.session.usuario, 
-                        { maxAge:800000000 } 
+                        req.session.usuario.usuarioEmail, 
+                        { maxAge:8000000000 } 
                         );                         // * Creo la Cookie *
             
-            (consologuearProceso) ? console.log(`${controladorEnUso}, Cookie sessionUsuario (req.cookies.sessionUsuario): `,req.cookies.sessionUsuario) : null;    
+            (consologuearProceso) ? console.log(`${controladorEnUso}, Verifico la Cookie creada 'sessionUsuario': `,req.cookies.sessionUsuario) : null;    
         };
 
         // Devuelvo el estado del proceso
